@@ -1,5 +1,7 @@
 package store;
 
+import store.exception.BusinessException;
+
 public class Product {
     private final String name;
     private final long price;
@@ -15,7 +17,7 @@ public class Product {
 
     public boolean isAvailablePurchase(long quantity) {
         if (quantity <= 0) {
-            throw new IllegalArgumentException("[ERROR] 구매 수량은 0이하일 수 없습니다.");
+            throw new BusinessException("구매 수량은 0이하일 수 없습니다.");
         }
         return this.quantity >= quantity;
     }
@@ -24,6 +26,6 @@ public class Product {
         if (isAvailablePurchase(quantity)) {
             return this.quantity = this.quantity - quantity;
         }
-        throw new IllegalArgumentException("[ERROR] 재고가 부족하여 구매할 수 없습니다.");
+        throw new BusinessException("재고가 부족하여 구매할 수 없습니다.");
     }
 }
