@@ -13,8 +13,7 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public boolean isAvailablePurchase(long payment) {
-        int cnt = (int) (payment / price);
-        return cnt > 0 && cnt <= quantity;
+    public boolean isAvailablePurchase(long quantity) {
+        return this.quantity >= quantity;
     }
 }
