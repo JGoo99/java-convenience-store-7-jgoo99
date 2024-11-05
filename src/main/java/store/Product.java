@@ -1,5 +1,6 @@
 package store;
 
+import java.text.DecimalFormat;
 import store.exception.BusinessException;
 
 public class Product {
@@ -27,5 +28,15 @@ public class Product {
             return this.quantity = this.quantity - quantity;
         }
         throw new BusinessException("재고가 부족하여 구매할 수 없습니다.");
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("###,###");
+        return "- " +
+                name + " " +
+                df.format(price) + "원 " +
+                df.format(quantity) + "개 " +
+                promotion;
     }
 }
