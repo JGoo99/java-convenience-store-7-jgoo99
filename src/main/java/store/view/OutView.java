@@ -1,7 +1,7 @@
 package store.view;
 
 import java.util.List;
-import store.Product;
+import store.dto.Product;
 
 public class OutView {
 

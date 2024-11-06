@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import store.Product;
+import store.dto.Product;
 
 public class ProductReader {
 

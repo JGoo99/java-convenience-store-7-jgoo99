@@ -1,4 +1,4 @@
-package store;
+package store.dto;
 
 import java.text.DecimalFormat;
 import store.exception.BusinessException;
