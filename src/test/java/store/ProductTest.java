@@ -2,13 +2,16 @@ package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import store.model.Product;
+import store.model.Promotion;
 
 class ProductTest {
 
@@ -66,6 +69,19 @@ class ProductTest {
         // when & then
         assertThat(product.toString())
                 .isEqualTo("탄산수 1,200원 재고없음 탄산2+1");
+    }
+
+    @DisplayName("오늘 날짜가 프로모션 기간을 비교하여 할인 가능 여부를 반환한다.")
+    @Test
+    void test6() {
+        // given
+        LocalDate start = LocalDate.now();
+        LocalDate end = LocalDate.now().plusDays(1);
+        Promotion promotion = new Promotion("탄산2+1", 2, 1, start, end);
+
+        Product product = new Product("콜라", 1000L, 10L, promotion);
+        // when & then
+        assertTrue(product.isAvailablePromotion());
     }
 
 }

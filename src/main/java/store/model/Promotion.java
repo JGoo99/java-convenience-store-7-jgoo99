@@ -21,4 +21,8 @@ public class Promotion {
     public String getName() {
         return name;
     }
+
+    public boolean withinPeriod(LocalDate date) {
+        return date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1));
+    }
 }

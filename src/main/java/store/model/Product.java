@@ -1,19 +1,26 @@
 package store.model;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import store.exception.BusinessException;
+import store.repository.PromotionRepository;
 
 public class Product {
+
     private final String name;
     private final long price;
     private long quantity;
-    private final String promotion;
+    private final Promotion promotion;
 
-    public Product(String name, long price, long quantity, String promotion) {
+    public Product(String name, long price, long quantity, Promotion promotion) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.promotion = promotion;
+    }
+
+    public Product(String name, long price, long quantity, String promotionName) {
+        this(name, price, quantity, PromotionRepository.getInstance().findByName(promotionName));
     }
 
     public boolean isAvailablePurchase(long quantity) {
@@ -45,5 +52,9 @@ public class Product {
                 df.format(price) + "원 " +
                 getQuantityStatus() +
                 promotion;
+    }
+
+    public boolean isAvailablePromotion() {
+        return promotion.withinPeriod(LocalDate.now());
     }
 }
