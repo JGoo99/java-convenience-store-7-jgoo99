@@ -3,6 +3,7 @@ package store.reader;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -18,5 +19,15 @@ class ProductReaderTest {
         // when & then
         assertThat(reader.read(line).toString())
                 .isEqualTo(expected);
+    }
+
+    @DisplayName("Products 정보가 나열된 문자열을 읽어 Product 객체 리스트를 반환한다.")
+    @Test
+    void test2() {
+        // given
+        ProductReader reader = new ProductReader();
+        // when & then
+        assertThat(reader.readAll())
+                .size().isEqualTo(16);
     }
 }
