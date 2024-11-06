@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import store.model.Product;
+import store.model.Promotion;
+import store.repository.ProductRepository;
+import store.repository.PromotionRepository;
 
 public class ProductReader {
 
@@ -28,11 +31,13 @@ public class ProductReader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        ProductRepository.getInstance().saveAll(products);
         return products;
     }
 
     public Product read(String line) {
         String[] split = line.split(",");
-        return new Product(split[0], Long.parseLong(split[1]), Long.parseLong(split[2]), split[3]);
+        Promotion promotion = PromotionRepository.getInstance().findByName(split[3]);
+        return new Product(split[0], Long.parseLong(split[1]), Long.parseLong(split[2]), promotion);
     }
 }

@@ -1,6 +1,7 @@
 package store.repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import store.model.Promotion;
 
@@ -18,6 +19,10 @@ public class PromotionRepository {
             promotionRepository = new PromotionRepository();
         }
         return promotionRepository;
+    }
+
+    public void saveAll(List<Promotion> promotions) {
+        promotions.forEach(this::save);
     }
 
     public Promotion save(Promotion promotion) {
