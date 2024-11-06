@@ -34,7 +34,13 @@ public class Product {
 
     public long buy(long quantity) {
         validateAvailablePurchase(quantity);
-        return this.quantity = this.quantity - quantity;
+        this.quantity -= quantity;
+        if (isAvailablePromotion(quantity)) {
+            long freeQuantity = promotion.calcFreeQuantity(quantity);
+            long paymentQuantity = quantity - freeQuantity;
+            return price * paymentQuantity;
+        }
+        return price * quantity;
     }
 
     public String getQuantityStatus() {
@@ -45,7 +51,10 @@ public class Product {
         return df.format(quantity) + "개 ";
     }
 
-    public boolean isAvailablePromotion() {
+    public boolean isAvailablePromotion(long quantity) {
+        if (!promotion.overBuyCnt(quantity)) {
+            return false;
+        }
         return promotion.withinPeriod(LocalDate.now());
     }
 

@@ -25,4 +25,20 @@ public class Promotion {
     public boolean withinPeriod(LocalDate date) {
         return date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1));
     }
+
+    public long calcFreeQuantity(long quantity) {
+        if (quantity == buyCnt) {
+            return 1;
+        }
+        return quantity / (buyCnt + getCnt);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public boolean overBuyCnt(long quantity) {
+        return buyCnt + getCnt <= quantity;
+    }
 }
