@@ -2,6 +2,7 @@ package store;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -10,31 +11,33 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import store.exception.BusinessException;
 import store.model.Product;
 import store.model.Promotion;
 
 class ProductTest {
 
-    @DisplayName("결제 금액 만큼의 각 상품의 재고 수량이 있는지 반환한다.")
+    @DisplayName("결제 금액 만큼의 상품 수량을 구매할 수 있는지 확인한다.")
     @ParameterizedTest
-    @CsvSource(value = {"1:true", "10:true", "12:false"}, delimiter = ':')
-    void test1(long quantity, boolean isAvailable) {
+    @ValueSource(longs = {1L, 10L})
+    void test1(long quantity) {
         // given
         Product product = new Product("콜라", 1000L, 10L, "탄산2+1");
         // when & then
-        assertThat(product.isAvailablePurchase(quantity))
-                .isEqualTo(isAvailable);
+        assertDoesNotThrow(() -> product.validateAvailablePurchase(quantity));
     }
 
     @DisplayName("결제된 수량만큼 재고를 차감한다.")
     @ParameterizedTest
-    @CsvSource(value = {"1:9", "10:0"}, delimiter = ':')
-    void test2(long paymentQuantity, long remainingQuantity) {
+    @CsvSource(value = {"1:9개", "10:재고없음"}, delimiter = ':')
+    void test2(long paymentQuantity, String quantityStatus) {
         // given
         Product product = new Product("콜라", 1000L, 10L, "탄산2+1");
-        // when & then
-        assertThat(product.buy(paymentQuantity))
-                .isEqualTo(remainingQuantity);
+        // when
+        product.buy(paymentQuantity);
+        // then
+        assertThat(product.toString())
+                .contains(quantityStatus);
     }
 
     @DisplayName("결제된 수량이 재고를 초과하는 경우 예외가 발생한다.")
@@ -44,9 +47,8 @@ class ProductTest {
         // given
         Product product = new Product("콜라", 1000L, 10L, "탄산2+1");
         // when & then
-        assertThatThrownBy(() -> product.buy(quantity))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
+        assertThatThrownBy(() -> product.validateAvailablePurchase(quantity))
+                .isInstanceOf(BusinessException.class);
     }
 
     @DisplayName("결제된 수량이 0 이하인 경우 예외가 발생한다.")
@@ -83,5 +85,4 @@ class ProductTest {
         // when & then
         assertTrue(product.isAvailablePromotion());
     }
-
 }

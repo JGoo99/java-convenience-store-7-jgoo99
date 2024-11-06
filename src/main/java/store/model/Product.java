@@ -23,18 +23,18 @@ public class Product {
         this(name, price, quantity, PromotionRepository.getInstance().findByName(promotionName));
     }
 
-    public boolean isAvailablePurchase(long quantity) {
+    public void validateAvailablePurchase(long quantity) {
         if (quantity <= 0) {
-            throw new BusinessException("구매 수량은 0이하일 수 없습니다.");
+            throw new BusinessException("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
         }
-        return this.quantity >= quantity;
+        if (this.quantity < quantity) {
+            throw new BusinessException("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+        }
     }
 
     public long buy(long quantity) {
-        if (isAvailablePurchase(quantity)) {
-            return this.quantity = this.quantity - quantity;
-        }
-        throw new BusinessException("재고가 부족하여 구매할 수 없습니다.");
+        validateAvailablePurchase(quantity);
+        return this.quantity = this.quantity - quantity;
     }
 
     public String getQuantityStatus() {
@@ -45,6 +45,10 @@ public class Product {
         return df.format(quantity) + "개 ";
     }
 
+    public boolean isAvailablePromotion() {
+        return promotion.withinPeriod(LocalDate.now());
+    }
+
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("###,###");
@@ -52,9 +56,5 @@ public class Product {
                 df.format(price) + "원 " +
                 getQuantityStatus() +
                 promotion;
-    }
-
-    public boolean isAvailablePromotion() {
-        return promotion.withinPeriod(LocalDate.now());
     }
 }
