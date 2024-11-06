@@ -1,4 +1,4 @@
-package store.dto;
+package store.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

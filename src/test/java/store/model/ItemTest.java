@@ -1,4 +1,4 @@
-package store.dto;
+package store.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
