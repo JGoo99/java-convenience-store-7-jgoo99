@@ -33,8 +33,7 @@ public class Product {
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("###,###");
-        return "- " +
-                name + " " +
+        return name + " " +
                 df.format(price) + "원 " +
                 df.format(quantity) + "개 " +
                 promotion;
