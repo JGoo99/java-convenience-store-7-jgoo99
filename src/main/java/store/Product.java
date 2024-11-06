@@ -30,12 +30,20 @@ public class Product {
         throw new BusinessException("재고가 부족하여 구매할 수 없습니다.");
     }
 
+    public String getQuantityStatus() {
+        DecimalFormat df = new DecimalFormat("###,###");
+        if (quantity == 0) {
+            return "재고없음 ";
+        }
+        return df.format(quantity) + "개 ";
+    }
+
     @Override
     public String toString() {
         DecimalFormat df = new DecimalFormat("###,###");
         return name + " " +
                 df.format(price) + "원 " +
-                df.format(quantity) + "개 " +
+                getQuantityStatus() +
                 promotion;
     }
 }

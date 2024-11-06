@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import store.exception.BusinessException;
 
 class ProductTest {
 
@@ -55,6 +55,16 @@ class ProductTest {
         assertThatThrownBy(() -> product.buy(quantity))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
+    }
+
+    @DisplayName("만약 재고가 0개라면 재고 없음을 출력한다.")
+    @Test
+    void test5() {
+        // given
+        Product product = new Product("탄산수", 1200L, 0L, "탄산2+1");
+        // when & then
+        assertThat(product.toString())
+                .isEqualTo("탄산수 1,200원 재고없음 탄산2+1");
     }
 
 }
