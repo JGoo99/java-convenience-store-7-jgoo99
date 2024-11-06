@@ -19,8 +19,8 @@ public class Product {
         this.promotion = promotion;
     }
 
-    public Product(String name, long price, long quantity, String promotionName) {
-        this(name, price, quantity, PromotionRepository.getInstance().findByName(promotionName));
+    public String getName() {
+        return name;
     }
 
     public void validateAvailablePurchase(long quantity) {
@@ -46,16 +46,27 @@ public class Product {
     public String getQuantityStatus() {
         DecimalFormat df = new DecimalFormat("###,###");
         if (quantity == 0) {
-            return "재고없음 ";
+            return "재고 없음 ";
         }
         return df.format(quantity) + "개 ";
     }
 
     public boolean isAvailablePromotion(long quantity) {
-        if (!promotion.overBuyCnt(quantity)) {
+        if (promotion.lessThanBuyCnt(quantity)) {
             return false;
         }
         return promotion.withinPeriod(LocalDate.now());
+    }
+
+    public boolean checkQuantity(long quantity) {
+        return isAvailablePromotion(quantity) && promotion.checkQuantity(quantity) && this.quantity > 1;
+    }
+
+    private String getPromotionStatus() {
+        if (promotion == null) {
+            return "";
+        }
+        return promotion.toString();
     }
 
     @Override
@@ -64,6 +75,6 @@ public class Product {
         return name + " " +
                 df.format(price) + "원 " +
                 getQuantityStatus() +
-                promotion;
+                getPromotionStatus();
     }
 }

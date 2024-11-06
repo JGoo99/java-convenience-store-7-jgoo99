@@ -5,15 +5,15 @@ import java.time.LocalDate;
 public class Promotion {
 
     private final String name;
-    private final long buyCnt;
-    private final long getCnt;
+    private final int buyQuantity;
+    private final int getQuantity;
     private final LocalDate start;
     private final LocalDate end;
 
-    public Promotion(String name, long buyCnt, long getCnt, LocalDate start, LocalDate end) {
+    public Promotion(String name, int buyQuantity, int getQuantity, LocalDate start, LocalDate end) {
         this.name = name;
-        this.buyCnt = buyCnt;
-        this.getCnt = getCnt;
+        this.buyQuantity = buyQuantity;
+        this.getQuantity = getQuantity;
         this.start = start;
         this.end = end;
     }
@@ -27,18 +27,20 @@ public class Promotion {
     }
 
     public long calcFreeQuantity(long quantity) {
-        if (quantity == buyCnt) {
-            return 1;
-        }
-        return quantity / (buyCnt + getCnt);
+        return quantity / (buyQuantity + getQuantity);
+    }
+
+    public boolean checkQuantity(long quantity) {
+        int unit = buyQuantity + getQuantity;
+        return quantity % unit == buyQuantity;
+    }
+
+    public boolean lessThanBuyCnt(long quantity) {
+        return buyQuantity > quantity;
     }
 
     @Override
     public String toString() {
         return name;
-    }
-
-    public boolean overBuyCnt(long quantity) {
-        return buyCnt + getCnt <= quantity;
     }
 }

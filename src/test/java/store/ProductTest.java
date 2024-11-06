@@ -39,7 +39,7 @@ class ProductTest {
 
     @DisplayName("결제된 수량만큼 재고를 차감한다.")
     @ParameterizedTest
-    @CsvSource(value = {"1:9개", "10:재고없음"}, delimiter = ':')
+    @CsvSource(value = {"1:9개", "10:재고 없음"}, delimiter = ':')
     void test2(long paymentQuantity, String quantityStatus) {
         // given
         Product product = new Product("콜라", 1000L, 10L, getExpiredPromotion());
@@ -80,7 +80,7 @@ class ProductTest {
         Product product = new Product("탄산수", 1200L, 0L, getExpiredPromotion());
         // when & then
         assertThat(product.toString())
-                .isEqualTo("탄산수 1,200원 재고없음 탄산2+1");
+                .isEqualTo("탄산수 1,200원 재고 없음 탄산2+1");
     }
 
     @DisplayName("오늘 날짜가 프로모션 기간을 비교하여 할인 가능 여부를 반환한다. (단, 프로모션 적용 가능 개수 이상일 경우)")
@@ -116,5 +116,16 @@ class ProductTest {
         // when & then
         assertThat(product.buy(quantity))
                 .isEqualTo(payment);
+    }
+
+    @DisplayName("프로모션 적용이 가능한 상품에 대해 고객이 해당 수량만큼 가져오지 않았을 경우를 판별한다. (2 + 1)")
+    @ParameterizedTest
+    @CsvSource(value = {"1:false", "2:true", "3:false", "4:false", "5:true", "6:false", "7:false", "8:true", "9:false", "10:false"}, delimiter = ':')
+    void test9(long quantity, boolean expected) {
+        // given
+        Product product = new Product("콜라", 1000L, 10L, getPromotion(2, 1));
+        // when & then
+        assertThat(product.checkQuantity(quantity))
+                .isEqualTo(expected);
     }
 }
