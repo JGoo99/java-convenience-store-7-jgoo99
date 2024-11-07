@@ -33,6 +33,6 @@ public class PromotionReader {
     }
 
     public Promotion read(String line) {
-        return PromotionParser.parse(line);
+        return LineParser.withPromotionRegex(line).toPromotion();
     }
 }
