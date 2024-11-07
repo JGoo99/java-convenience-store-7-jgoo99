@@ -1,6 +1,7 @@
-package store.runner;
+package store.core;
 
 import java.util.List;
+import store.exception.BusinessException;
 import store.model.Item;
 import store.view.InputView;
 import store.view.OutView;
@@ -37,7 +38,7 @@ public class ConvenienceRunner {
     private void buy(List<Item> items) {
         try {
             convenience.buy(items);
-        } catch (IllegalArgumentException e) {
+        } catch (BusinessException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -1,4 +1,4 @@
-package store.runner;
+package store.core;
 
 import java.util.ArrayList;
 import java.util.List;
