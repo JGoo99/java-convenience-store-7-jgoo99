@@ -2,12 +2,13 @@ package store.model;
 
 import java.text.DecimalFormat;
 import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 
 public class Product {
 
-    private final String name;
-    private final long price;
-    long quantity;
+    protected final String name;
+    protected final long price;
+    protected long quantity;
 
     public Product(String name, long price, long quantity) {
         this.name = name;
@@ -15,19 +16,18 @@ public class Product {
         this.quantity = quantity;
     }
 
+    public void buy(long buyQ) {
+        this.quantity -= buyQ;
+    }
+
     public void validateAvailablePurchase(long quantity) {
         validateNegative(quantity);
     }
 
-    public void validateNegative(long quantity) {
+    protected void validateNegative(long quantity) {
         if (quantity <= 0) {
-            throw new BusinessException("올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
+            throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
-    }
-
-    public long buy(long quantity) {
-        this.quantity -= quantity;
-        return quantity;
     }
 
     public String getQuantityStatus() {
@@ -36,6 +36,18 @@ public class Product {
             return "재고 없음";
         }
         return df.format(quantity) + "개";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isSameName(String name) {
+        return this.name.equals(name);
+    }
+
+    public long calcPayment(long buyQ) {
+        return this.price * buyQ;
     }
 
     @Override

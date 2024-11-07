@@ -26,7 +26,7 @@ public class ProductQuantityRepository {
     }
 
     public void update(Product product, long quantity) {
-        PRODUCT_QUANTITIES.put(product.getName(), findByName(product.getName()) + quantity);
+        PRODUCT_QUANTITIES.put(product.getName(), findByName(product.getName()) - quantity);
     }
 
     public Long findByName(String promotionName) {

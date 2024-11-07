@@ -2,7 +2,6 @@ package store.core;
 
 import java.util.List;
 import store.model.Item;
-import store.model.PosMachine;
 import store.model.Product;
 
 public class Convenience {
@@ -22,7 +21,7 @@ public class Convenience {
     public void buy(List<Item> items) {
         items.forEach(item -> {
             List<Product> targetProducts = takeProducts(item);
-//            pos.scanBarcode(item, targetProducts);
+            pos.scanBarcode(item, targetProducts);
         });
 
         /*
