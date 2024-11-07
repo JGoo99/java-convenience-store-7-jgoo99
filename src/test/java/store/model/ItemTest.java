@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.repository.ProductRepository;
+import store.repository.ProductQuantityRepository;
 
 class ItemTest {
 
@@ -12,9 +12,10 @@ class ItemTest {
     @Test
     void test1() {
         // given
-        ProductRepository.getInstance().save(new Product("콜라", 1000L, 10L, null));
+        ProductQuantityRepository.getInstance().save("콜라", 10L);
+        // when
         String itemInput = "[콜라-3]";
-        // when & then
+        // then
         assertThat(Item.from(itemInput).toString())
                 .isEqualTo("콜라");
     }

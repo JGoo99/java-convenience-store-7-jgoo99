@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import store.model.Product;
 import store.model.Promotion;
-import store.repository.ProductRepository;
+import store.model.PromotionProduct;
+import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 
 public class ProductReader {
@@ -31,13 +32,21 @@ public class ProductReader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ProductRepository.getInstance().saveAll(products);
         return products;
     }
 
     public Product read(String line) {
         String[] split = line.split(",");
+        String name = split[0];
+        long price = Long.parseLong(split[1]);
+        long quantity = Long.parseLong(split[2]);
+
+        ProductQuantityRepository.getInstance().save(name, price);
         Promotion promotion = PromotionRepository.getInstance().findByName(split[3]);
-        return new Product(split[0], Long.parseLong(split[1]), Long.parseLong(split[2]), promotion);
+
+        if (promotion == null) {
+            return new Product(name, price, quantity);
+        }
+        return new PromotionProduct(name, price, quantity, promotion);
     }
 }
