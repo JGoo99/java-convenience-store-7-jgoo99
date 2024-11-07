@@ -1,5 +1,6 @@
 package store.model;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
 
 public class PromotionProduct extends Product {
@@ -11,38 +12,36 @@ public class PromotionProduct extends Product {
         this.promotion = promotion;
     }
 
-    @Override
-    public long buy(long quantity) {
-        validateNegative(quantity);
-        long totalBuyQuantity = promotion.calcQuantity(Math.min(quantity, this.quantity));
-        if (quantity > this.quantity) {
-            totalBuyQuantity = this.quantity;
-        }
-        this.quantity -= totalBuyQuantity;
-        return totalBuyQuantity;
+    public boolean expiredPromotion() {
+        return !promotion.withinPeriod(LocalDate.from(DateTimes.now()));
     }
 
-    public boolean isAvailablePromotion(long quantity) {
-        if (promotion.lessThanBuyCnt(quantity)) {
-            return false;
-        }
-        return promotion.withinPeriod(LocalDate.now());
+    public PromotionPurchaseStatus getPurchaseStatus(long totalQ) {
+        long buyQ = getBuyQ(totalQ);
+        long appliedQ = calcCurAppliedQuantity(buyQ);
+
+        return new PromotionPurchaseStatus(
+                buyQ, overQuantity(totalQ), totalQ - appliedQ, appliedQ, calcFreeQuantity(buyQ));
     }
 
-    public boolean needOneMorePromotionQuantity(long quantity) {
-        return isAvailablePromotion(quantity) && promotion.needOneMoreQuantity(quantity) && super.quantity >= 1;
+    private long getBuyQ(long quantity) {
+        return Math.min(quantity, this.quantity);
     }
 
-    private String getPromotionStatus() {
-        if (promotion == null) {
-            return "";
-        }
-        return promotion.toString();
+    private boolean overQuantity(long totalQ) {
+        return this.quantity < totalQ;
+    }
+
+    private long calcFreeQuantity(long buyQ) {
+        return promotion.calcFreeQuantity(buyQ);
+    }
+
+    private long calcCurAppliedQuantity(long buyQ) {
+        return promotion.calcCurAppliedQuantity(buyQ);
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " +
-                getPromotionStatus();
+        return super.toString() + " " + promotion;
     }
 }

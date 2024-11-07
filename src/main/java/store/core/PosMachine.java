@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 import store.model.Item;
 import store.model.Product;
 import store.model.PromotionProduct;
+import store.model.PromotionPurchaseStatus;
 import store.repository.ProductQuantityRepository;
 import store.view.InputView;
 
@@ -64,7 +65,11 @@ public class PosMachine {
         }
         if (product.expiredPromotion()) {
             buyDefault(item, product);
+            return;
         }
+
+        PromotionPurchaseStatus status = product.getPurchaseStatus(item.getQuantity());
+
     }
 
     private boolean existPromotion() {
