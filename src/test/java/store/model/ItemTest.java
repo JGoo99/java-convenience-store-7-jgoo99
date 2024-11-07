@@ -23,7 +23,7 @@ class ItemTest {
         String itemInput = "[" + productName + "-" + quantity + "]";
         // when & then
         Item item = Item.from(itemInput);
-        assertEquals(productName, item.getProductName());
+        assertEquals(productName, item.getName());
         assertEquals(quantity, item.getQuantity());
     }
 

@@ -10,11 +10,11 @@ public class Item {
 
     private static final String REGEX = "\\[([가-힣]+)-([0-9]+)\\]";
 
-    private final String productName;
+    private final String name;
     private long quantity;
 
-    public Item(String productName, long quantity) {
-        this.productName = productName;
+    public Item(String name, long quantity) {
+        this.name = name;
         this.quantity = quantity;
     }
 
@@ -43,16 +43,24 @@ public class Item {
         }
     }
 
-    public String getProductName() {
-        return productName;
+    public void addOneMoreQuantity() {
+        this.quantity++;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public long getQuantity() {
         return quantity;
     }
 
+    public void buy(long buyQ) {
+        this.quantity -= buyQ;
+    }
+
     @Override
     public String toString() {
-        return productName;
+        return name;
     }
 }
