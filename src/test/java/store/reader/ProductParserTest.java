@@ -6,15 +6,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.Promotion;
 
-class PromotionParserTest {
+class ProductParserTest {
 
-    @DisplayName("promotions.md 의 한 라인이 주어지면 Promotion 을 반환한다.")
+    @DisplayName("products.md 의 한 라인이 주어지면 product 을 반환한다.")
     @Test
     void test1() {
         // given
-        String line = "탄산2+1,2,1,2024-01-01,2024-12-31";
+        String line = "사이다,1000,7,null";
         // when & then
-        assertThat(LineParser.withPromotionRegex(line).parse())
+        assertThat(LineParser.withProductRegex(line).parse())
                 .isInstanceOf(Promotion.class);
     }
 }

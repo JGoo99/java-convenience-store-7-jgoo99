@@ -31,6 +31,6 @@ public class ProductReader {
     }
 
     public Product read(String line) {
-        return LineParser.withProductRegex(line).toProduct();
+        return LineParser.withProductRegex(line).parse();
     }
 }
