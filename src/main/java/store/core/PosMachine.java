@@ -69,7 +69,12 @@ public class PosMachine {
         }
 
         PromotionPurchaseStatus status = product.getPurchaseStatus(item.getQuantity());
-
+        if (status.isOverQ()) {
+            boolean keepGoing = inputView.checkUnAppliedPromotionPurchase(item, status.unAppliedQ());
+            if (!keepGoing) {
+                item.subtractUnPromotionQuantity(status.unAppliedQ());
+            }
+        }
     }
 
     private boolean existPromotion() {

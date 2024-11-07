@@ -59,6 +59,10 @@ public class Item {
         this.quantity -= buyQ;
     }
 
+    public void subtractUnPromotionQuantity(long unAppliedQ) {
+        this.quantity -= unAppliedQ;
+    }
+
     @Override
     public String toString() {
         return name;
