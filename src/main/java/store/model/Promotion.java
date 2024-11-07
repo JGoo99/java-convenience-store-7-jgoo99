@@ -23,24 +23,15 @@ public class Promotion {
     }
 
     public boolean withinPeriod(LocalDate date) {
-        return date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1));
+        return withinStartDate(date) && withinEndDate(date);
     }
 
-    public long calcQuantity(long quantity) {
-        int unit = buyQuantity + getQuantity;
-        return (quantity / unit) * unit;
+    private boolean withinEndDate(LocalDate date) {
+        return date.isBefore(end.plusDays(1));
     }
 
-    public long calcFreeQuantity(long quantity) {
-        return quantity / (buyQuantity + getQuantity);
-    }
-
-    public boolean needOneMoreQuantity(long quantity) {
-        return quantity % (buyQuantity + getQuantity) == buyQuantity;
-    }
-
-    public boolean lessThanBuyCnt(long quantity) {
-        return buyQuantity > quantity;
+    private boolean withinStartDate(LocalDate date) {
+        return date.isAfter(start.minusDays(1));
     }
 
     @Override
