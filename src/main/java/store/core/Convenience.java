@@ -1,4 +1,4 @@
-package store.runner;
+package store.core;
 
 import java.util.List;
 import store.model.Item;
@@ -7,13 +7,12 @@ import store.model.Product;
 
 public class Convenience {
 
-    private final List<Product> products;
     private final PosMachine pos;
-    private List<Item> items;
+    private final List<Product> products;
 
     private Convenience(List<Product> products) {
-        this.products = products;
         this.pos = new PosMachine();
+        this.products = products;
     }
 
     public static Convenience stockProduct(ConvenienceCreator creator) {
@@ -21,7 +20,10 @@ public class Convenience {
     }
 
     public void buy(List<Item> items) {
-        initToPos(items);
+        items.forEach(item -> {
+            List<Product> targetProducts = takeProducts(item);
+//            pos.scanBarcode(item, targetProducts);
+        });
 
         /*
         1. 프로모션 할인
@@ -29,13 +31,13 @@ public class Convenience {
          */
     }
 
+    private List<Product> takeProducts(Item item) {
+        return products.stream().filter(product -> product.isSameName(item.getName())).toList();
+    }
+
     public String getProductsStatus() {
         StringBuilder sb = new StringBuilder();
         products.forEach(x -> sb.append("- ").append(x).append("\n"));
         return sb.toString();
-    }
-
-    private void initToPos(List<Item> items) {
-        this.items = items;
     }
 }
