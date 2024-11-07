@@ -3,6 +3,7 @@ package store.model;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.repository.ProductQuantityRepository;
 
 public class Item {
@@ -26,19 +27,19 @@ public class Item {
             validate(productName, quantity);
             return new Item(productName, quantity);
         }
-        throw new BusinessException("잘못된 입력입니다. 다시 입력해 주세요.");
+        throw new BusinessException(ErrorMessage.INVALID_INPUT);
     }
 
     private static void validate(String productName, long quantity) {
         if (quantity <= 0) {
-            throw new BusinessException("잘못된 입력입니다. 다시 입력해 주세요.");
+            throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
         Long productQuantity = ProductQuantityRepository.getInstance().findByName(productName);
         if (productQuantity == null) {
-            throw new BusinessException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
+            throw new BusinessException(ErrorMessage.NOTFOUND_PRODUCT);
         }
         if (productQuantity < quantity) {
-            throw new BusinessException("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+            throw new BusinessException(ErrorMessage.OVER_PRODUCT_QUANTITY);
         }
     }
 

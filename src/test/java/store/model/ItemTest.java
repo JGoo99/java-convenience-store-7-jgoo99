@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.repository.ProductQuantityRepository;
 
 class ItemTest {
@@ -28,7 +29,7 @@ class ItemTest {
 
     @DisplayName("재고 중에 상품명이 일치하는 것이 없는 경우 예외가 발생한다.")
     @ParameterizedTest
-    @CsvSource(value = {"사이다:6", "초코바:5"}, delimiter = ':')
+    @CsvSource(value = {"오렌지주스:6", "탄산수:5"}, delimiter = ':')
     void test2(String productName, long quantity) {
         // given
         ProductQuantityRepository.getInstance().save("콜라", 10L);
@@ -36,7 +37,7 @@ class ItemTest {
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.NOTFOUND_PRODUCT.toString());
     }
 
     @DisplayName("형식에 맞지 않는 입력 시 예외가 발생한다.")
@@ -48,18 +49,18 @@ class ItemTest {
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_INPUT.toString());
     }
 
     @DisplayName("구매 수량이 재고 수량을 초과하는 경우 예외가 발생한다.")
     @Test
     void test4() {
         // given
-        ProductQuantityRepository.getInstance().save("콜라", 10L);
+        ProductQuantityRepository.getInstance().save("컵라면", 10L);
         // when & then
-        assertThatThrownBy(() -> Item.from("[콜라-11]"))
+        assertThatThrownBy(() -> Item.from("[컵라면-11]"))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.OVER_PRODUCT_QUANTITY.toString());
     }
 
     @DisplayName("구매 수량이 0 이하인 경우 예외가 발생한다.")
@@ -72,6 +73,6 @@ class ItemTest {
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+                .hasMessageContaining(ErrorMessage.INVALID_INPUT.toString());
     }
 }

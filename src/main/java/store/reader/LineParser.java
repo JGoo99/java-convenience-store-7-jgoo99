@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import store.constants.MdFileRegex;
 import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.model.Product;
 import store.model.Promotion;
 import store.model.PromotionProduct;
@@ -68,7 +69,7 @@ public class LineParser {
 
     private void validate() {
         if (!matcher.matches()) {
-            throw new BusinessException("잘못된 입력입니다. 다시 입력해 주세요.");
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
     }
 }
