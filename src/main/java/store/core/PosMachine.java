@@ -40,22 +40,14 @@ public class PosMachine {
             buyPromotion(item);
         }
         buyDefault(item);
+        productQ.clear();
     }
 
     private void buyDefault(Item item) {
         if (productQ.isEmpty() || item.getQuantity() == 0) {
             return;
         }
-        buyDefault(item, productQ.poll());
-        productQ.clear();
-    }
-
-    public void buyDefault(Item item, Product product) {
-        long buyQ = item.getQuantity();
-        product.buy(buyQ);
-        item.pay(buyQ);
-        ProductQuantityRepository.getInstance().update(product, buyQ);
-        this.purchasedItems.add(item);
+        buy(item, item.getQuantity(), productQ.poll());
     }
 
     private void buyPromotion(Item item) {
@@ -64,7 +56,7 @@ public class PosMachine {
             return;
         }
         if (product.expiredPromotion()) {
-            buyDefault(item, product);
+            buy(item, item.getQuantity(), product);
             return;
         }
 
@@ -75,6 +67,19 @@ public class PosMachine {
                 item.subtractUnPromotionQuantity(status.unAppliedQ());
             }
         }
+        buy(item, status.buyQ(), product);
+        initFreeItem(item, status.freeQ());
+    }
+
+    public void buy(Item item, long buyQ, Product product) {
+        product.buy(buyQ);
+        item.pay(buyQ);
+        ProductQuantityRepository.getInstance().update(product, buyQ);
+        this.purchasedItems.add(new Item(item.getName(), buyQ));
+    }
+
+    private void initFreeItem(Item item, long freeQ) {
+        this.freeItems.add(new Item(item.getName(), freeQ));
     }
 
     private boolean existPromotion() {

@@ -35,7 +35,7 @@ class PosMachineTest {
         Item item = new Item("에너지바", 5L);
         Product product = new Product("에너지바", 2000L, 5L);
         // when
-        pos.buyDefault(item, product);
+        pos.buy(item, item.getQuantity(), product);
         // then
         assertThat(repository.findByName(product.getName()))
                 .isEqualTo(0L);
