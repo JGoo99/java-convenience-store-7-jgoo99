@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import store.model.Promotion;
@@ -23,10 +22,9 @@ public class PromotionReader {
     public List<Promotion> readAll() {
         List<Promotion> promotions = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                promotions.add(read(line));
-            }
+            br.lines()
+                    .skip(1)
+                    .forEach(line -> promotions.add(read(line)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,8 +33,6 @@ public class PromotionReader {
     }
 
     public Promotion read(String line) {
-        String[] split = line.split(",");
-        return new Promotion(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), LocalDate.parse(split[3]),
-                LocalDate.parse(split[4]));
+        return PromotionParser.parse(line);
     }
 }
