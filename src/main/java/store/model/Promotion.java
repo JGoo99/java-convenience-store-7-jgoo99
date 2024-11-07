@@ -44,6 +44,10 @@ public class Promotion {
         return (buyQ / cycleQuantity) * cycleQuantity;
     }
 
+    public boolean appliableIfOneMore(long unAppliedQ) {
+        return unAppliedQ == buyQuantity;
+    }
+
     @Override
     public String toString() {
         return name;

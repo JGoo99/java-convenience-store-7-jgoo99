@@ -44,4 +44,11 @@ public class PromotionProduct extends Product {
     public String toString() {
         return super.toString() + " " + promotion;
     }
+
+    public boolean needMoreQuantity(long unAppliedQ, long buyQ) {
+        if (++buyQ > this.quantity) {
+            return false;
+        }
+        return promotion.appliableIfOneMore(unAppliedQ);
+    }
 }

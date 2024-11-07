@@ -67,7 +67,15 @@ public class PosMachine {
                 item.subtractUnPromotionQuantity(status.unAppliedQ());
             }
         }
-        buy(item, status.buyQ(), product);
+        long buyQ = status.buyQ();
+        if (product.needMoreQuantity(status.unAppliedQ(), buyQ)) {
+            boolean more = inputView.checkMoreQuantityPurchase(item);
+            if (more) {
+                item.addOneMoreQuantity();
+                buyQ++;
+            }
+        }
+        buy(item, buyQ, product);
         initFreeItem(item, status.freeQ());
     }
 
