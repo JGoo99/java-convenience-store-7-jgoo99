@@ -26,13 +26,17 @@ public class Promotion {
         return date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1));
     }
 
+    public long calcQuantity(long quantity) {
+        int unit = buyQuantity + getQuantity;
+        return (quantity / unit) * unit;
+    }
+
     public long calcFreeQuantity(long quantity) {
         return quantity / (buyQuantity + getQuantity);
     }
 
-    public boolean checkQuantity(long quantity) {
-        int unit = buyQuantity + getQuantity;
-        return quantity % unit == buyQuantity;
+    public boolean needOneMoreQuantity(long quantity) {
+        return quantity % (buyQuantity + getQuantity) == buyQuantity;
     }
 
     public boolean lessThanBuyCnt(long quantity) {
