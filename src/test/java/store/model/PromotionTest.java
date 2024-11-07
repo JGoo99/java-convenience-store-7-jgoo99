@@ -2,6 +2,7 @@ package store.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,12 +10,12 @@ import org.junit.jupiter.api.Test;
 class PromotionTest {
 
     private Promotion getWithinPeriodPromotion(int buyCnt, int getCnt) {
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.from(DateTimes.now());
         return new Promotion("탄산2+1", buyCnt, getCnt, now, now);
     }
 
     private Promotion getExpiredPromotion(int buyCnt, int getCnt) {
-        LocalDate now = LocalDate.now().minusDays(1);
+        LocalDate now = LocalDate.from(DateTimes.now()).minusDays(1);
         return new Promotion("탄산2+1", buyCnt, getCnt, now, now);
     }
 

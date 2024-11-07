@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.model.Product;
 
 public class ProductReader {
@@ -24,8 +26,8 @@ public class ProductReader {
             br.lines()
                     .skip(1)
                     .forEach(line -> products.add(read(line)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | BusinessException e) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
         return products;
     }

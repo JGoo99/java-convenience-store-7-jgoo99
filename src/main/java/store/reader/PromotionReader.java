@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.model.Promotion;
 import store.repository.PromotionRepository;
 
@@ -25,8 +27,8 @@ public class PromotionReader {
             br.lines()
                     .skip(1)
                     .forEach(line -> promotions.add(read(line)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | BusinessException e) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
         PromotionRepository.getInstance().saveAll(promotions);
         return promotions;
