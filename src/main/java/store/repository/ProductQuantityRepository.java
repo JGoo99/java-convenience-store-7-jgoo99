@@ -32,4 +32,8 @@ public class ProductQuantityRepository {
     public Long findByName(String promotionName) {
         return PRODUCT_QUANTITIES.get(promotionName);
     }
+
+    public void clear() {
+        PRODUCT_QUANTITIES.clear();
+    }
 }

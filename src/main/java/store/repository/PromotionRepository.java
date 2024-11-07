@@ -32,4 +32,8 @@ public class PromotionRepository {
     public Promotion findByName(String promotionName) {
         return PROMOTIONS.get(promotionName);
     }
+
+    public void clear() {
+        PROMOTIONS.clear();
+    }
 }

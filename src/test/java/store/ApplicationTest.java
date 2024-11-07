@@ -1,15 +1,25 @@
 package store;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import store.repository.ProductQuantityRepository;
+import store.repository.PromotionRepository;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertNowTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ApplicationTest extends NsTest {
+
+    @BeforeEach
+    public void repositoryClear() {
+        ProductQuantityRepository.getInstance().clear();
+        PromotionRepository.getInstance().clear();
+    }
+
     @Test
     void 파일에_있는_상품_목록_출력() {
         assertSimpleTest(() -> {
