@@ -52,21 +52,39 @@ public class PosMachine {
 
     private void buyPromotion(Item item) {
         PromotionProduct product = (PromotionProduct) productQ.poll();
-        if (product.isSoldOut()) {
-            return;
-        }
-        if (product.expiredPromotion()) {
-            buy(item, item.getQuantity(), product);
+        if (disablePromotion(item, product)) {
             return;
         }
 
         PromotionPurchaseStatus status = product.getPurchaseStatus(item.getQuantity());
+        checkUnAppliedPurchase(item, status);
+        long buyQ = checkNeedOneMore(item, status, product);
+
+        buy(item, buyQ, product);
+        initFreeItem(item, status.freeQ());
+    }
+
+    private boolean disablePromotion(Item item, PromotionProduct product) {
+        if (product.isSoldOut()) {
+            return true;
+        }
+        if (product.expiredPromotion()) {
+            buy(item, item.getQuantity(), product);
+            return true;
+        }
+        return false;
+    }
+
+    private void checkUnAppliedPurchase(Item item, PromotionPurchaseStatus status) {
         if (status.isOverQ()) {
             boolean keepGoing = inputView.checkUnAppliedPromotionPurchase(item, status.unAppliedQ());
             if (!keepGoing) {
                 item.subtractUnPromotionQuantity(status.unAppliedQ());
             }
         }
+    }
+
+    private long checkNeedOneMore(Item item, PromotionPurchaseStatus status, PromotionProduct product) {
         long buyQ = status.buyQ();
         if (product.needMoreQuantity(status.unAppliedQ(), buyQ)) {
             boolean more = inputView.checkMoreQuantityPurchase(item);
@@ -75,8 +93,7 @@ public class PosMachine {
                 buyQ++;
             }
         }
-        buy(item, buyQ, product);
-        initFreeItem(item, status.freeQ());
+        return buyQ;
     }
 
     public void buy(Item item, long buyQ, Product product) {
