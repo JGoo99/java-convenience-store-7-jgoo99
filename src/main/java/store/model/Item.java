@@ -30,6 +30,9 @@ public class Item {
     }
 
     private static void validate(String productName, long quantity) {
+        if (quantity <= 0) {
+            throw new BusinessException("잘못된 입력입니다. 다시 입력해 주세요.");
+        }
         Long productQuantity = ProductQuantityRepository.getInstance().findByName(productName);
         if (productQuantity == null) {
             throw new BusinessException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
