@@ -55,7 +55,7 @@ public class Item {
         return quantity;
     }
 
-    public void buy(long buyQ) {
+    public void pay(long buyQ) {
         this.quantity -= buyQ;
     }
 

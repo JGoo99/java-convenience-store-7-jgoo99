@@ -35,6 +35,9 @@ public class PosMachine {
 
     public void scanBarcode(Item item, List<Product> targetProducts) {
         productQ.addAll(targetProducts);
+        if (existPromotion()) {
+            buyPromotion(item);
+        }
         buyDefault(item);
     }
 
@@ -43,13 +46,28 @@ public class PosMachine {
             return;
         }
         buyDefault(item, productQ.poll());
+        productQ.clear();
     }
 
     public void buyDefault(Item item, Product product) {
         long buyQ = item.getQuantity();
         product.buy(buyQ);
+        item.pay(buyQ);
         ProductQuantityRepository.getInstance().update(product, buyQ);
-
         this.purchasedItems.add(item);
+    }
+
+    private void buyPromotion(Item item) {
+        PromotionProduct product = (PromotionProduct) productQ.poll();
+        if (product.isSoldOut()) {
+            return;
+        }
+        if (product.expiredPromotion()) {
+            buyDefault(item, product);
+        }
+    }
+
+    private boolean existPromotion() {
+        return productQ.size() >= 2;
     }
 }

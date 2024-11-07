@@ -20,6 +20,10 @@ public class Product {
         this.quantity -= buyQ;
     }
 
+    public boolean isSoldOut() {
+        return this.quantity == 0;
+    }
+
     public void validateAvailablePurchase(long quantity) {
         validateNegative(quantity);
     }
