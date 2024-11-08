@@ -23,6 +23,7 @@ public class Convenience {
             List<Product> targetProducts = takeProducts(item);
             pos.scanBarcode(item, targetProducts);
         });
+        pos.membership();
 
         /*
         1. 프로모션 할인

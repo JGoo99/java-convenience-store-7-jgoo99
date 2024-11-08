@@ -48,6 +48,11 @@ public class InputView {
         return askYesOrNo();
     }
 
+    public boolean checkMembership() {
+        print("멤버십 할인을 받으시겠습니까? (Y/N)");
+        return askYesOrNo();
+    }
+
     private boolean askYesOrNo() {
         String yesOrNo = null;
         while (yesOrNo == null) {

@@ -110,4 +110,8 @@ public class PosMachine {
     private boolean existPromotion() {
         return productQ.size() >= 2;
     }
+
+    public void membership() {
+        boolean membership = inputView.checkMembership();
+    }
 }
