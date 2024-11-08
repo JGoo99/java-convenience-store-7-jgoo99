@@ -135,7 +135,10 @@ public class PosMachine {
     }
 
     public void membership() {
-        boolean membership = inputView.checkMembership();
+        if (!inputView.checkMembership()) {
+            return;
+        }
+        receipt.membershipDiscount();
     }
 
     public Receipt getReceipt() {

@@ -26,7 +26,8 @@ public class OutView {
         sb.append(receipt.printFreeItems());
         sb.append("=====================================\n");
         sb.append(receipt.printTotalAmount() + "\n");
-        sb.append(receipt.printFreeAmount());
+        sb.append(receipt.printFreeAmount() + "\n");
+        sb.append(receipt.printMembershipAmount());
         return print(sb.toString());
     }
 }

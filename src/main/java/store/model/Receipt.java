@@ -61,6 +61,10 @@ public class Receipt {
         this.unAppliedAmount += amount;
     }
 
+    public void membershipDiscount() {
+        this.membershipDiscountedAmount = (unAppliedAmount / 100) * 30;
+    }
+
     public String printTotalAmount() {
         DecimalFormat df = new DecimalFormat("###,###");
         return String.format("%-11s\t\t%-10d\t%s", "총구매액", totalCnt, df.format(totalAmount));
@@ -70,4 +74,11 @@ public class Receipt {
         DecimalFormat df = new DecimalFormat("-###,###");
         return String.format("%-11s\t\t\t\t\t%s", "행사할인", df.format(freeAmount));
     }
+
+    public String printMembershipAmount() {
+        DecimalFormat df = new DecimalFormat("-###,###");
+        return String.format("%-11s\t\t\t\t\t%s", "멤버십할인", df.format(membershipDiscountedAmount));
+    }
+
+
 }
