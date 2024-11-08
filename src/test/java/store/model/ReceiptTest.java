@@ -21,5 +21,4 @@ class ReceiptTest {
                 .contains("콜라", "3", "3,000")
                 .contains("에너지바", "5", "10,000");
     }
-
 }

@@ -17,7 +17,7 @@ public class Receipt {
 
     public String printPurchasedItems() {
         StringBuffer sb = new StringBuffer();
-        sb.append(String.format("%-11s\t\t%-10s\t%-6s\n", "상품명", "수량", "금액"));
+        sb.append(String.format("%-11s\t\t%-10s\t%s\n", "상품명", "수량", "금액"));
         purchasedItems.forEach(item -> sb.append(item + "\n"));
         return sb.toString();
     }
