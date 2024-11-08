@@ -12,8 +12,8 @@ class ReceiptTest {
     void test1() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
-        receipt.addPurchasedItem(PurchasedItem.create("에너지바", 5L, 2000L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5L, 2000L));
         // when & then
         assertThat(receipt.printPurchasedItems())
                 .contains("콜라", "3", "3,000")
@@ -25,8 +25,8 @@ class ReceiptTest {
     void test2() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 7L, 1000L));
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 7L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
         // when & then
         assertThat(receipt.printPurchasedItems())
                 .contains("콜라", "10", "10,000");
@@ -37,12 +37,26 @@ class ReceiptTest {
     void test3() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 7L, 1000L));
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 7L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
         // when & then
         System.out.println(receipt.printTotalAmount());
         assertThat(receipt.printTotalAmount())
                 .containsIgnoringWhitespaces("총구매액 10 10,000");
+
+    }
+
+    @DisplayName("행사 할인을 출력한다.")
+    @Test
+    void test4() {
+        // given
+        Receipt receipt = new Receipt();
+        receipt.addFreeItem(new PurchasedItem("오렌지주스", 1L, 1800L));
+        receipt.addFreeItem(new PurchasedItem("콜라", 1L, 1000L));
+        // when & then
+        System.out.println(receipt.printFreeAmount());
+        assertThat(receipt.printFreeAmount())
+                .contains("행사할인", "-2,800");
 
     }
 }

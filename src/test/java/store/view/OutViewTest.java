@@ -44,10 +44,10 @@ class OutViewTest {
         // given
         OutView view = new OutView();
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
-        receipt.addPurchasedItem(PurchasedItem.create("에너지바", 5L, 2000L));
-        receipt.addPurchasedItem(PurchasedItem.create("오렌지주스", 2L, 1800L));
-        receipt.addPurchasedItem(PurchasedItem.create("물", 1L, 500L));
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5L, 2000L));
+        receipt.addPurchasedItem(new PurchasedItem("오렌지주스", 2L, 1800L));
+        receipt.addPurchasedItem(new PurchasedItem("물", 1L, 500L));
         // when & then
         assertThat(view.printReceipt(receipt))
                 .contains("==============W 편의점================")
@@ -63,10 +63,10 @@ class OutViewTest {
         // given
         OutView view = new OutView();
         Receipt receipt = new Receipt();
-        receipt.addFreeItem(PurchasedItem.createFree("콜라", 1L));
-        receipt.addFreeItem(PurchasedItem.createFree("감자칩", 2L));
-        receipt.addFreeItem(PurchasedItem.createFree("오렌지주스", 1L));
-        receipt.addFreeItem(PurchasedItem.createFree("컵라면", 1L));
+        receipt.addFreeItem(new PurchasedItem("콜라", 1L, 1000L));
+        receipt.addFreeItem(new PurchasedItem("감자칩", 2L, 1500L));
+        receipt.addFreeItem(new PurchasedItem("오렌지주스", 1L, 1800L));
+        receipt.addFreeItem(new PurchasedItem("컵라면", 1L, 1700L));
         // when & then
         assertThat(view.printReceipt(receipt))
                 .contains("==============W 편의점================")

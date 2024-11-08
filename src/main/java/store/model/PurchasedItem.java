@@ -8,18 +8,10 @@ public class PurchasedItem {
     private long quantity;
     private final long price;
 
-    private PurchasedItem(String name, long quantity, long price) {
+    public PurchasedItem(String name, long quantity, long price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
-    }
-
-    public static PurchasedItem create(String name, long buyQ, long price) {
-        return new PurchasedItem(name, buyQ, price);
-    }
-
-    public static PurchasedItem createFree(String name, long freeQ) {
-        return new PurchasedItem(name, freeQ, 0L);
     }
 
     public String getPurchasedStatus() {

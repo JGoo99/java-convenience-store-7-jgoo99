@@ -66,24 +66,24 @@ public class PosMachine {
             if (!confirmUnPromotionPurchase(item, status)) {
                 item.subtractUnPromotionQuantity(status.unAppliedQ());
                 purchase(item, status.appliedQ(), product);
-                addFreeItemToReceipt(item, status.freeQ());
+                addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
                 return;
             }
             receipt.addUnPromotionAmount(product.calcPayment(product.calcUnAppliedRemain(status.appliedQ())));
             purchaseAllPromotion(item, status.buyQ(), product);
-            addFreeItemToReceipt(item, status.freeQ());
+            addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
             return;
         }
 
         if (isAdditionalPromotionItemNeeded(item, status, product)) {
             item.addOneMoreQuantity();
             purchase(item, status.buyQ() + 1, product);
-            addFreeItemToReceipt(item, status.freeQ() + 1);
+            addFreeItemToReceipt(item, status.freeQ() + 1, product.getPrice());
             return;
         }
 
         purchase(item, status.buyQ(), product);
-        addFreeItemToReceipt(item, status.freeQ());
+        addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
     }
 
     private boolean isPromotionDisabled(Item item, PromotionProduct product) {
@@ -122,12 +122,12 @@ public class PosMachine {
         item.pay(buyQ);
         ProductQuantityRepository.getInstance().update(product, buyQ);
         receipt.addPurchasedItem(
-                PurchasedItem.create(item.getName(), buyQ, product.getPrice()));
+                new PurchasedItem(item.getName(), buyQ, product.getPrice()));
     }
 
-    private void addFreeItemToReceipt(Item item, long freeQ) {
+    private void addFreeItemToReceipt(Item item, long freeQ, long productPrice) {
         receipt.addFreeItem(
-                PurchasedItem.createFree(item.getName(), freeQ));
+                new PurchasedItem(item.getName(), freeQ, productPrice));
     }
 
     private boolean existPromotion() {

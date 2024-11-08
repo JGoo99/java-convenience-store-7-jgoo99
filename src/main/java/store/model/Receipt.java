@@ -13,7 +13,9 @@ public class Receipt {
     private final List<PurchasedItem> freeItems;
     private long totalCnt = 0L;
     private long totalAmount = 0L;
+    private long freeAmount = 0L;
     private long unAppliedAmount = 0L;
+    private long membershipDiscountedAmount = 0L;
 
     public Receipt() {
         this.purchasedItems = new ArrayList<>();
@@ -39,6 +41,7 @@ public class Receipt {
     }
 
     public void addFreeItem(PurchasedItem item) {
+        this.freeAmount += item.calcAmount();
         this.freeItems.add(item);
     }
 
@@ -63,8 +66,8 @@ public class Receipt {
         return String.format("%-11s\t\t%-10d\t%s", "총구매액", totalCnt, df.format(totalAmount));
     }
 
-    public void clear() {
-        this.purchasedItems.clear();
-
+    public String printFreeAmount() {
+        DecimalFormat df = new DecimalFormat("-###,###");
+        return String.format("%-11s\t\t\t\t\t%s", "행사할인", df.format(freeAmount));
     }
 }
