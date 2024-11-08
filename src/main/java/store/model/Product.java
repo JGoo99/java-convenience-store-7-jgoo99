@@ -16,7 +16,7 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void buy(long buyQ) {
+    public void purchase(long buyQ) {
         this.quantity -= buyQ;
     }
 

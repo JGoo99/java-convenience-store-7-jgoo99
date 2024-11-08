@@ -8,6 +8,7 @@ public class Receipt {
 
     private final List<PurchasedItem> purchasedItems;
     private final List<PurchasedItem> freeItems;
+    private long unAppliedAmount = 0L;
 
     public Receipt() {
         this.purchasedItems = new ArrayList<>();
@@ -40,5 +41,9 @@ public class Receipt {
         freeItems.forEach(item -> sb.append(item.getFreeStatus() + "\n"));
         freeItems.clear();
         return sb.toString();
+    }
+
+    public void addUnPromotionAmount(long amount) {
+        this.unAppliedAmount += amount;
     }
 }

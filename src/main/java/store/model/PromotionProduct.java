@@ -51,4 +51,14 @@ public class PromotionProduct extends Product {
         }
         return promotion.appliableIfOneMore(unAppliedQ);
     }
+
+    public long clear() {
+        long prev = this.quantity;
+        this.quantity = 0;
+        return prev;
+    }
+
+    public long calcUnAppliedRemain(long appliedQ) {
+        return this.quantity - appliedQ;
+    }
 }

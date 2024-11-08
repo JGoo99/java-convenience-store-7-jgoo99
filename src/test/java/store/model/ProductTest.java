@@ -1,7 +1,6 @@
 package store.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import store.exception.BusinessException;
 
 class ProductTest {
 
@@ -30,7 +28,7 @@ class ProductTest {
         // given
         Product product = new Product("콜라", 1000L, 10L);
         // when
-        product.buy(paymentQuantity);
+        product.purchase(paymentQuantity);
         // then
         assertThat(product.toString())
                 .contains(quantityStatus);
