@@ -17,7 +17,8 @@ public class ProductParser extends LineParser {
     }
 
     public static ProductParser read(String line) {
-        return new ProductParser(buildRegex(PRODUCT_NAME, LONG, LONG, PROMOTION_NAME), line);
+        return new ProductParser(line, buildRegex(
+                PRODUCT_NAME, LONG, LONG, PROMOTION_NAME));
     }
 
     public Product parse() {
@@ -28,10 +29,18 @@ public class ProductParser extends LineParser {
         String promotionName = matcher.group(4);
 
         ProductQuantityRepository.getInstance().save(name, quantity);
+        return parse(name, price, quantity, promotionName);
+    }
+
+    private Product parse(String name, long price, long quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
-        if (promotion == null) {
-            return new Product(name, price, quantity);
+        if (isPromotion(promotion)) {
+            return new PromotionProduct(name, price, quantity, promotion);
         }
-        return new PromotionProduct(name, price, quantity, promotion);
+        return new Product(name, price, quantity);
+    }
+
+    private boolean isPromotion(Promotion promotion) {
+        return promotion != null;
     }
 }

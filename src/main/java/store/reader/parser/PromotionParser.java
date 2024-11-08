@@ -14,7 +14,8 @@ public class PromotionParser extends LineParser {
     }
 
     public static PromotionParser read(String line) {
-        return new PromotionParser(buildRegex(PROMOTION_NAME, LONG, LONG, DATE, DATE), line);
+        return new PromotionParser(line, buildRegex(
+                PROMOTION_NAME, LONG, LONG, DATE, DATE));
     }
 
     public Promotion parse() {

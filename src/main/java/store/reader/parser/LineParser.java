@@ -12,7 +12,7 @@ public class LineParser {
 
     protected final Matcher matcher;
 
-    protected LineParser(String regex, String line) {
+    protected LineParser(String line, String regex) {
         this.matcher = Pattern.compile("^" + regex + "$").matcher(line);
     }
 
