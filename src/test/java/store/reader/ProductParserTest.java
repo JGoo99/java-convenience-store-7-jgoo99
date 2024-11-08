@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.Promotion;
+import store.model.Product;
 
 class ProductParserTest {
 
@@ -15,6 +15,6 @@ class ProductParserTest {
         String line = "사이다,1000,7,null";
         // when & then
         assertThat(LineParser.withProductRegex(line).parse())
-                .isInstanceOf(Promotion.class);
+                .isInstanceOf(Product.class);
     }
 }

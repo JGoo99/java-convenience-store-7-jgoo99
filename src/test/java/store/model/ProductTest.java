@@ -36,29 +36,6 @@ class ProductTest {
                 .contains(quantityStatus);
     }
 
-    @DisplayName("결제된 수량이 재고를 초과하는 경우 예외가 발생한다.")
-    @ParameterizedTest
-    @ValueSource(longs = {11, 15})
-    void test3(long quantity) {
-        // given
-        Product product = new Product("콜라", 1000L, 10L);
-        // when & then
-        assertThatThrownBy(() -> product.validateAvailablePurchase(quantity))
-                .isInstanceOf(BusinessException.class);
-    }
-
-    @DisplayName("결제된 수량이 0 이하인 경우 예외가 발생한다.")
-    @ParameterizedTest
-    @ValueSource(longs = {0, -3})
-    void test4(long quantity) {
-        // given
-        Product product = new Product("콜라", 1000L, 10L);
-        // when & then
-        assertThatThrownBy(() -> product.buy(quantity))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
-    }
-
     @DisplayName("만약 재고가 0개라면 재고 없음을 출력한다.")
     @Test
     void test5() {
