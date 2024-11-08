@@ -24,6 +24,8 @@ public class OutView {
         sb.append(receipt.printPurchasedItems());
         sb.append("=============증\t\t정===============\n");
         sb.append(receipt.printFreeItems());
+        sb.append("=====================================\n");
+        sb.append(receipt.printTotalAmount());
         return print(sb.toString());
     }
 }

@@ -31,4 +31,18 @@ class ReceiptTest {
         assertThat(receipt.printPurchasedItems())
                 .contains("콜라", "10", "10,000");
     }
+
+    @DisplayName("총 구매 개수와 금액을 출력한다.")
+    @Test
+    void test3() {
+        // given
+        Receipt receipt = new Receipt();
+        receipt.addPurchasedItem(PurchasedItem.create("콜라", 7L, 1000L));
+        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
+        // when & then
+        System.out.println(receipt.printTotalAmount());
+        assertThat(receipt.printTotalAmount())
+                .containsIgnoringWhitespaces("총구매액 10 10,000");
+
+    }
 }

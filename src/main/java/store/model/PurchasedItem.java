@@ -24,7 +24,7 @@ public class PurchasedItem {
 
     public String getPurchasedStatus() {
         DecimalFormat df = new DecimalFormat("###,###");
-        return String.format("%-11s\t\t%-10d\t%s", name, quantity, df.format(price * quantity));
+        return String.format("%-11s\t\t%-10d\t%-6s", name, quantity, df.format(price * quantity));
     }
 
     public String getFreeStatus() {
@@ -37,5 +37,13 @@ public class PurchasedItem {
 
     public void addQuantity(PurchasedItem item) {
         this.quantity += item.quantity;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public long calcAmount() {
+        return this.quantity * this.price;
     }
 }

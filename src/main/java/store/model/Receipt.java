@@ -1,13 +1,18 @@
 package store.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Receipt {
 
+    private static final StringBuffer BUFFER = new StringBuffer();
+
     private final List<PurchasedItem> purchasedItems;
     private final List<PurchasedItem> freeItems;
+    private long totalCnt = 0L;
+    private long totalAmount = 0L;
     private long unAppliedAmount = 0L;
 
     public Receipt() {
@@ -15,7 +20,15 @@ public class Receipt {
         this.freeItems = new ArrayList<>();
     }
 
+    private StringBuffer getBuffer() {
+        BUFFER.setLength(0);
+        return BUFFER;
+    }
+
     public void addPurchasedItem(PurchasedItem targetItem) {
+        this.totalCnt += targetItem.getQuantity();
+        this.totalAmount += targetItem.calcAmount();
+
         Optional<PurchasedItem> exist =
                 purchasedItems.stream().filter(item -> item.isSameName(targetItem)).findFirst();
         if (exist.isEmpty()) {
@@ -30,20 +43,28 @@ public class Receipt {
     }
 
     public String printPurchasedItems() {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = getBuffer();
         purchasedItems.forEach(item -> sb.append(item.getPurchasedStatus() + "\n"));
-        purchasedItems.clear();
         return sb.toString();
     }
 
     public String printFreeItems() {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = getBuffer();
         freeItems.forEach(item -> sb.append(item.getFreeStatus() + "\n"));
-        freeItems.clear();
         return sb.toString();
     }
 
     public void addUnPromotionAmount(long amount) {
         this.unAppliedAmount += amount;
+    }
+
+    public String printTotalAmount() {
+        DecimalFormat df = new DecimalFormat("###,###");
+        return String.format("%-11s\t\t%-10d\t%s", "총구매액", totalCnt, df.format(totalAmount));
+    }
+
+    public void clear() {
+        this.purchasedItems.clear();
+
     }
 }

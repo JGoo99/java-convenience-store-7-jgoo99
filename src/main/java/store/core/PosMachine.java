@@ -14,9 +14,10 @@ import store.view.InputView;
 
 public class PosMachine {
 
-    private final Receipt receipt;
     private final InputView inputView;
     private final PriorityQueue<Product> productQ;
+
+    private Receipt receipt;
 
     public PosMachine() {
         this.receipt = new Receipt();
@@ -138,6 +139,8 @@ public class PosMachine {
     }
 
     public Receipt getReceipt() {
-        return receipt;
+        Receipt cur = this.receipt;
+        this.receipt = new Receipt();
+        return cur;
     }
 }
