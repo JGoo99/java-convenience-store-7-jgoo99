@@ -44,10 +44,10 @@ class OutViewTest {
         // given
         OutView view = new OutView();
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
-        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5L, 2000L));
-        receipt.addPurchasedItem(new PurchasedItem("오렌지주스", 2L, 1800L));
-        receipt.addPurchasedItem(new PurchasedItem("물", 1L, 500L));
+        receipt.addPurchasedItem(PurchasedItem.create("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(PurchasedItem.create("에너지바", 5L, 2000L));
+        receipt.addPurchasedItem(PurchasedItem.create("오렌지주스", 2L, 1800L));
+        receipt.addPurchasedItem(PurchasedItem.create("물", 1L, 500L));
         // when & then
         assertThat(view.printReceipt(receipt))
                 .contains("==============W 편의점================")
@@ -55,5 +55,24 @@ class OutViewTest {
                 .contains("에너지바", "5", "10,000")
                 .contains("오렌지주스", "2", "3,600")
                 .contains("물", "1", "500");
+    }
+
+    @DisplayName("증정 내역 정보를 영수증으로 출력한다.")
+    @Test
+    void test4() {
+        // given
+        OutView view = new OutView();
+        Receipt receipt = new Receipt();
+        receipt.addFreeItem(PurchasedItem.createFree("콜라", 1L));
+        receipt.addFreeItem(PurchasedItem.createFree("감자칩", 2L));
+        receipt.addFreeItem(PurchasedItem.createFree("오렌지주스", 1L));
+        receipt.addFreeItem(PurchasedItem.createFree("컵라면", 1L));
+        // when & then
+        assertThat(view.printReceipt(receipt))
+                .contains("==============W 편의점================")
+                .contains("콜라", "1")
+                .contains("감자칩", "2")
+                .contains("오렌지주스", "1")
+                .contains("컵라면", "1");
     }
 }

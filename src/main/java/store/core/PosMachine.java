@@ -16,14 +16,12 @@ import store.view.InputView;
 public class PosMachine {
 
     private final Receipt receipt;
-    private final List<Item> freeItems;
 
     private final InputView inputView;
     private final PriorityQueue<Product> productQ;
 
     public PosMachine() {
         this.receipt = new Receipt();
-        this.freeItems = new ArrayList<>();
         this.inputView = new InputView();
         this.productQ = new PriorityQueue<>(new Comparator<Product>() {
             @Override
@@ -103,11 +101,12 @@ public class PosMachine {
         item.pay(buyQ);
         ProductQuantityRepository.getInstance().update(product, buyQ);
         receipt.addPurchasedItem(
-                new PurchasedItem(item.getName(), buyQ, product.getPrice()));
+                PurchasedItem.create(item.getName(), buyQ, product.getPrice()));
     }
 
     private void initFreeItem(Item item, long freeQ) {
-        this.freeItems.add(new Item(item.getName(), freeQ));
+        receipt.addFreeItem(
+                PurchasedItem.createFree(item.getName(), freeQ));
     }
 
     private boolean existPromotion() {
