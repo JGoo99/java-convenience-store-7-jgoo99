@@ -1,6 +1,8 @@
 package store.view;
 
 
+import store.model.Receipt;
+
 public class OutView {
 
     public String printWelcome() {
@@ -14,5 +16,11 @@ public class OutView {
     public String print(String view) {
         System.out.println(view);
         return view;
+    }
+
+    public String printReceipt(Receipt receipt) {
+        StringBuffer sb = new StringBuffer("==============W 편의점================\n");
+        sb.append(receipt.printPurchasedItems());
+        return print(sb.toString());
     }
 }

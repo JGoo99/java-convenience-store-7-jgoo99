@@ -3,6 +3,7 @@ package store.core;
 import java.util.List;
 import store.exception.BusinessException;
 import store.model.Item;
+import store.model.Receipt;
 import store.view.InputView;
 import store.view.OutView;
 
@@ -37,7 +38,8 @@ public class ConvenienceRunner {
 
     private void buy(List<Item> items) {
         try {
-            convenience.buy(items);
+            Receipt receipt = convenience.buy(items);
+            out.printReceipt(receipt);
         } catch (BusinessException e) {
             System.out.println(e.getMessage());
         }

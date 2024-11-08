@@ -8,19 +8,21 @@ import store.model.Item;
 import store.model.Product;
 import store.model.PromotionProduct;
 import store.model.PromotionPurchaseStatus;
+import store.model.PurchasedItem;
+import store.model.Receipt;
 import store.repository.ProductQuantityRepository;
 import store.view.InputView;
 
 public class PosMachine {
 
-    private final List<Item> purchasedItems;
+    private final Receipt receipt;
     private final List<Item> freeItems;
 
     private final InputView inputView;
     private final PriorityQueue<Product> productQ;
 
     public PosMachine() {
-        this.purchasedItems = new ArrayList<>();
+        this.receipt = new Receipt();
         this.freeItems = new ArrayList<>();
         this.inputView = new InputView();
         this.productQ = new PriorityQueue<>(new Comparator<Product>() {
@@ -100,7 +102,8 @@ public class PosMachine {
         product.buy(buyQ);
         item.pay(buyQ);
         ProductQuantityRepository.getInstance().update(product, buyQ);
-        this.purchasedItems.add(new Item(item.getName(), buyQ));
+        receipt.addPurchasedItem(
+                new PurchasedItem(item.getName(), buyQ, product.getPrice()));
     }
 
     private void initFreeItem(Item item, long freeQ) {
@@ -113,5 +116,9 @@ public class PosMachine {
 
     public void membership() {
         boolean membership = inputView.checkMembership();
+    }
+
+    public Receipt getReceipt() {
+        return receipt;
     }
 }

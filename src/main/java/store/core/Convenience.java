@@ -3,6 +3,7 @@ package store.core;
 import java.util.List;
 import store.model.Item;
 import store.model.Product;
+import store.model.Receipt;
 
 public class Convenience {
 
@@ -18,17 +19,13 @@ public class Convenience {
         return new Convenience(creator.getProducts());
     }
 
-    public void buy(List<Item> items) {
+    public Receipt buy(List<Item> items) {
         items.forEach(item -> {
             List<Product> targetProducts = takeProducts(item);
             pos.scanBarcode(item, targetProducts);
         });
         pos.membership();
-
-        /*
-        1. 프로모션 할인
-        2. 멤버십 할인
-         */
+        return pos.getReceipt();
     }
 
     private List<Product> takeProducts(Item item) {

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.Promotion;
+import store.model.PurchasedItem;
+import store.model.Receipt;
 
 class OutViewTest {
 
@@ -34,5 +36,24 @@ class OutViewTest {
                 .isEqualTo("현재 보유하고 있는 상품입니다.\n\n" +
                         "- 탄산수 1,200원 5개\n" +
                         "- 감자칩 1,500원 5개 탄산2+1\n");
+    }
+
+    @DisplayName("구매 내역 정보를 영수증으로 출력한다.")
+    @Test
+    void test3() {
+        // given
+        OutView view = new OutView();
+        Receipt receipt = new Receipt();
+        receipt.addPurchasedItem(new PurchasedItem("콜라", 3L, 1000L));
+        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5L, 2000L));
+        receipt.addPurchasedItem(new PurchasedItem("오렌지주스", 2L, 1800L));
+        receipt.addPurchasedItem(new PurchasedItem("물", 1L, 500L));
+        // when & then
+        assertThat(view.printReceipt(receipt))
+                .contains("==============W 편의점================")
+                .contains("콜라", "3", "3,000")
+                .contains("에너지바", "5", "10,000")
+                .contains("오렌지주스", "2", "3,600")
+                .contains("물", "1", "500");
     }
 }

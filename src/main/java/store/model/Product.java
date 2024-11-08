@@ -46,6 +46,10 @@ public class Product {
         return name;
     }
 
+    public long getPrice() {
+        return price;
+    }
+
     public boolean isSameName(String name) {
         return this.name.equals(name);
     }
