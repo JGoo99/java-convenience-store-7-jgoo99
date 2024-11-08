@@ -1,40 +1,21 @@
 package store.reader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import store.exception.BusinessException;
-import store.exception.ErrorMessage;
-import store.model.Promotion;
+import store.model.entity.Promotion;
+import store.reader.parser.LineParser;
 import store.repository.PromotionRepository;
 
-public class PromotionReader {
+public class PromotionReader extends MdFileLineReader<Promotion> {
 
     private static final String PROMOTION_FILE_PATH = "src/main/resources/promotions.md";
+    private final PromotionRepository repository = PromotionRepository.getInstance();
 
-    private final File file;
-
-    public PromotionReader() {
-        this.file = new File(PROMOTION_FILE_PATH);
-    }
-
-    public List<Promotion> readAll() {
-        List<Promotion> promotions = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            br.lines()
-                    .skip(1)
-                    .forEach(line -> promotions.add(read(line)));
-        } catch (IOException | BusinessException e) {
-            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
-        }
-        PromotionRepository.getInstance().saveAll(promotions);
-        return promotions;
+    @Override
+    protected String getFilePath() {
+        return PROMOTION_FILE_PATH;
     }
 
     public Promotion read(String line) {
-        return LineParser.withPromotionRegex(line).parse();
+        Promotion promotion = LineParser.withPromotionRegex(line).parse();
+        return repository.save(promotion);
     }
 }

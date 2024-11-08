@@ -3,7 +3,7 @@ package store.repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import store.model.Promotion;
+import store.model.entity.Promotion;
 
 public class PromotionRepository {
 
@@ -26,7 +26,8 @@ public class PromotionRepository {
     }
 
     public Promotion save(Promotion promotion) {
-        return PROMOTIONS.put(promotion.getName(), promotion);
+        PROMOTIONS.put(promotion.getName(), promotion);
+        return promotion;
     }
 
     public Promotion findByName(String promotionName) {
