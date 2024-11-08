@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import store.model.Item;
 import store.model.Product;
 import store.model.PromotionProduct;
-import store.model.PromotionPurchaseStatus;
+import store.model.PromotionPurchaseQuantity;
 import store.model.PurchasedItem;
 import store.model.Receipt;
 import store.repository.ProductQuantityRepository;
@@ -15,75 +15,67 @@ import store.view.InputView;
 public class PosMachine {
 
     private final InputView inputView;
-    private final PriorityQueue<Product> productQ;
+    private final PriorityQueue<Product> productQueue;
 
     private Receipt receipt;
 
     public PosMachine() {
         this.receipt = new Receipt();
         this.inputView = new InputView();
-        this.productQ = new PriorityQueue<>(new Comparator<Product>() {
-            @Override
-            public int compare(Product o1, Product o2) {
-                if (o1 instanceof PromotionProduct) {
-                    return -1;
-                }
-                return 1;
-            }
-        });
+        this.productQueue = new PriorityQueue<>(
+                Comparator.comparing((Product p) -> !(p instanceof PromotionProduct)));
     }
 
     public void scanBarcode(Item item, List<Product> targetProducts) {
-        productQ.addAll(targetProducts);
+        productQueue.addAll(targetProducts);
         if (existPromotion()) {
             processPromotionScan(item);
         }
         processDefaultScan(item);
-        productQ.clear();
+        productQueue.clear();
     }
 
     private void processDefaultScan(Item item) {
-        if (productQ.isEmpty() || item.getQuantity() == 0) {
+        if (productQueue.isEmpty() || item.getQuantity() == 0) {
             return;
         }
-        Product product = productQ.poll();
+        Product product = productQueue.poll();
         receipt.addUnPromotionAmount(product.calcPayment(item.getQuantity()));
         purchase(item, item.getQuantity(), product);
     }
 
     private void processPromotionScan(Item item) {
-        PromotionProduct product = (PromotionProduct) productQ.poll();
+        PromotionProduct product = (PromotionProduct) productQueue.poll();
         if (isPromotionDisabled(item, product)) {
             return;
         }
-
-        PromotionPurchaseStatus status = product.getPurchaseStatus(item.getQuantity());
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(item.getQuantity());
         handlePurchaseProcess(item, status, product);
     }
 
-    private void handlePurchaseProcess(Item item, PromotionPurchaseStatus status, PromotionProduct product) {
-        if (status.isOverQ()) {
+    private void handlePurchaseProcess(Item item, PromotionPurchaseQuantity status, PromotionProduct product) {
+        if (status.isExceeded()) {
             if (!confirmUnPromotionPurchase(item, status)) {
-                item.subtractUnPromotionQuantity(status.unAppliedQ());
-                purchase(item, status.appliedQ(), product);
-                addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
+                item.subtractUnPromotionQuantity(status.unDiscounted());
+                purchase(item, status.discounted(), product);
+                addFreeItemToReceipt(item, status.free(), product.getPrice());
                 return;
             }
-            receipt.addUnPromotionAmount(product.calcPayment(product.calcUnAppliedRemain(status.appliedQ())));
-            purchaseAllPromotion(item, status.buyQ(), product);
-            addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
+            receipt.addUnPromotionAmount(product.calcPayment(product.calcUnDiscountedQuantity(status.discounted())));
+            purchaseAllPromotion(item, status.purchase(), product);
+            addFreeItemToReceipt(item, status.free(), product.getPrice());
             return;
         }
 
         if (isAdditionalPromotionItemNeeded(item, status, product)) {
             item.addOneMoreQuantity();
-            purchase(item, status.buyQ() + 1, product);
-            addFreeItemToReceipt(item, status.freeQ() + 1, product.getPrice());
+            purchase(item, status.purchase() + 1, product);
+            addFreeItemToReceipt(item, status.free() + 1, product.getPrice());
             return;
         }
 
-        purchase(item, status.buyQ(), product);
-        addFreeItemToReceipt(item, status.freeQ(), product.getPrice());
+        purchase(item, status.purchase(), product);
+        addFreeItemToReceipt(item, status.free(), product.getPrice());
     }
 
     private boolean isPromotionDisabled(Item item, PromotionProduct product) {
@@ -97,13 +89,13 @@ public class PosMachine {
         return false;
     }
 
-    private boolean confirmUnPromotionPurchase(Item item, PromotionPurchaseStatus status) {
-        return inputView.checkUnAppliedPromotionPurchase(item, status.unAppliedQ());
+    private boolean confirmUnPromotionPurchase(Item item, PromotionPurchaseQuantity status) {
+        return inputView.checkUnDiscountedPromotionPurchase(item, status.unDiscounted());
     }
 
-    private boolean isAdditionalPromotionItemNeeded(Item item, PromotionPurchaseStatus status, PromotionProduct product) {
-        if (product.needMoreQuantity(status.unAppliedQ(), status.buyQ())) {
-            return inputView.checkMoreQuantityPurchase(item);
+    private boolean isAdditionalPromotionItemNeeded(Item item, PromotionPurchaseQuantity status, PromotionProduct product) {
+        if (product.needOneMoreForPromotion(status.unDiscounted(), status.purchase())) {
+            return inputView.checkOneMoreForPromotion(item);
         }
         return false;
     }
@@ -114,7 +106,7 @@ public class PosMachine {
     }
 
     public void purchaseAllPromotion(Item item, long buyQ, PromotionProduct product) {
-        product.clear();
+        product.purchaseAll();
         pay(item, buyQ, product);
     }
 
@@ -131,11 +123,11 @@ public class PosMachine {
     }
 
     private boolean existPromotion() {
-        return productQ.size() >= 2;
+        return productQueue.size() >= 2;
     }
 
-    public void membership() {
-        if (!inputView.checkMembership()) {
+    public void aseMembershipDiscounts() {
+        if (!inputView.checkMembershipDiscount()) {
             return;
         }
         receipt.membershipDiscount();

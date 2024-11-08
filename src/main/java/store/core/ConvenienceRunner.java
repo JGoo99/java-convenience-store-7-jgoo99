@@ -29,16 +29,15 @@ public class ConvenienceRunner {
             out.printWelcome();
             out.printProducts(convenience.getProductsStatus());
 
-            List<Item> items = input.readItems();
-            buy(items);
+            purchase(input.readItems());
 
             keepGoing = input.askWantToKeepGoing();
         }
     }
 
-    private void buy(List<Item> items) {
+    private void purchase(List<Item> items) {
         try {
-            Receipt receipt = convenience.buy(items);
+            Receipt receipt = convenience.purchase(items);
             out.printReceipt(receipt);
         } catch (BusinessException e) {
             System.out.println(e.getMessage());

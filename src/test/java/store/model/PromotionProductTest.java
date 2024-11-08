@@ -49,13 +49,13 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(10L);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(10L);
         // then
-        assertEquals(7L, status.buyQ());       // 총 구매 가능 수량
-        assertTrue(status.isOverQ());                    // 구매 수량이 재고 수량을 넘는지
-        assertEquals(4L, status.unAppliedQ()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
-        assertEquals(6L, status.appliedQ());   // 할인이 적용된 수량
-        assertEquals(2L, status.freeQ());       // 무료 증정 수량
+        assertEquals(7L, status.purchase());       // 총 구매 가능 수량
+        assertTrue(status.isExceeded());                    // 구매 수량이 재고 수량을 넘는지
+        assertEquals(4L, status.unDiscounted()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
+        assertEquals(6L, status.discounted());   // 할인이 적용된 수량
+        assertEquals(2L, status.free());       // 무료 증정 수량
     }
 
     @DisplayName("구매 수량을 통해 프로모션 상품 구매 시 상태를 확인할 수 있다. (1+1)")
@@ -64,13 +64,13 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(10L);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(10L);
         // then
-        assertEquals(7L, status.buyQ());       // 총 구매 가능 수량
-        assertTrue(status.isOverQ());                    // 구매 수량이 재고 수량을 넘는지
-        assertEquals(4L, status.unAppliedQ()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
-        assertEquals(6L, status.appliedQ());   // 할인이 적용된 수량
-        assertEquals(3L, status.freeQ());       // 무료 증정 수량
+        assertEquals(7L, status.purchase());       // 총 구매 가능 수량
+        assertTrue(status.isExceeded());                    // 구매 수량이 재고 수량을 넘는지
+        assertEquals(4L, status.unDiscounted()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
+        assertEquals(6L, status.discounted());   // 할인이 적용된 수량
+        assertEquals(3L, status.free());       // 무료 증정 수량
     }
 
     @DisplayName("프로모션 적용이 가능한 상품에 대해 고객이 해당 수량보다 적게 가져온 경우를 판별한다. (2+1)")
@@ -80,9 +80,9 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
         // then
-        assertThat(product.needMoreQuantity(status.unAppliedQ(), buyQ))
+        assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
     }
 
@@ -93,9 +93,9 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
         // then
-        assertThat(product.needMoreQuantity(status.unAppliedQ(), buyQ))
+        assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
     }
 
@@ -106,9 +106,9 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
         // then
-        assertFalse(product.needMoreQuantity(status.unAppliedQ(), buyQ));
+        assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
     }
 
     @DisplayName("무료 증정 수량을 추가할 때, 재고가 없으면 추가 여부를 묻지 않도록 한다. (1+1)")
@@ -118,9 +118,9 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseStatus status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
         // then
-        assertFalse(product.needMoreQuantity(status.unAppliedQ(), buyQ));
+        assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
     }
 
 }

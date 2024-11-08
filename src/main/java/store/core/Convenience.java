@@ -19,16 +19,20 @@ public class Convenience {
         return new Convenience(creator.getProducts());
     }
 
-    public Receipt buy(List<Item> items) {
-        items.forEach(item -> {
-            List<Product> targetProducts = takeProducts(item);
-            pos.scanBarcode(item, targetProducts);
-        });
-        pos.membership();
+    public Receipt purchase(List<Item> items) {
+        scanBarcodes(items);
+        pos.aseMembershipDiscounts();
         return pos.getReceipt();
     }
 
-    private List<Product> takeProducts(Item item) {
+    private void scanBarcodes(List<Item> items) {
+        items.forEach(item -> {
+            List<Product> targetProducts = searchTargetProducts(item);
+            pos.scanBarcode(item, targetProducts);
+        });
+    }
+
+    private List<Product> searchTargetProducts(Item item) {
         return products.stream().filter(product -> product.isSameName(item.getName())).toList();
     }
 

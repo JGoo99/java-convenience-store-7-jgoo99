@@ -16,49 +16,51 @@ public class PromotionProduct extends Product {
         return !promotion.withinPeriod(LocalDate.from(DateTimes.now()));
     }
 
-    public PromotionPurchaseStatus getPurchaseStatus(long totalQ) {
-        long buyQ = getBuyQ(totalQ);
-        long appliedQ = calcCurAppliedQuantity(buyQ);
+    public PromotionPurchaseQuantity getPurchaseStatus(long totalPurchaseQuantity) {
+        long availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
+        long discountedQuantity = calcDiscountedQuantity(availableQuantity);
 
-        return new PromotionPurchaseStatus(
-                buyQ, overQuantity(totalQ), totalQ - appliedQ, appliedQ, calcFreeQuantity(buyQ));
+        return new PromotionPurchaseQuantity(
+                availableQuantity,
+                isQuantityExceeded(totalPurchaseQuantity),
+                totalPurchaseQuantity - discountedQuantity,
+                discountedQuantity,
+                calcFreeQuantity(availableQuantity));
     }
 
-    private long getBuyQ(long quantity) {
-        return Math.min(quantity, this.quantity);
+    private long calcAvailableQuantity(long quantity) {
+        return Math.min(this.quantity, quantity);
     }
 
-    private boolean overQuantity(long totalQ) {
-        return this.quantity < totalQ;
+    private boolean isQuantityExceeded(long totalQuantity) {
+        return this.quantity < totalQuantity;
     }
 
-    private long calcFreeQuantity(long buyQ) {
-        return promotion.calcFreeQuantity(buyQ);
+    private long calcFreeQuantity(long buyQuantity) {
+        return promotion.calcFreeQuantity(buyQuantity);
     }
 
-    private long calcCurAppliedQuantity(long buyQ) {
-        return promotion.calcCurAppliedQuantity(buyQ);
+    private long calcDiscountedQuantity(long buyQuantity) {
+        return promotion.calcCurAppliedQuantity(buyQuantity);
+    }
+
+    public boolean needOneMoreForPromotion(long unDiscountedQuantity, long buyQuantity) {
+        if (++buyQuantity > this.quantity) {
+            return false;
+        }
+        return promotion.promotionIfPurchaseOneMore(unDiscountedQuantity);
+    }
+
+    public void purchaseAll() {
+        super.purchase(this.quantity);
+    }
+
+    public long calcUnDiscountedQuantity(long discountedQuantity) {
+        return this.quantity - discountedQuantity;
     }
 
     @Override
     public String toString() {
         return super.toString() + " " + promotion;
-    }
-
-    public boolean needMoreQuantity(long unAppliedQ, long buyQ) {
-        if (++buyQ > this.quantity) {
-            return false;
-        }
-        return promotion.appliableIfOneMore(unAppliedQ);
-    }
-
-    public long clear() {
-        long prev = this.quantity;
-        this.quantity = 0;
-        return prev;
-    }
-
-    public long calcUnAppliedRemain(long appliedQ) {
-        return this.quantity - appliedQ;
     }
 }

@@ -6,16 +6,16 @@ public class Promotion {
 
     private final String name;
     private final int buyQuantity;
-    private final int getQuantity;
-    private final int cycleQuantity;
+    private final int freeQuantity;
+    private final int oneCycleQuantity;
     private final LocalDate start;
     private final LocalDate end;
 
-    public Promotion(String name, int buyQuantity, int getQuantity, LocalDate start, LocalDate end) {
+    public Promotion(String name, int buyQuantity, int freeQuantity, LocalDate start, LocalDate end) {
         this.name = name;
         this.buyQuantity = buyQuantity;
-        this.getQuantity = getQuantity;
-        this.cycleQuantity = buyQuantity + getQuantity;
+        this.freeQuantity = freeQuantity;
+        this.oneCycleQuantity = buyQuantity + freeQuantity;
         this.start = start;
         this.end = end;
     }
@@ -36,16 +36,16 @@ public class Promotion {
         return date.isAfter(start.minusDays(1));
     }
 
-    public long calcFreeQuantity(long buyQ) {
-        return buyQ / cycleQuantity;
+    public long calcFreeQuantity(long buyQuantity) {
+        return buyQuantity / oneCycleQuantity;
     }
 
-    public long calcCurAppliedQuantity(long buyQ) {
-        return (buyQ / cycleQuantity) * cycleQuantity;
+    public long calcCurAppliedQuantity(long buyQuantity) {
+        return (buyQuantity / oneCycleQuantity) * oneCycleQuantity;
     }
 
-    public boolean appliableIfOneMore(long unAppliedQ) {
-        return unAppliedQ == buyQuantity;
+    public boolean promotionIfPurchaseOneMore(long unDiscountedQuantity) {
+        return unDiscountedQuantity == buyQuantity;
     }
 
     @Override

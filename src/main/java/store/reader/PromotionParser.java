@@ -2,22 +2,10 @@ package store.reader;
 
 import static store.constants.MdFileRegex.DATE;
 import static store.constants.MdFileRegex.LONG;
-import static store.constants.MdFileRegex.PRODUCT_NAME;
 import static store.constants.MdFileRegex.PROMOTION_NAME;
 
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import store.constants.MdFileRegex;
-import store.exception.BusinessException;
-import store.exception.ErrorMessage;
-import store.model.Product;
 import store.model.Promotion;
-import store.model.PromotionProduct;
-import store.repository.ProductQuantityRepository;
-import store.repository.PromotionRepository;
 
 public class PromotionParser extends LineParser {
 

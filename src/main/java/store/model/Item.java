@@ -55,12 +55,12 @@ public class Item {
         return quantity;
     }
 
-    public void pay(long buyQ) {
-        this.quantity -= buyQ;
+    public void pay(long buyQuantity) {
+        this.quantity -= buyQuantity;
     }
 
-    public void subtractUnPromotionQuantity(long unAppliedQ) {
-        this.quantity -= unAppliedQ;
+    public void subtractUnPromotionQuantity(long unAppliedQuantity) {
+        this.quantity -= unAppliedQuantity;
     }
 
     @Override

@@ -16,8 +16,8 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void purchase(long buyQ) {
-        this.quantity -= buyQ;
+    public void purchase(long buyQuantity) {
+        this.quantity -= buyQuantity;
     }
 
     public boolean isSoldOut() {
@@ -54,8 +54,8 @@ public class Product {
         return this.name.equals(name);
     }
 
-    public long calcPayment(long buyQ) {
-        return this.price * buyQ;
+    public long calcPayment(long buyQuantity) {
+        return this.price * buyQuantity;
     }
 
     @Override

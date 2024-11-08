@@ -13,11 +13,6 @@ public class OutView {
         return print("현재 보유하고 있는 상품입니다.\n\n" + products);
     }
 
-    public String print(String view) {
-        System.out.println(view);
-        return view;
-    }
-
     public String printReceipt(Receipt receipt) {
         StringBuffer sb = new StringBuffer("==============W 편의점================\n");
         sb.append(String.format("%-11s\t\t%-10s\t%s\n", "상품명", "수량", "금액"));
@@ -27,7 +22,13 @@ public class OutView {
         sb.append("=====================================\n");
         sb.append(receipt.printTotalAmount() + "\n");
         sb.append(receipt.printFreeAmount() + "\n");
-        sb.append(receipt.printMembershipAmount());
+        sb.append(receipt.printMembershipDiscountedAmount() + "\n");
+        sb.append(receipt.printTotalPayment() + "\n");
         return print(sb.toString());
+    }
+
+    private String print(String view) {
+        System.out.println(view);
+        return view;
     }
 }

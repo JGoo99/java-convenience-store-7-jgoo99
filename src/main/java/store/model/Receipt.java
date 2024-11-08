@@ -27,17 +27,17 @@ public class Receipt {
         return BUFFER;
     }
 
-    public void addPurchasedItem(PurchasedItem targetItem) {
-        this.totalCnt += targetItem.getQuantity();
-        this.totalAmount += targetItem.calcAmount();
+    public void addPurchasedItem(PurchasedItem purchasedItem) {
+        this.totalCnt += purchasedItem.getQuantity();
+        this.totalAmount += purchasedItem.calcAmount();
 
         Optional<PurchasedItem> exist =
-                purchasedItems.stream().filter(item -> item.isSameName(targetItem)).findFirst();
+                purchasedItems.stream().filter(item -> item.isSameName(purchasedItem)).findFirst();
         if (exist.isEmpty()) {
-            this.purchasedItems.add(targetItem);
+            this.purchasedItems.add(purchasedItem);
             return;
         }
-        exist.get().addQuantity(targetItem);
+        exist.get().addQuantity(purchasedItem);
     }
 
     public void addFreeItem(PurchasedItem item) {
@@ -75,10 +75,13 @@ public class Receipt {
         return String.format("%-11s\t\t\t\t\t%s", "행사할인", df.format(freeAmount));
     }
 
-    public String printMembershipAmount() {
+    public String printMembershipDiscountedAmount() {
         DecimalFormat df = new DecimalFormat("-###,###");
         return String.format("%-11s\t\t\t\t\t%s", "멤버십할인", df.format(membershipDiscountedAmount));
     }
 
-
+    public String printTotalPayment() {
+        DecimalFormat df = new DecimalFormat("###,###");
+        return String.format("%-11s\t\t\t\t\t%s", "내실돈", df.format(totalAmount - (freeAmount + membershipDiscountedAmount)));
+    }
 }
