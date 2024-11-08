@@ -1,5 +1,11 @@
 package store.view;
 
+import static store.constants.InputViewRequest.ITEMS;
+import static store.constants.InputViewRequest.KEEP_GOING;
+import static store.constants.InputViewRequest.MEMBER_SHIP_DISCOUNT;
+import static store.constants.InputViewRequest.ONE_MORE_FOR_PROMOTION;
+import static store.constants.InputViewRequest.UN_DISCOUNTED_PURCHASE;
+
 import camp.nextstep.edu.missionutils.Console;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +19,7 @@ public class InputView {
     private static final String NO = "N";
 
     public List<Item> readItems() {
-        print("구매하실 상품명과 수량을 입력해 주세요. (예: [사이다-2],[감자칩-1])");
+        print(ITEMS.toString());
         List<Item> items = null;
         while (items == null) {
             items = readItemInputs();
@@ -34,22 +40,22 @@ public class InputView {
     }
 
     public boolean askWantToKeepGoing() {
-        print("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)");
+        print(KEEP_GOING.toString());
         return askYesOrNo();
     }
 
     public boolean checkOneMoreForPromotion(Item item) {
-        print("현재 " + item + "은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
+        print("현재 " + item + ONE_MORE_FOR_PROMOTION);
         return askYesOrNo();
     }
 
     public boolean checkUnDiscountedPromotionPurchase(Item item, long quantity) {
-        print("현재 " + item + " " + quantity + "개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+        print("현재 " + item + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }
 
     public boolean checkMembershipDiscount() {
-        print("멤버십 할인을 받으시겠습니까? (Y/N)");
+        print(MEMBER_SHIP_DISCOUNT.toString());
         return askYesOrNo();
     }
 
@@ -58,7 +64,7 @@ public class InputView {
         while (yesOrNo == null) {
             yesOrNo = getYesOrNo();
         }
-        return yesOrNo.equals("Y");
+        return yesOrNo.equals(YES);
     }
 
     private String getYesOrNo() {
