@@ -2,7 +2,7 @@ package store.repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import store.model.Product;
+import store.model.entity.Product;
 
 public class ProductQuantityRepository {
 

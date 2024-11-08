@@ -1,8 +1,8 @@
-package store.model;
+package store.model.entity;
 
 import java.time.LocalDate;
 
-public class Promotion {
+public class Promotion implements ConvenienceEntity {
 
     private final String name;
     private final int buyQuantity;

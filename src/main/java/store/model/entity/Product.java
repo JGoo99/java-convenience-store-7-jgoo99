@@ -1,10 +1,10 @@
-package store.model;
+package store.model.entity;
 
 import java.text.DecimalFormat;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 
-public class Product {
+public class Product implements ConvenienceEntity {
 
     protected final String name;
     protected final long price;

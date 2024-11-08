@@ -1,12 +1,12 @@
-package store.reader;
+package store.reader.parser;
 
 import static store.constants.MdFileRegex.LONG;
 import static store.constants.MdFileRegex.PRODUCT_NAME;
 import static store.constants.MdFileRegex.PROMOTION_NAME;
 
-import store.model.Product;
-import store.model.Promotion;
-import store.model.PromotionProduct;
+import store.model.entity.Product;
+import store.model.entity.Promotion;
+import store.model.entity.PromotionProduct;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 

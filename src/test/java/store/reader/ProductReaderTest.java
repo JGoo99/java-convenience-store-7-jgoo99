@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import store.model.Promotion;
+import store.model.entity.Promotion;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.core.PosMachine;
+import store.model.entity.Product;
+import store.model.entity.Promotion;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 

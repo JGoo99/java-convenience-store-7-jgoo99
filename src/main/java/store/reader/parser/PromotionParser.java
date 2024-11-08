@@ -1,11 +1,11 @@
-package store.reader;
+package store.reader.parser;
 
 import static store.constants.MdFileRegex.DATE;
 import static store.constants.MdFileRegex.LONG;
 import static store.constants.MdFileRegex.PROMOTION_NAME;
 
 import java.time.LocalDate;
-import store.model.Promotion;
+import store.model.entity.Promotion;
 
 public class PromotionParser extends LineParser {
 

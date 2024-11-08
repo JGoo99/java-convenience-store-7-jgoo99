@@ -2,7 +2,7 @@ package store.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import store.model.Product;
+import store.model.entity.Product;
 import store.reader.ProductReader;
 import store.reader.PromotionReader;
 

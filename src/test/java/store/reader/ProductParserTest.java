@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.Product;
+import store.model.entity.Product;
+import store.reader.parser.LineParser;
 
 class ProductParserTest {
 

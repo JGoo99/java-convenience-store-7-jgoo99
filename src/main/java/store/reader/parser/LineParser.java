@@ -1,4 +1,4 @@
-package store.reader;
+package store.reader.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

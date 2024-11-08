@@ -2,7 +2,7 @@ package store.core;
 
 import java.util.List;
 import store.model.Item;
-import store.model.Product;
+import store.model.entity.Product;
 import store.model.Receipt;
 
 public class Convenience {

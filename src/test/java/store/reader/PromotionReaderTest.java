@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.Promotion;
+import store.model.entity.Promotion;
 
 class PromotionReaderTest {
 

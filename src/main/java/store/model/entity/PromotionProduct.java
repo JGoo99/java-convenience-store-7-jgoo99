@@ -1,7 +1,8 @@
-package store.model;
+package store.model.entity;
 
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
+import store.model.PromotionPurchaseQuantity;
 
 public class PromotionProduct extends Product {
 
