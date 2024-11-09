@@ -8,7 +8,6 @@ import store.model.entity.Product;
 import store.model.entity.PromotionProduct;
 import store.model.PromotionPurchaseQuantity;
 import store.model.PurchasedItem;
-import store.model.Receipt;
 import store.repository.ProductQuantityRepository;
 import store.view.InputView;
 
@@ -40,7 +39,7 @@ public class PosMachine {
             return;
         }
         Product product = productQueue.poll();
-        receipt.addUnPromotionAmount(product.calcPayment(item.getQuantity()));
+        receipt.addUnDiscountedAmount(product.calcPayment(item.getQuantity()));
         purchase(item, item.getQuantity(), product);
     }
 
@@ -49,33 +48,39 @@ public class PosMachine {
         if (isPromotionDisabled(item, product)) {
             return;
         }
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(item.getQuantity());
-        handlePurchaseProcess(item, status, product);
+        PromotionPurchaseQuantity quantities = product.getPurchaseQuantityStatus(item.getQuantity());
+        handlePromotionPurchase(item, quantities, product);
     }
 
-    private void handlePurchaseProcess(Item item, PromotionPurchaseQuantity status, PromotionProduct product) {
-        if (status.isExceeded()) {
-            if (!confirmUnPromotionPurchase(item, status)) {
-                item.subtractUnPromotionQuantity(status.unDiscounted());
-                purchase(item, status.discounted(), product);
-                addFreeItemToReceipt(item, status.free(), product.getPrice());
-                return;
-            }
-            receipt.addUnPromotionAmount(product.calcPayment(product.calcUnDiscountedQuantity(status.discounted())));
-            purchaseAllPromotion(item, status.purchase(), product);
-            addFreeItemToReceipt(item, status.free(), product.getPrice());
+    private void handlePromotionPurchase(Item item, PromotionPurchaseQuantity quantities, PromotionProduct product) {
+        if (quantities.isExceeded()) {
+            handleQuantityExceededPromotion(item, quantities, product);
             return;
         }
+        handlePromotion(item, quantities, product);
+    }
 
-        if (isAdditionalPromotionItemNeeded(item, status, product)) {
+    private void handlePromotion(Item item, PromotionPurchaseQuantity quantities, PromotionProduct product) {
+        if (isAdditionalPromotionItemNeeded(item, quantities, product)) {
             item.addOneMoreQuantity();
-            purchase(item, status.purchase() + 1, product);
-            addFreeItemToReceipt(item, status.free() + 1, product.getPrice());
+            purchase(item, quantities.purchase() + 1, product);
+            addFreeItemToReceipt(item.getName(), quantities.free() + 1, product.getPrice());
             return;
         }
 
-        purchase(item, status.purchase(), product);
-        addFreeItemToReceipt(item, status.free(), product.getPrice());
+        purchase(item, quantities.purchase(), product);
+        addFreeItemToReceipt(item.getName(), quantities.free(), product.getPrice());
+    }
+
+    private void handleQuantityExceededPromotion(Item item, PromotionPurchaseQuantity quantities, PromotionProduct product) {
+        addFreeItemToReceipt(item.getName(), quantities.free(), product.getPrice());
+        if (!continuePurchaseUndiscounted(item, quantities.unDiscounted())) {
+            item.subtractUnDiscountedQuantity(quantities.unDiscounted());
+            purchase(item, quantities.discounted(), product);
+            return;
+        }
+        receipt.addUnDiscountedAmount(product.calcUnDiscountedAmount(quantities.discounted()));
+        purchaseAllPromotion(item, quantities.purchase(), product);
     }
 
     private boolean isPromotionDisabled(Item item, PromotionProduct product) {
@@ -89,8 +94,8 @@ public class PosMachine {
         return false;
     }
 
-    private boolean confirmUnPromotionPurchase(Item item, PromotionPurchaseQuantity status) {
-        return inputView.checkUnDiscountedPromotionPurchase(item, status.unDiscounted());
+    private boolean continuePurchaseUndiscounted(Item item, long unDiscountedQuantity) {
+        return inputView.checkUnDiscountedPromotionPurchase(item.getName(), unDiscountedQuantity);
     }
 
     private boolean isAdditionalPromotionItemNeeded(Item item, PromotionPurchaseQuantity status, PromotionProduct product) {
@@ -112,14 +117,14 @@ public class PosMachine {
 
     private void pay(Item item, long buyQ, Product product) {
         item.pay(buyQ);
-        ProductQuantityRepository.getInstance().update(product, buyQ);
+        ProductQuantityRepository.getInstance().update(item.getName(), buyQ);
         receipt.addPurchasedItem(
                 new PurchasedItem(item.getName(), buyQ, product.getPrice()));
     }
 
-    private void addFreeItemToReceipt(Item item, long freeQ, long productPrice) {
+    private void addFreeItemToReceipt(String productName, long freeQ, long productPrice) {
         receipt.addFreeItem(
-                new PurchasedItem(item.getName(), freeQ, productPrice));
+                new PurchasedItem(productName, freeQ, productPrice));
     }
 
     private boolean existPromotion() {

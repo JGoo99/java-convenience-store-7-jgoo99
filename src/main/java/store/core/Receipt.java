@@ -1,9 +1,10 @@
-package store.model;
+package store.core;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import store.model.PurchasedItem;
 
 public class Receipt {
 
@@ -57,7 +58,7 @@ public class Receipt {
         return sb.toString();
     }
 
-    public void addUnPromotionAmount(long amount) {
+    public void addUnDiscountedAmount(long amount) {
         this.unAppliedAmount += amount;
     }
 

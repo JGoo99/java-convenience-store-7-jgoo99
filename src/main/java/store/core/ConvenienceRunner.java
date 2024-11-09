@@ -3,7 +3,6 @@ package store.core;
 import java.util.List;
 import store.exception.BusinessException;
 import store.model.Item;
-import store.model.Receipt;
 import store.view.InputView;
 import store.view.OutView;
 

@@ -1,7 +1,7 @@
 package store.view;
 
 
-import store.model.Receipt;
+import store.core.Receipt;
 
 public class OutView {
 

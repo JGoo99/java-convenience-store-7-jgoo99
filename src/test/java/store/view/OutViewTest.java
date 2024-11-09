@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.entity.Promotion;
 import store.model.PurchasedItem;
-import store.model.Receipt;
+import store.core.Receipt;
 
 class OutViewTest {
 
