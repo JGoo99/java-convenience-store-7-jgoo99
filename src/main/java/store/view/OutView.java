@@ -14,17 +14,7 @@ public class OutView {
     }
 
     public String printReceipt(Receipt receipt) {
-        StringBuffer sb = new StringBuffer("==============W 편의점================\n");
-        sb.append(String.format("%-11s\t\t%-10s\t%s\n", "상품명", "수량", "금액"));
-        sb.append(receipt.printPurchasedItems());
-        sb.append("=============증\t\t정===============\n");
-        sb.append(receipt.printFreeItems());
-        sb.append("=====================================\n");
-        sb.append(receipt.printTotalAmount() + "\n");
-        sb.append(receipt.printFreeAmount() + "\n");
-        sb.append(receipt.printMembershipDiscountedAmount() + "\n");
-        sb.append(receipt.printTotalPayment() + "\n");
-        return print(sb.toString());
+        return print(receipt.write());
     }
 
     private String print(String view) {
