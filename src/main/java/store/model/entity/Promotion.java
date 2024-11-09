@@ -7,7 +7,6 @@ public class Promotion implements ConvenienceEntity, Parsable {
 
     private final String name;
     private final int buyQuantity;
-    private final int freeQuantity;
     private final int oneCycleQuantity;
     private final LocalDate start;
     private final LocalDate end;
@@ -15,7 +14,6 @@ public class Promotion implements ConvenienceEntity, Parsable {
     public Promotion(String name, int buyQuantity, int freeQuantity, LocalDate start, LocalDate end) {
         this.name = name;
         this.buyQuantity = buyQuantity;
-        this.freeQuantity = freeQuantity;
         this.oneCycleQuantity = buyQuantity + freeQuantity;
         this.start = start;
         this.end = end;

@@ -2,6 +2,7 @@ package store.model;
 
 import store.reader.parser.Parsable;
 
+// TODO recode 객체로 파싱해서 사용해서 getter 없애기
 public class Item implements Parsable {
 
     private final String name;

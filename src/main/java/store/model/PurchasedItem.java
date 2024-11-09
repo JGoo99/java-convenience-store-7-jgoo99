@@ -1,6 +1,6 @@
 package store.model;
 
-import java.text.DecimalFormat;
+import store.core.utils.ReceiptFormater;
 
 public class PurchasedItem {
 
@@ -15,12 +15,11 @@ public class PurchasedItem {
     }
 
     public String getPurchasedStatus() {
-        DecimalFormat df = new DecimalFormat("###,###");
-        return String.format("%-11s\t\t%-10d\t%-6s", name, quantity, df.format(price * quantity));
+        return ReceiptFormater.buildPurchasedItemFormat(name, quantity, quantity * price);
     }
 
     public String getFreeStatus() {
-        return String.format("%-11s\t\t%d", name, quantity);
+        return ReceiptFormater.buildFreeItemFormat(name, quantity);
     }
 
     public boolean isSameName(PurchasedItem item) {

@@ -7,6 +7,7 @@ import store.repository.PromotionRepository;
 public class PromotionReader extends MdFileLineReader<Promotion> {
 
     private static final String PROMOTION_FILE_PATH = "src/main/resources/promotions.md";
+
     private final PromotionRepository repository = PromotionRepository.getInstance();
 
     @Override
