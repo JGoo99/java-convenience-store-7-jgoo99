@@ -1,5 +1,6 @@
-package store.core;
+package store.core.utils;
 
+import store.core.Receipt;
 import store.model.Item;
 import store.model.PurchasedItem;
 import store.model.entity.Product;

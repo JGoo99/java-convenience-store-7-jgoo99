@@ -1,8 +1,7 @@
-package store.utils;
+package store.core.utils;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import store.model.PaymentCalculator;
 import store.model.PurchasedItem;
 
 public class ReceiptWriter {

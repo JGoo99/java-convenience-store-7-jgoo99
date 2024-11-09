@@ -1,4 +1,4 @@
-package store.model;
+package store.core.utils;
 
 public class PaymentCalculator {
 

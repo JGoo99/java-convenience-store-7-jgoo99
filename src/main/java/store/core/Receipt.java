@@ -3,9 +3,9 @@ package store.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import store.model.PaymentCalculator;
+import store.core.utils.PaymentCalculator;
 import store.model.PurchasedItem;
-import store.utils.ReceiptWriter;
+import store.core.utils.ReceiptWriter;
 
 public class Receipt {
 
