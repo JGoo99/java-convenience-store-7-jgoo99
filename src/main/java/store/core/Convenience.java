@@ -32,7 +32,7 @@ public class Convenience {
         });
     }
 
-    private List<Product> searchTargetProducts(Item item) {
+    private List<Product> searchTargetProducts(final Item item) {
         return products.stream().filter(product -> product.isSameName(item.getName())).toList();
     }
 

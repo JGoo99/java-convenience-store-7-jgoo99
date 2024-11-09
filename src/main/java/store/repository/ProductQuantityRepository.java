@@ -19,12 +19,12 @@ public class ProductQuantityRepository {
         return promotionRepository;
     }
 
-    public void save(String name, int quantity) {
+    public void save(String name, final int quantity) {
         int prevQuantity = PRODUCT_QUANTITIES.getOrDefault(name, 0);
         PRODUCT_QUANTITIES.put(name, prevQuantity + quantity);
     }
 
-    public void update(String name, int quantity) {
+    public void update(String name, final int quantity) {
         PRODUCT_QUANTITIES.put(name, findByName(name) - quantity);
     }
 

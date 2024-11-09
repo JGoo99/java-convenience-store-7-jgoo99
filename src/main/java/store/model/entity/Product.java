@@ -16,19 +16,19 @@ public class Product implements ConvenienceEntity {
         this.quantity = quantity;
     }
 
-    public void purchase(int buyQuantity) {
-        this.quantity -= buyQuantity;
+    public void purchase(final int purchaseQuantity) {
+        this.quantity -= purchaseQuantity;
     }
 
     public boolean isSoldOut() {
         return this.quantity == 0;
     }
 
-    public void validateAvailablePurchase(int quantity) {
+    public void validateAvailablePurchase(final int quantity) {
         validateNegative(quantity);
     }
 
-    protected void validateNegative(int quantity) {
+    protected void validateNegative(final int quantity) {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
@@ -46,11 +46,11 @@ public class Product implements ConvenienceEntity {
         return price;
     }
 
-    public boolean isSameName(String name) {
+    public boolean isSameName(final String name) {
         return this.name.equals(name);
     }
 
-    public long calcPayment(int buyQuantity) {
+    public long calcPayment(final int buyQuantity) {
         return this.price * buyQuantity;
     }
 

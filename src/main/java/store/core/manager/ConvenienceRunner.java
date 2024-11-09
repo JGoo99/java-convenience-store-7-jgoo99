@@ -34,7 +34,7 @@ public class ConvenienceRunner {
         }
     }
 
-    private void purchase(List<Item> items) {
+    private void purchase(final List<Item> items) {
         try {
             Receipt receipt = convenience.purchase(items);
             out.printReceipt(receipt);

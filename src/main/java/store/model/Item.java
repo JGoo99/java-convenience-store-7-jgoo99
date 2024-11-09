@@ -18,7 +18,7 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public static Item from(String itemInput) {
+    public static Item from(final String itemInput) {
         Matcher matcher = Pattern.compile(REGEX).matcher(itemInput);
         if (matcher.find()) {
             String productName = matcher.group(1);
@@ -30,7 +30,7 @@ public class Item {
         throw new BusinessException(ErrorMessage.INVALID_INPUT);
     }
 
-    private static void validate(String productName, long quantity) {
+    private static void validate(final String productName, final int quantity) {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
@@ -55,11 +55,11 @@ public class Item {
         return quantity;
     }
 
-    public void pay(int purchaseQuantity) {
+    public void pay(final int purchaseQuantity) {
         this.quantity -= purchaseQuantity;
     }
 
-    public void subtractUnDiscountedQuantity(int unDiscountedQuantity) {
+    public void subtractUnDiscountedQuantity(final int unDiscountedQuantity) {
         this.quantity -= unDiscountedQuantity;
     }
 

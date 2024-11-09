@@ -38,7 +38,7 @@ public class Receipt {
         this.freeItems.add(item);
     }
 
-    public void addUnDiscountedAmount(long amount) {
+    public void addUnDiscountedAmount(final long amount) {
         paymentCalculator.addUnDiscountedAmount(amount);
     }
 

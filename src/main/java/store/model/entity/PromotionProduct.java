@@ -17,7 +17,7 @@ public class PromotionProduct extends Product {
         return !promotion.withinPeriod(LocalDate.from(DateTimes.now()));
     }
 
-    public PromotionPurchaseQuantity getPurchaseQuantityStatus(int totalPurchaseQuantity) {
+    public PromotionPurchaseQuantity getPurchaseQuantityStatus(final int totalPurchaseQuantity) {
         int availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
         int discountedQuantity = calcDiscountedQuantity(availableQuantity);
 
@@ -29,24 +29,24 @@ public class PromotionProduct extends Product {
                 calcFreeQuantity(availableQuantity));
     }
 
-    private int calcAvailableQuantity(int quantity) {
+    private int calcAvailableQuantity(final int quantity) {
         return Math.min(this.quantity, quantity);
     }
 
-    private boolean isQuantityExceeded(long totalQuantity) {
+    private boolean isQuantityExceeded(final long totalQuantity) {
         return this.quantity < totalQuantity;
     }
 
-    private int calcFreeQuantity(int purchaseQuantity) {
+    private int calcFreeQuantity(final int purchaseQuantity) {
         return promotion.calcFreeQuantity(purchaseQuantity);
     }
 
-    private int calcDiscountedQuantity(int purchaseQuantity) {
+    private int calcDiscountedQuantity(final int purchaseQuantity) {
         return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
-    public boolean needOneMoreForPromotion(int unDiscountedQuantity, int purchaseQuantity) {
-        if (++purchaseQuantity > this.quantity) {
+    public boolean needOneMoreForPromotion(final int unDiscountedQuantity, final int purchaseQuantity) {
+        if (purchaseQuantity + 1 > this.quantity) {
             return false;
         }
         return promotion.promotionIfPurchaseOneMore(unDiscountedQuantity);
@@ -56,7 +56,7 @@ public class PromotionProduct extends Product {
         super.purchase(this.quantity);
     }
 
-    public long calcUnDiscountedAmount(int discountedQuantity) {
+    public long calcUnDiscountedAmount(final int discountedQuantity) {
         return super.calcPayment(this.quantity - discountedQuantity);
     }
 

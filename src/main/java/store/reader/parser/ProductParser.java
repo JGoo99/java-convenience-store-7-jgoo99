@@ -32,7 +32,7 @@ public class ProductParser extends LineParser {
         return parse(name, price, quantity, promotionName);
     }
 
-    private Product parse(String name, long price, int quantity, String promotionName) {
+    private Product parse(String name, final long price, final int quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
         if (isPromotion(promotion)) {
             return new PromotionProduct(name, price, quantity, promotion);
