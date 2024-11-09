@@ -1,10 +1,10 @@
-package store.model;
+package store.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.core.Receipt;
+import store.model.PurchasedItem;
 
 class ReceiptTest {
 

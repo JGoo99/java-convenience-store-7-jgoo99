@@ -1,11 +1,10 @@
-package store.reader;
+package store.reader.parser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.entity.Promotion;
-import store.reader.parser.LineParser;
 
 class PromotionParserTest {
 

@@ -1,4 +1,4 @@
-package store.model;
+package store.model.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,6 @@ import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.entity.Promotion;
 
 class PromotionTest {
 
