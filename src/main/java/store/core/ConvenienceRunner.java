@@ -10,12 +10,10 @@ public class ConvenienceRunner {
 
     private final Convenience convenience;
     private final OutView out;
-    private final InputView input;
 
     private ConvenienceRunner(Convenience convenience) {
         this.convenience = convenience;
         this.out = new OutView();
-        this.input = new InputView();
     }
 
     public static ConvenienceRunner stock() {
@@ -28,9 +26,9 @@ public class ConvenienceRunner {
             out.printWelcome();
             out.printProducts(convenience.getProductsStatus());
 
-            purchase(input.readItems());
+            purchase(InputView.readItems());
 
-            keepGoing = input.askWantToKeepGoing();
+            keepGoing = InputView.askWantToKeepGoing();
         }
     }
 

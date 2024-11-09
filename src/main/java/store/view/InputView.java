@@ -18,7 +18,10 @@ public class InputView {
     private static final String YES = "Y";
     private static final String NO = "N";
 
-    public List<Item> readItems() {
+    private InputView() {
+    }
+
+    public static List<Item> readItems() {
         print(ITEMS.toString());
         List<Item> items = null;
         while (items == null) {
@@ -39,27 +42,27 @@ public class InputView {
         }
     }
 
-    public boolean askWantToKeepGoing() {
+    public static boolean askWantToKeepGoing() {
         print(KEEP_GOING.toString());
         return askYesOrNo();
     }
 
-    public boolean checkOneMoreForPromotion(String itemName) {
+    public static boolean checkOneMoreForPromotion(String itemName) {
         print("현재 " + itemName + ONE_MORE_FOR_PROMOTION);
         return askYesOrNo();
     }
 
-    public boolean checkUnDiscountedPromotionPurchase(String itemName, long quantity) {
+    public static boolean checkUnDiscountedPromotionPurchase(String itemName, long quantity) {
         print("현재 " + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }
 
-    public boolean checkMembershipDiscount() {
+    public static boolean checkMembershipDiscount() {
         print(MEMBER_SHIP_DISCOUNT.toString());
         return askYesOrNo();
     }
 
-    private boolean askYesOrNo() {
+    private static boolean askYesOrNo() {
         String yesOrNo = null;
         while (yesOrNo == null) {
             yesOrNo = getYesOrNo();
@@ -67,7 +70,7 @@ public class InputView {
         return yesOrNo.equals(YES);
     }
 
-    private String getYesOrNo() {
+    private static String getYesOrNo() {
         String yesOrNo = Console.readLine();
         try {
             validateYesOrNo(yesOrNo);
@@ -84,7 +87,7 @@ public class InputView {
         }
     }
 
-    private void print(String view) {
+    private static void print(String view) {
         System.out.println(view);
     }
 }

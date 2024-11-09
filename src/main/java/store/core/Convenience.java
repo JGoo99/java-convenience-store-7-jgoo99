@@ -20,8 +20,8 @@ public class Convenience {
 
     public Receipt purchase(List<Item> items) {
         scanBarcodes(items);
-        pos.aseMembershipDiscounts();
-        return pos.getReceipt();
+        pos.askMembershipDiscount();
+        return pos.printReceipt();
     }
 
     private void scanBarcodes(List<Item> items) {
