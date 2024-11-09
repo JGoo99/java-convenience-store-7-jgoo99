@@ -1,11 +1,12 @@
 package store.model.entity;
 
 import java.text.DecimalFormat;
-import store.exception.BusinessException;
-import store.exception.ErrorMessage;
+import store.model.Item;
 import store.reader.parser.Parsable;
 
 public class Product implements ConvenienceEntity, Parsable {
+
+    private static DecimalFormat PRICE_FORMAT = new DecimalFormat("###,###");
 
     protected final String name;
     protected final long price;
@@ -25,41 +26,29 @@ public class Product implements ConvenienceEntity, Parsable {
         return this.quantity == 0;
     }
 
-    public void validateAvailablePurchase(final int quantity) {
-        validateNegative(quantity);
-    }
-
-    protected void validateNegative(final int quantity) {
-        if (quantity <= 0) {
-            throw new BusinessException(ErrorMessage.INVALID_INPUT);
-        }
-    }
-
-    public String getQuantityStatus() {
-        DecimalFormat df = new DecimalFormat("###,###");
-        if (quantity == 0) {
-            return "재고 없음";
-        }
-        return df.format(quantity) + "개";
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
     public boolean isSameName(final String name) {
         return this.name.equals(name);
+    }
+
+    public Item parseOf(final int purchaseQuantity) {
+        return new Item(name, purchaseQuantity, price);
     }
 
     public long calcPayment(final int buyQuantity) {
         return this.price * buyQuantity;
     }
 
+    public String getQuantityStatus() {
+        if (quantity == 0) {
+            return "재고 없음";
+        }
+        return PRICE_FORMAT.format(quantity) + "개";
+    }
+
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("###,###");
         return name + " " +
-                df.format(price) + "원 " +
+                PRICE_FORMAT.format(price) + "원 " +
                 getQuantityStatus();
     }
 }

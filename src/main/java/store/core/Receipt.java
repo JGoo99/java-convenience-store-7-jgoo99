@@ -4,36 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import store.core.utils.PaymentCalculator;
-import store.model.PurchasedItem;
+import store.model.Item;
 import store.core.utils.ReceiptWriter;
 
 public class Receipt {
 
-    private final List<PurchasedItem> purchasedItems;
-    private final List<PurchasedItem> freeItems;
+    private final List<Item> items;
+    private final List<Item> freeItems;
     private final PaymentCalculator paymentCalculator;
     private final ReceiptWriter writer;
 
     public Receipt() {
-        this.purchasedItems = new ArrayList<>();
+        this.items = new ArrayList<>();
         this.freeItems = new ArrayList<>();
         this.paymentCalculator = new PaymentCalculator();
         this.writer = new ReceiptWriter(paymentCalculator);
     }
 
-    public void addPurchasedItem(PurchasedItem purchasedItem) {
-        paymentCalculator.addTotalQuantity(purchasedItem.getQuantity());
-        paymentCalculator.addTotalAmount(purchasedItem.calcAmount());
-        Optional<PurchasedItem> exist =
-                purchasedItems.stream().filter(item -> item.isSameName(purchasedItem)).findFirst();
+    public void addItem(Item item) {
+        paymentCalculator.addItem(item);
+        Optional<Item> exist =
+                items.stream().filter(registeredItem -> registeredItem.isSameName(item)).findFirst();
         if (exist.isEmpty()) {
-            this.purchasedItems.add(purchasedItem);
+            this.items.add(item);
             return;
         }
-        exist.get().addQuantity(purchasedItem);
+        exist.get().addQuantity(item);
     }
 
-    public void addFreeItem(PurchasedItem item) {
+    public void addFreeItem(Item item) {
         paymentCalculator.addFreeAmount(item.calcAmount());
         this.freeItems.add(item);
     }
@@ -47,6 +46,6 @@ public class Receipt {
     }
 
     public String write() {
-        return writer.run(purchasedItems, freeItems);
+        return writer.run(items, freeItems);
     }
 }

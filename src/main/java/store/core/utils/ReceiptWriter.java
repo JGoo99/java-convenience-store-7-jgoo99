@@ -9,7 +9,7 @@ import static store.constants.ReceiptElement.TOTAL_AMOUNT;
 import static store.constants.ReceiptElement.TOTAL_PAYMENT;
 
 import java.util.List;
-import store.model.PurchasedItem;
+import store.model.Item;
 
 public class ReceiptWriter {
 
@@ -21,9 +21,9 @@ public class ReceiptWriter {
         this.payment = payment;
     }
 
-    public String run(List<PurchasedItem> purchasedItems, List<PurchasedItem> freeItems) {
+    public String run(List<Item> items, List<Item> freeItems) {
         writeConvenienceName();
-        writePurchasedItems(purchasedItems);
+        writeItems(items);
         if (!freeItems.isEmpty()) {
             writeFreeItems(freeItems);
         }
@@ -44,34 +44,34 @@ public class ReceiptWriter {
         BUFFER.append(CONVENIENCE_NAME_FRAME);
     }
 
-    private void writePurchasedItems(List<PurchasedItem> purchasedItems) {
-        BUFFER.append(ReceiptFormater.buildPurchasedItemFrame());
-        purchasedItems.forEach(item -> BUFFER.append(item.getPurchasedStatus()));
+    private void writeItems(List<Item> items) {
+        BUFFER.append(ReceiptFormater.buildItemListFrameLine());
+        items.forEach(item -> BUFFER.append(item.parseReceiptLineOfPurchased()));
     }
 
-    private void writeFreeItems(List<PurchasedItem> freeItems) {
+    private void writeFreeItems(List<Item> freeItems) {
         BUFFER.append(FREE_ITEM_FRAME);
-        freeItems.forEach(item -> BUFFER.append(item.getFreeStatus()));
+        freeItems.forEach(item -> BUFFER.append(item.parseReceiptLineOfFree()));
     }
 
     private void writeTotalAmount() {
         BUFFER.append(AMOUNT_FRAME);
-        BUFFER.append(ReceiptFormater.buildPurchasedItemFormat(
+        BUFFER.append(ReceiptFormater.buildItemLine(
                 TOTAL_AMOUNT.toString(), payment.getTotalQuantity(), payment.getTotalAmount()));
     }
 
     private void writeFreeAmount() {
-        BUFFER.append(ReceiptFormater.buildNegativeAmountFormat(
+        BUFFER.append(ReceiptFormater.buildDiscountedLine(
                 FREE_DISCOUNT, payment.getFreeAmount()));
     }
 
     private void writeMembershipDiscountedAmount() {
-        BUFFER.append(ReceiptFormater.buildNegativeAmountFormat(
+        BUFFER.append(ReceiptFormater.buildDiscountedLine(
                 MEMBERSHIP_DISCOUNT, payment.getMembershipDiscountedAmount()));
     }
 
     private void writeTotalPayment() {
-        BUFFER.append(ReceiptFormater.buildAmountFormat(
+        BUFFER.append(ReceiptFormater.buildAmountLine(
                 TOTAL_PAYMENT, payment.calcTotalPayment()));
     }
 }

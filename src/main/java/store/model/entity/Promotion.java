@@ -43,7 +43,7 @@ public class Promotion implements ConvenienceEntity, Parsable {
         return (purchaseQuantity / oneCycleQuantity) * oneCycleQuantity;
     }
 
-    public boolean promotionIfPurchaseOneMore(final int unDiscountedQuantity) {
+    public boolean availableGetOneMoreForFree(final int unDiscountedQuantity) {
         return unDiscountedQuantity == buyQuantity;
     }
 

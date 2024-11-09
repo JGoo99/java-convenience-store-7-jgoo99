@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.PurchasedItem;
+import store.model.Item;
 
 class ReceiptTest {
 
@@ -13,8 +13,8 @@ class ReceiptTest {
     void test1() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 3, 1000L));
-        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5, 2000L));
+        receipt.addItem(new Item("콜라", 3, 1000L));
+        receipt.addItem(new Item("에너지바", 5, 2000L));
         // when & then
         assertThat(receipt.write())
                 .contains("콜라", "3", "3,000")
@@ -26,8 +26,8 @@ class ReceiptTest {
     void test2() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 7, 1000L));
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 3, 1000L));
+        receipt.addItem(new Item("콜라", 7, 1000L));
+        receipt.addItem(new Item("콜라", 3, 1000L));
         // when & then
         assertThat(receipt.write())
                 .contains("콜라", "10", "10,000");
@@ -38,8 +38,8 @@ class ReceiptTest {
     void test3() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 7, 1000L));
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 3, 1000L));
+        receipt.addItem(new Item("콜라", 7, 1000L));
+        receipt.addItem(new Item("콜라", 3, 1000L));
         // when & then
         assertThat(receipt.write())
                 .containsIgnoringWhitespaces("총구매액 10 10,000");
@@ -51,8 +51,8 @@ class ReceiptTest {
     void test4() {
         // given
         Receipt receipt = new Receipt();
-        receipt.addFreeItem(new PurchasedItem("오렌지주스", 1, 1800L));
-        receipt.addFreeItem(new PurchasedItem("콜라", 1, 1000L));
+        receipt.addFreeItem(new Item("오렌지주스", 1, 1800L));
+        receipt.addFreeItem(new Item("콜라", 1, 1000L));
         // when & then
         assertThat(receipt.write())
                 .contains("행사할인", "-2,800");

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.entity.Promotion;
-import store.model.PurchasedItem;
+import store.model.Item;
 import store.core.Receipt;
 
 class OutputViewTest {
@@ -44,10 +44,10 @@ class OutputViewTest {
         // given
         OutputView view = new OutputView();
         Receipt receipt = new Receipt();
-        receipt.addPurchasedItem(new PurchasedItem("콜라", 3, 1000L));
-        receipt.addPurchasedItem(new PurchasedItem("에너지바", 5, 2000L));
-        receipt.addPurchasedItem(new PurchasedItem("오렌지주스", 2, 1800L));
-        receipt.addPurchasedItem(new PurchasedItem("물", 1, 500L));
+        receipt.addItem(new Item("콜라", 3, 1000L));
+        receipt.addItem(new Item("에너지바", 5, 2000L));
+        receipt.addItem(new Item("오렌지주스", 2, 1800L));
+        receipt.addItem(new Item("물", 1, 500L));
         // when & then
         assertThat(view.printReceipt(receipt))
                 .contains("==============W 편의점================")
@@ -63,10 +63,10 @@ class OutputViewTest {
         // given
         OutputView view = new OutputView();
         Receipt receipt = new Receipt();
-        receipt.addFreeItem(new PurchasedItem("콜라", 1, 1000L));
-        receipt.addFreeItem(new PurchasedItem("감자칩", 2, 1500L));
-        receipt.addFreeItem(new PurchasedItem("오렌지주스", 1, 1800L));
-        receipt.addFreeItem(new PurchasedItem("컵라면", 1, 1700L));
+        receipt.addFreeItem(new Item("콜라", 1, 1000L));
+        receipt.addFreeItem(new Item("감자칩", 2, 1500L));
+        receipt.addFreeItem(new Item("오렌지주스", 1, 1800L));
+        receipt.addFreeItem(new Item("컵라면", 1, 1700L));
         // when & then
         assertThat(view.printReceipt(receipt))
                 .contains("==============W 편의점================")

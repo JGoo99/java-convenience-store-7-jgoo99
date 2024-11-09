@@ -1,5 +1,7 @@
 package store.core.utils;
 
+import store.model.Item;
+
 public class PaymentCalculator {
 
     private int totalQuantity = 0;
@@ -8,12 +10,9 @@ public class PaymentCalculator {
     private long unDiscountedAmount = 0L;
     private long membershipDiscountedAmount = 0L;
 
-    public void addTotalQuantity(int quantity) {
-        this.totalQuantity += quantity;
-    }
-
-    public void addTotalAmount(long amount) {
-        this.totalAmount += amount;
+    public void addItem(Item item) {
+        this.totalQuantity = item.calcQuantityAdditionWith(this.totalQuantity);
+        this.totalAmount += item.calcAmount();
     }
 
     public void addFreeAmount(long amount) {
@@ -47,4 +46,5 @@ public class PaymentCalculator {
     public long getMembershipDiscountedAmount() {
         return membershipDiscountedAmount;
     }
+
 }

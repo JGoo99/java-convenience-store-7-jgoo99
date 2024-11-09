@@ -8,10 +8,10 @@ import static store.constants.ParseModelRegex.PRODUCT_NAME;
 
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
-import store.model.Item;
+import store.model.ItemDto;
 import store.repository.ProductQuantityRepository;
 
-public class ItemParser extends LineParser<Item> {
+public class ItemParser extends LineParser<ItemDto> {
 
     public ItemParser(String line) {
         super(line);
@@ -23,11 +23,11 @@ public class ItemParser extends LineParser<Item> {
     }
 
     @Override
-    public Item parse() {
+    public ItemDto parse() {
         String productName = matcher.group(1);
         int quantity = Integer.parseInt(matcher.group(2));
         validateItem(productName, quantity);
-        return new Item(productName, quantity);
+        return new ItemDto(productName, quantity);
     }
 
     private static void validateItem(String productName, final int quantity) {

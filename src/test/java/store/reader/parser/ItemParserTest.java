@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
-import store.model.Item;
+import store.model.ItemDto;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 
@@ -31,9 +31,9 @@ class ItemParserTest {
         ProductQuantityRepository.getInstance().save(productName, 10);
         String itemInput = "[" + productName + "-" + quantity + "]";
         // when & then
-        Item item = new ItemParser(itemInput).parse();
-        assertEquals(productName, item.getName());
-        assertEquals(quantity, item.getQuantity());
+        ItemDto itemDto = new ItemParser(itemInput).parse();
+        assertEquals(productName, itemDto.getName());
+        assertEquals(quantity, itemDto.getQuantity());
     }
 
     @DisplayName("재고 중에 상품명이 일치하는 것이 없는 경우 예외가 발생한다.")

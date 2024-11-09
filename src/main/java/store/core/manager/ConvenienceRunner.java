@@ -4,7 +4,7 @@ import java.util.List;
 import store.core.Convenience;
 import store.core.Receipt;
 import store.exception.BusinessException;
-import store.model.Item;
+import store.model.ItemDto;
 import store.view.InputView;
 import store.view.OutputView;
 
@@ -36,9 +36,9 @@ public class ConvenienceRunner {
         }
     }
 
-    private void purchase(final List<Item> items) {
+    private void purchase(final List<ItemDto> itemDtos) {
         try {
-            Receipt receipt = convenience.purchase(items);
+            Receipt receipt = convenience.purchase(itemDtos);
             out.printReceipt(receipt);
         } catch (BusinessException e) {
             System.out.println(e.getMessage());

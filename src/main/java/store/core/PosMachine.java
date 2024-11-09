@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import store.core.utils.BarcodeScanner;
 import store.core.utils.PromotionBarcodeScanner;
-import store.model.Item;
+import store.model.ItemDto;
 import store.model.entity.Product;
 import store.model.entity.PromotionProduct;
 import store.view.InputView;
@@ -24,12 +24,12 @@ public class PosMachine {
                 Comparator.comparing((Product p) -> !(p instanceof PromotionProduct)));
     }
 
-    public void scanBarcode(Item item, List<Product> targetProducts) {
+    public void scanBarcode(ItemDto itemDto, List<Product> targetProducts) {
         fetchStockStatusOfItem(targetProducts);
         if (isPromotionItem()) {
-            registerPromotionToReceipt(item);
+            registerPromotionToReceipt(itemDto);
         }
-        registerToReceipt(item);
+        registerToReceipt(itemDto);
         clearStockStatusOfItem();
     }
 
@@ -41,23 +41,23 @@ public class PosMachine {
         return productQueue.size() >= 2;
     }
 
-    private void registerPromotionToReceipt(Item item) {
-        PromotionBarcodeScanner.read(receipt, productQueue.poll(), item).scan();
+    private void registerPromotionToReceipt(ItemDto itemDto) {
+        PromotionBarcodeScanner.read(receipt, productQueue.poll(), itemDto).scan();
     }
 
-    private void registerToReceipt(Item item) {
-        if (isAllPurchased(item)) {
+    private void registerToReceipt(ItemDto itemDto) {
+        if (isAllPurchased(itemDto)) {
             return;
         }
-        BarcodeScanner.read(receipt, productQueue.poll(), item).scan();
+        BarcodeScanner.read(receipt, productQueue.poll(), itemDto).scan();
     }
 
     private void clearStockStatusOfItem() {
         productQueue.clear();
     }
 
-    private boolean isAllPurchased(Item item) {
-        return item.getQuantity() == 0;
+    private boolean isAllPurchased(ItemDto itemDto) {
+        return itemDto.getQuantity() == 0;
     }
 
     public void askMembershipDiscount() {

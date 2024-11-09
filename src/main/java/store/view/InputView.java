@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
-import store.model.Item;
+import store.model.ItemDto;
 import store.reader.parser.ItemParser;
 
 public class InputView implements Printable {
@@ -19,16 +19,16 @@ public class InputView implements Printable {
     private static final String YES = "Y";
     private static final String NO = "N";
 
-    public List<Item> readItems() {
+    public List<ItemDto> readItems() {
         print(ITEMS);
-        List<Item> items = null;
-        while (items == null) {
-            items = readItemInputs();
+        List<ItemDto> itemDtos = null;
+        while (itemDtos == null) {
+            itemDtos = readItemInputs();
         }
-        return items;
+        return itemDtos;
     }
 
-    private List<Item> readItemInputs() {
+    private List<ItemDto> readItemInputs() {
         try {
             String itemInput = Console.readLine();
             return Arrays.stream(itemInput.split(","))
@@ -45,7 +45,7 @@ public class InputView implements Printable {
         return askYesOrNo();
     }
 
-    public boolean checkOneMoreForPromotion(String itemName) {
+    public boolean checkGetOneMoreForFree(String itemName) {
         print("현재 " + itemName + ONE_MORE_FOR_PROMOTION);
         return askYesOrNo();
     }

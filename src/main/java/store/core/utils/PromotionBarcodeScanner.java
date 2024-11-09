@@ -1,9 +1,8 @@
 package store.core.utils;
 
 import store.core.Receipt;
-import store.model.Item;
+import store.model.ItemDto;
 import store.model.PromotionPurchaseQuantity;
-import store.model.PurchasedItem;
 import store.model.entity.Product;
 import store.model.entity.PromotionProduct;
 import store.view.InputView;
@@ -14,18 +13,18 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     private final PromotionPurchaseQuantity quantityStatus;
     private final InputView input;
 
-    public PromotionBarcodeScanner(Receipt receipt, Product product, Item item,
-                                   PromotionProduct promotionProduct, PromotionPurchaseQuantity quantityStatus) {
-        super(receipt, product, item);
+    private PromotionBarcodeScanner(Receipt receipt, Product product, ItemDto itemDto,
+                                    PromotionProduct promotionProduct, PromotionPurchaseQuantity quantityStatus) {
+        super(receipt, product, itemDto);
         this.promotionProduct = promotionProduct;
         this.quantityStatus = quantityStatus;
         this.input = new InputView();
     }
 
-    public static PromotionBarcodeScanner read(Receipt receipt, Product product, Item item) {
+    public static PromotionBarcodeScanner read(Receipt receipt, Product product, ItemDto itemDto) {
         PromotionProduct promotionProduct = (PromotionProduct) product;
-        PromotionPurchaseQuantity quantityStatus = promotionProduct.getPurchaseQuantityStatus(item.getQuantity());
-        return new PromotionBarcodeScanner(receipt, product, item, promotionProduct, quantityStatus);
+        PromotionPurchaseQuantity quantityStatus = promotionProduct.getPurchaseQuantityStatus(itemDto.getQuantity());
+        return new PromotionBarcodeScanner(receipt, product, itemDto, promotionProduct, quantityStatus);
     }
 
     @Override
@@ -50,18 +49,18 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private void handleQuantityExceededPromotion() {
         addFreeItemToReceipt(quantityStatus.free());
-        if (!purchaseUnDiscounted()) {
-            item.subtractUnDiscountedQuantity(quantityStatus.unDiscounted());
-            purchase(quantityStatus.discounted());
+        if (purchaseUnDiscounted()) {
+            receipt.addUnDiscountedAmount(promotionProduct.calcUnDiscountedAmount(quantityStatus.discounted()));
+            purchaseAllPromotion(quantityStatus.purchase());
             return;
         }
-        receipt.addUnDiscountedAmount(promotionProduct.calcUnDiscountedAmount(quantityStatus.discounted()));
-        purchaseAllPromotion(quantityStatus.purchase());
+        itemDto.subtractQuantity(quantityStatus.unDiscounted());
+        purchase(quantityStatus.discounted());
     }
 
     private void handlePromotion() {
         if (needOneMoreForPromotion()) {
-            item.addOneMoreQuantity();
+            itemDto.addOneMoreQuantity();
             purchase(quantityStatus.purchase() + 1);
             addFreeItemToReceipt(quantityStatus.free() + 1);
             return;
@@ -71,12 +70,11 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void addFreeItemToReceipt(int freeQuantity) {
-        receipt.addFreeItem(
-                new PurchasedItem(item.getName(), freeQuantity, promotionProduct.getPrice()));
+        receipt.addFreeItem(promotionProduct.parseOf(freeQuantity));
     }
 
     private boolean purchaseUnDiscounted() {
-        return input.checkUnDiscountedPromotionPurchase(item.getName(), quantityStatus.unDiscounted());
+        return input.checkUnDiscountedPromotionPurchase(itemDto.getName(), quantityStatus.unDiscounted());
     }
 
     public void purchaseAllPromotion(int buyQuantity) {
@@ -85,8 +83,8 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private boolean needOneMoreForPromotion() {
-        if (promotionProduct.needOneMoreForPromotion(quantityStatus.unDiscounted(), quantityStatus.purchase())) {
-            return input.checkOneMoreForPromotion(item.getName());
+        if (promotionProduct.availableGetOneMoreForFree(quantityStatus.unDiscounted(), quantityStatus.purchase())) {
+            return input.checkGetOneMoreForFree(itemDto.getName());
         }
         return false;
     }

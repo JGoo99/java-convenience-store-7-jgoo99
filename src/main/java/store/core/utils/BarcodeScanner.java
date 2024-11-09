@@ -1,8 +1,7 @@
 package store.core.utils;
 
 import store.core.Receipt;
-import store.model.Item;
-import store.model.PurchasedItem;
+import store.model.ItemDto;
 import store.model.entity.Product;
 import store.repository.ProductQuantityRepository;
 
@@ -10,23 +9,21 @@ public class BarcodeScanner {
 
     protected final Receipt receipt;
     private final Product product;
-    protected final Item item;
-    protected final ProductQuantityRepository repository;
+    protected final ItemDto itemDto;
 
-    protected BarcodeScanner(Receipt receipt, Product product, Item item) {
+    protected BarcodeScanner(Receipt receipt, Product product, ItemDto itemDto) {
         this.receipt = receipt;
         this.product = product;
-        this.item = item;
-        this.repository = ProductQuantityRepository.getInstance();
+        this.itemDto = itemDto;
     }
 
-    public static BarcodeScanner read(Receipt receipt, Product product, Item item) {
-        return new BarcodeScanner(receipt, product, item);
+    public static BarcodeScanner read(Receipt receipt, Product product, ItemDto itemDto) {
+        return new BarcodeScanner(receipt, product, itemDto);
     }
 
     public void scan() {
-        receipt.addUnDiscountedAmount(product.calcPayment(item.getQuantity()));
-        purchase(item.getQuantity());
+        receipt.addUnDiscountedAmount(product.calcPayment(itemDto.getQuantity()));
+        purchase(itemDto.getQuantity());
     }
 
     protected void purchase(int purchaseQuantity) {
@@ -34,10 +31,9 @@ public class BarcodeScanner {
         pay(purchaseQuantity);
     }
 
-    protected void pay(int buyQuantity) {
-        item.pay(buyQuantity);
-        repository.update(item.getName(), buyQuantity);
-        receipt.addPurchasedItem(
-                new PurchasedItem(item.getName(), buyQuantity, product.getPrice()));
+    protected void pay(int purchaseQuantity) {
+        itemDto.subtractQuantity(purchaseQuantity);
+        ProductQuantityRepository.getInstance().update(itemDto.getName(), purchaseQuantity);
+        receipt.addItem(product.parseOf(purchaseQuantity));
     }
 }

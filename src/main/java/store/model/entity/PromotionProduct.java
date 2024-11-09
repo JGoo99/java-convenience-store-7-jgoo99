@@ -45,11 +45,11 @@ public class PromotionProduct extends Product {
         return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
-    public boolean needOneMoreForPromotion(final int unDiscountedQuantity, final int purchaseQuantity) {
+    public boolean availableGetOneMoreForFree(final int unDiscountedQuantity, final int purchaseQuantity) {
         if (purchaseQuantity + 1 > this.quantity) {
             return false;
         }
-        return promotion.promotionIfPurchaseOneMore(unDiscountedQuantity);
+        return promotion.availableGetOneMoreForFree(unDiscountedQuantity);
     }
 
     public void purchaseAll() {

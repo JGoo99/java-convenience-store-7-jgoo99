@@ -2,7 +2,7 @@ package store.core;
 
 import java.util.List;
 import store.core.manager.ConvenienceCreator;
-import store.model.Item;
+import store.model.ItemDto;
 import store.model.entity.Product;
 
 public class Convenience {
@@ -19,21 +19,21 @@ public class Convenience {
         return new Convenience(creator.getProducts());
     }
 
-    public Receipt purchase(List<Item> items) {
-        scanBarcodes(items);
+    public Receipt purchase(List<ItemDto> itemDtos) {
+        scanBarcodes(itemDtos);
         pos.askMembershipDiscount();
         return pos.printReceipt();
     }
 
-    private void scanBarcodes(List<Item> items) {
-        items.forEach(item -> {
+    private void scanBarcodes(List<ItemDto> itemDtos) {
+        itemDtos.forEach(item -> {
             List<Product> targetProducts = searchTargetProducts(item);
             pos.scanBarcode(item, targetProducts);
         });
     }
 
-    private List<Product> searchTargetProducts(final Item item) {
-        return products.stream().filter(product -> product.isSameName(item.getName())).toList();
+    private List<Product> searchTargetProducts(final ItemDto itemDto) {
+        return products.stream().filter(product -> product.isSameName(itemDto.getName())).toList();
     }
 
     public String getProductsStatus() {

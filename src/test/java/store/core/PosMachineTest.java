@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import store.model.Item;
+import store.model.ItemDto;
 import store.model.entity.Product;
 import store.model.entity.Promotion;
 import store.repository.ProductQuantityRepository;
@@ -36,10 +36,10 @@ class PosMachineTest {
         repository.save(productName, 5);
 
         PosMachine pos = new PosMachine();
-        Item item = new Item(productName, 5);
+        ItemDto itemDto = new ItemDto(productName, 5);
         Product product = new Product(productName, 2000L, 5);
         // when
-        pos.scanBarcode(item, List.of(product));
+        pos.scanBarcode(itemDto, List.of(product));
         // then
         assertThat(repository.findByName(productName))
                 .isEqualTo(0L);

@@ -1,40 +1,40 @@
 package store.model;
 
-import store.reader.parser.Parsable;
+import store.core.utils.ReceiptFormater;
 
-// TODO recode 객체로 파싱해서 사용해서 getter 없애기
-public class Item implements Parsable {
+public class Item {
 
     private final String name;
     private int quantity;
+    private final long price;
 
-    public Item(String name, int quantity) {
+    public Item(String name, int quantity, long price) {
         this.name = name;
         this.quantity = quantity;
+        this.price = price;
     }
 
-    public void addOneMoreQuantity() {
-        this.quantity++;
+    public String parseReceiptLineOfPurchased() {
+        return ReceiptFormater.buildItemLine(name, quantity, quantity * price);
     }
 
-    public String getName() {
-        return name;
+    public String parseReceiptLineOfFree() {
+        return ReceiptFormater.buildFreeItemLine(name, quantity);
     }
 
-    public int getQuantity() {
-        return quantity;
+    public boolean isSameName(Item item) {
+        return this.name.equals(item.name);
     }
 
-    public void pay(final int purchaseQuantity) {
-        this.quantity -= purchaseQuantity;
+    public void addQuantity(Item item) {
+        this.quantity += item.quantity;
     }
 
-    public void subtractUnDiscountedQuantity(final int unDiscountedQuantity) {
-        this.quantity -= unDiscountedQuantity;
+    public int calcQuantityAdditionWith(int quantity) {
+        return this.quantity + quantity;
     }
 
-    @Override
-    public String toString() {
-        return name;
+    public long calcAmount() {
+        return this.quantity * this.price;
     }
 }

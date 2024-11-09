@@ -83,7 +83,7 @@ class PromotionProductTest {
         // when
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
-        assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
+        assertThat(product.availableGetOneMoreForFree(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
     }
 
@@ -96,7 +96,7 @@ class PromotionProductTest {
         // when
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
-        assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
+        assertThat(product.availableGetOneMoreForFree(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
     }
 
@@ -109,7 +109,7 @@ class PromotionProductTest {
         // when
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
-        assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
+        assertFalse(product.availableGetOneMoreForFree(status.unDiscounted(), buyQ));
     }
 
     @DisplayName("무료 증정 수량을 추가할 때, 재고가 없으면 추가 여부를 묻지 않도록 한다. (1+1)")
@@ -121,7 +121,7 @@ class PromotionProductTest {
         // when
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
-        assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
+        assertFalse(product.availableGetOneMoreForFree(status.unDiscounted(), buyQ));
     }
 
 }
