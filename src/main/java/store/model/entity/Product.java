@@ -42,10 +42,6 @@ public class Product implements ConvenienceEntity {
         return df.format(quantity) + "개";
     }
 
-    public String getName() {
-        return name;
-    }
-
     public long getPrice() {
         return price;
     }

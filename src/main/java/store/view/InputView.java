@@ -44,13 +44,13 @@ public class InputView {
         return askYesOrNo();
     }
 
-    public boolean checkOneMoreForPromotion(Item item) {
-        print("현재 " + item + ONE_MORE_FOR_PROMOTION);
+    public boolean checkOneMoreForPromotion(String itemName) {
+        print("현재 " + itemName + ONE_MORE_FOR_PROMOTION);
         return askYesOrNo();
     }
 
-    public boolean checkUnDiscountedPromotionPurchase(Item item, long quantity) {
-        print("현재 " + item + " " + quantity + UN_DISCOUNTED_PURCHASE);
+    public boolean checkUnDiscountedPromotionPurchase(String itemName, long quantity) {
+        print("현재 " + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }
 

@@ -17,7 +17,7 @@ public class PromotionProduct extends Product {
         return !promotion.withinPeriod(LocalDate.from(DateTimes.now()));
     }
 
-    public PromotionPurchaseQuantity getPurchaseStatus(long totalPurchaseQuantity) {
+    public PromotionPurchaseQuantity getPurchaseQuantityStatus(long totalPurchaseQuantity) {
         long availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
         long discountedQuantity = calcDiscountedQuantity(availableQuantity);
 
@@ -56,8 +56,8 @@ public class PromotionProduct extends Product {
         super.purchase(this.quantity);
     }
 
-    public long calcUnDiscountedQuantity(long discountedQuantity) {
-        return this.quantity - discountedQuantity;
+    public long calcUnDiscountedAmount(long discountedQuantity) {
+        return super.calcPayment(this.quantity - discountedQuantity);
     }
 
     @Override

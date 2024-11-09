@@ -51,7 +51,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(10L);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(10L);
         // then
         assertEquals(7L, status.purchase());       // 총 구매 가능 수량
         assertTrue(status.isExceeded());                    // 구매 수량이 재고 수량을 넘는지
@@ -66,7 +66,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(10L);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(10L);
         // then
         assertEquals(7L, status.purchase());       // 총 구매 가능 수량
         assertTrue(status.isExceeded());                    // 구매 수량이 재고 수량을 넘는지
@@ -82,7 +82,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
         assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
@@ -95,7 +95,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
         assertThat(product.needOneMoreForPromotion(status.unDiscounted(), buyQ))
                 .isEqualTo(expected);
@@ -108,7 +108,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(2, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
         assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
     }
@@ -120,7 +120,7 @@ class PromotionProductTest {
         // given
         PromotionProduct product = new PromotionProduct("콜라", 1000L, 7L, getPromotion(1, 1));
         // when
-        PromotionPurchaseQuantity status = product.getPurchaseStatus(buyQ);
+        PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(buyQ);
         // then
         assertFalse(product.needOneMoreForPromotion(status.unDiscounted(), buyQ));
     }

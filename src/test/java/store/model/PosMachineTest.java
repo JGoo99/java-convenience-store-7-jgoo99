@@ -30,16 +30,17 @@ class PosMachineTest {
     @Test
     void test1() {
         // given
+        String productName = "에너지바";
         ProductQuantityRepository repository = ProductQuantityRepository.getInstance();
-        repository.save("에너지바", 5L);
+        repository.save(productName, 5L);
 
         PosMachine pos = new PosMachine();
-        Item item = new Item("에너지바", 5L);
-        Product product = new Product("에너지바", 2000L, 5L);
+        Item item = new Item(productName, 5L);
+        Product product = new Product(productName, 2000L, 5L);
         // when
         pos.purchase(item, item.getQuantity(), product);
         // then
-        assertThat(repository.findByName(product.getName()))
+        assertThat(repository.findByName(productName))
                 .isEqualTo(0L);
     }
 

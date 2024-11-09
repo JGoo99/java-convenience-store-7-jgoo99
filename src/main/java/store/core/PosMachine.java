@@ -61,7 +61,7 @@ public class PosMachine {
     }
 
     private void handlePromotion(Item item, PromotionPurchaseQuantity quantities, PromotionProduct product) {
-        if (isAdditionalPromotionItemNeeded(item, quantities, product)) {
+        if (isAdditionalPromotionItemNeeded(item.getName(), quantities, product)) {
             item.addOneMoreQuantity();
             purchase(item, quantities.purchase() + 1, product);
             addFreeItemToReceipt(item.getName(), quantities.free() + 1, product.getPrice());
@@ -98,9 +98,9 @@ public class PosMachine {
         return inputView.checkUnDiscountedPromotionPurchase(item.getName(), unDiscountedQuantity);
     }
 
-    private boolean isAdditionalPromotionItemNeeded(Item item, PromotionPurchaseQuantity status, PromotionProduct product) {
+    private boolean isAdditionalPromotionItemNeeded(String itemName, PromotionPurchaseQuantity status, PromotionProduct product) {
         if (product.needOneMoreForPromotion(status.unDiscounted(), status.purchase())) {
-            return inputView.checkOneMoreForPromotion(item);
+            return inputView.checkOneMoreForPromotion(itemName);
         }
         return false;
     }

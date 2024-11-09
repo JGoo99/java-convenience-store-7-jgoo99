@@ -59,7 +59,7 @@ public class Item {
         this.quantity -= buyQuantity;
     }
 
-    public void subtractUnPromotionQuantity(long unAppliedQuantity) {
+    public void subtractUnDiscountedQuantity(long unAppliedQuantity) {
         this.quantity -= unAppliedQuantity;
     }
 

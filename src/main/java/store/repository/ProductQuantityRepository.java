@@ -2,7 +2,6 @@ package store.repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import store.model.entity.Product;
 
 public class ProductQuantityRepository {
 
@@ -20,13 +19,13 @@ public class ProductQuantityRepository {
         return promotionRepository;
     }
 
-    public void save(String productName, long quantity) {
-        long prevQuantity = PRODUCT_QUANTITIES.getOrDefault(productName, 0L);
-        PRODUCT_QUANTITIES.put(productName, prevQuantity + quantity);
+    public void save(String name, long quantity) {
+        long prevQuantity = PRODUCT_QUANTITIES.getOrDefault(name, 0L);
+        PRODUCT_QUANTITIES.put(name, prevQuantity + quantity);
     }
 
-    public void update(Product product, long quantity) {
-        PRODUCT_QUANTITIES.put(product.getName(), findByName(product.getName()) - quantity);
+    public void update(String name, long quantity) {
+        PRODUCT_QUANTITIES.put(name, findByName(name) - quantity);
     }
 
     public Long findByName(String promotionName) {
