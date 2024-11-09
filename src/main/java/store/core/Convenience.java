@@ -1,6 +1,7 @@
 package store.core;
 
 import java.util.List;
+import store.core.manager.ConvenienceCreator;
 import store.model.Item;
 import store.model.entity.Product;
 

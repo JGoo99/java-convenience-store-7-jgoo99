@@ -1,6 +1,5 @@
-package store.core.barcodeScanners;
+package store.core;
 
-import store.core.Receipt;
 import store.model.Item;
 import store.model.PromotionPurchaseQuantity;
 import store.model.PurchasedItem;

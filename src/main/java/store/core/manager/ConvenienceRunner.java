@@ -1,6 +1,8 @@
-package store.core;
+package store.core.manager;
 
 import java.util.List;
+import store.core.Convenience;
+import store.core.Receipt;
 import store.exception.BusinessException;
 import store.model.Item;
 import store.view.InputView;

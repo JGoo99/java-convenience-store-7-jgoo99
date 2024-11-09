@@ -3,8 +3,6 @@ package store.core;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
-import store.core.barcodeScanners.BarcodeScanner;
-import store.core.barcodeScanners.PromotionBarcodeScanner;
 import store.model.Item;
 import store.model.entity.Product;
 import store.model.entity.PromotionProduct;
