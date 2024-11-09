@@ -9,7 +9,7 @@ import store.model.entity.Promotion;
 import store.model.PurchasedItem;
 import store.core.Receipt;
 
-class OutViewTest {
+class OutputViewTest {
 
     private Promotion getExpiredPromotion() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
@@ -20,7 +20,7 @@ class OutViewTest {
     @Test
     void test1() {
         // given
-        OutView view = new OutView();
+        OutputView view = new OutputView();
         // when & then
         assertThat(view.printWelcome())
                 .isEqualTo("안녕하세요. W편의점입니다.");
@@ -30,7 +30,7 @@ class OutViewTest {
     @Test
     void test2() {
         // given
-        OutView view = new OutView();
+        OutputView view = new OutputView();
         // when & then
         assertThat(view.printProducts("- 탄산수 1,200원 5개\n- 감자칩 1,500원 5개 탄산2+1\n"))
                 .isEqualTo("현재 보유하고 있는 상품입니다.\n\n" +
@@ -42,7 +42,7 @@ class OutViewTest {
     @Test
     void test3() {
         // given
-        OutView view = new OutView();
+        OutputView view = new OutputView();
         Receipt receipt = new Receipt();
         receipt.addPurchasedItem(new PurchasedItem("콜라", 3, 1000L));
         receipt.addPurchasedItem(new PurchasedItem("에너지바", 5, 2000L));
@@ -61,7 +61,7 @@ class OutViewTest {
     @Test
     void test4() {
         // given
-        OutView view = new OutView();
+        OutputView view = new OutputView();
         Receipt receipt = new Receipt();
         receipt.addFreeItem(new PurchasedItem("콜라", 1, 1000L));
         receipt.addFreeItem(new PurchasedItem("감자칩", 2, 1500L));

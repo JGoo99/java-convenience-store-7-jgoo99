@@ -12,12 +12,14 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private final PromotionProduct promotionProduct;
     private final PromotionPurchaseQuantity quantityStatus;
+    private final InputView input;
 
     public PromotionBarcodeScanner(Receipt receipt, Product product, Item item,
                                    PromotionProduct promotionProduct, PromotionPurchaseQuantity quantityStatus) {
         super(receipt, product, item);
         this.promotionProduct = promotionProduct;
         this.quantityStatus = quantityStatus;
+        this.input = new InputView();
     }
 
     public static PromotionBarcodeScanner read(Receipt receipt, Product product, Item item) {
@@ -74,7 +76,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private boolean purchaseUnDiscounted() {
-        return InputView.checkUnDiscountedPromotionPurchase(item.getName(), quantityStatus.unDiscounted());
+        return input.checkUnDiscountedPromotionPurchase(item.getName(), quantityStatus.unDiscounted());
     }
 
     public void purchaseAllPromotion(int buyQuantity) {
@@ -84,7 +86,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private boolean needOneMoreForPromotion() {
         if (promotionProduct.needOneMoreForPromotion(quantityStatus.unDiscounted(), quantityStatus.purchase())) {
-            return InputView.checkOneMoreForPromotion(item.getName());
+            return input.checkOneMoreForPromotion(item.getName());
         }
         return false;
     }

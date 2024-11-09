@@ -13,11 +13,13 @@ import store.view.InputView;
 public class PosMachine {
 
     private final PriorityQueue<Product> productQueue;
+    private final InputView input;
 
     private Receipt receipt;
 
     public PosMachine() {
         this.receipt = new Receipt();
+        this.input = new InputView();
         this.productQueue = new PriorityQueue<>(
                 Comparator.comparing((Product p) -> !(p instanceof PromotionProduct)));
     }
@@ -59,7 +61,7 @@ public class PosMachine {
     }
 
     public void askMembershipDiscount() {
-        if (!InputView.checkMembershipDiscount()) {
+        if (!input.checkMembershipDiscount()) {
             return;
         }
         receipt.membershipDiscount();

@@ -6,16 +6,18 @@ import store.core.Receipt;
 import store.exception.BusinessException;
 import store.model.Item;
 import store.view.InputView;
-import store.view.OutView;
+import store.view.OutputView;
 
 public class ConvenienceRunner {
 
     private final Convenience convenience;
-    private final OutView out;
+    private final InputView input;
+    private final OutputView out;
 
     private ConvenienceRunner(Convenience convenience) {
         this.convenience = convenience;
-        this.out = new OutView();
+        this.input = new InputView();
+        this.out = new OutputView();
     }
 
     public static ConvenienceRunner stock() {
@@ -28,9 +30,9 @@ public class ConvenienceRunner {
             out.printWelcome();
             out.printProducts(convenience.getProductsStatus());
 
-            purchase(InputView.readItems());
+            purchase(input.readItems());
 
-            keepGoing = InputView.askWantToKeepGoing();
+            keepGoing = input.askWantToKeepGoing();
         }
     }
 
