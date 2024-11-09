@@ -8,15 +8,15 @@ public class Product implements ConvenienceEntity {
 
     protected final String name;
     protected final long price;
-    protected long quantity;
+    protected int quantity;
 
-    public Product(String name, long price, long quantity) {
+    public Product(String name, long price, int quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public void purchase(long buyQuantity) {
+    public void purchase(int buyQuantity) {
         this.quantity -= buyQuantity;
     }
 
@@ -24,11 +24,11 @@ public class Product implements ConvenienceEntity {
         return this.quantity == 0;
     }
 
-    public void validateAvailablePurchase(long quantity) {
+    public void validateAvailablePurchase(int quantity) {
         validateNegative(quantity);
     }
 
-    protected void validateNegative(long quantity) {
+    protected void validateNegative(int quantity) {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
@@ -50,7 +50,7 @@ public class Product implements ConvenienceEntity {
         return this.name.equals(name);
     }
 
-    public long calcPayment(long buyQuantity) {
+    public long calcPayment(int buyQuantity) {
         return this.price * buyQuantity;
     }
 

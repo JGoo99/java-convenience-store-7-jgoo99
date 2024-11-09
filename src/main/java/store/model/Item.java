@@ -11,9 +11,9 @@ public class Item {
     private static final String REGEX = "\\[([가-힣]+)-([0-9]+)\\]";
 
     private final String name;
-    private long quantity;
+    private int quantity;
 
-    public Item(String name, long quantity) {
+    public Item(String name, int quantity) {
         this.name = name;
         this.quantity = quantity;
     }
@@ -22,7 +22,7 @@ public class Item {
         Matcher matcher = Pattern.compile(REGEX).matcher(itemInput);
         if (matcher.find()) {
             String productName = matcher.group(1);
-            long quantity = Long.parseLong(matcher.group(2));
+            int quantity = Integer.parseInt(matcher.group(2));
 
             validate(productName, quantity);
             return new Item(productName, quantity);
@@ -34,7 +34,7 @@ public class Item {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
-        Long productQuantity = ProductQuantityRepository.getInstance().findByName(productName);
+        Integer productQuantity = ProductQuantityRepository.getInstance().findByName(productName);
         if (productQuantity == null) {
             throw new BusinessException(ErrorMessage.NOTFOUND_PRODUCT);
         }
@@ -51,16 +51,16 @@ public class Item {
         return name;
     }
 
-    public long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void pay(long buyQuantity) {
-        this.quantity -= buyQuantity;
+    public void pay(int purchaseQuantity) {
+        this.quantity -= purchaseQuantity;
     }
 
-    public void subtractUnDiscountedQuantity(long unAppliedQuantity) {
-        this.quantity -= unAppliedQuantity;
+    public void subtractUnDiscountedQuantity(int unDiscountedQuantity) {
+        this.quantity -= unDiscountedQuantity;
     }
 
     @Override

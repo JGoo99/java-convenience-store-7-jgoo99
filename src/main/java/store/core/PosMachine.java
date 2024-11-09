@@ -52,7 +52,7 @@ public class PosMachine {
         productQueue.clear();
     }
 
-    private static boolean isAllPurchased(Item item) {
+    private boolean isAllPurchased(Item item) {
         return item.getQuantity() == 0;
     }
 

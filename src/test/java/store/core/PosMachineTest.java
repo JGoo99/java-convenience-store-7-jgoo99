@@ -33,11 +33,11 @@ class PosMachineTest {
         // given
         String productName = "에너지바";
         ProductQuantityRepository repository = ProductQuantityRepository.getInstance();
-        repository.save(productName, 5L);
+        repository.save(productName, 5);
 
         PosMachine pos = new PosMachine();
-        Item item = new Item(productName, 5L);
-        Product product = new Product(productName, 2000L, 5L);
+        Item item = new Item(productName, 5);
+        Product product = new Product(productName, 2000L, 5);
         // when
         pos.scanBarcode(item, List.of(product));
         // then

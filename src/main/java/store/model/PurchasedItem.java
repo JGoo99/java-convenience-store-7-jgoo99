@@ -5,10 +5,10 @@ import java.text.DecimalFormat;
 public class PurchasedItem {
 
     private final String name;
-    private long quantity;
+    private int quantity;
     private final long price;
 
-    public PurchasedItem(String name, long quantity, long price) {
+    public PurchasedItem(String name, int quantity, long price) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -31,7 +31,7 @@ public class PurchasedItem {
         this.quantity += item.quantity;
     }
 
-    public long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 

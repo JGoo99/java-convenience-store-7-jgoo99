@@ -25,14 +25,14 @@ public class ProductParser extends LineParser {
         validate();
         String name = matcher.group(1);
         long price = Long.parseLong(matcher.group(2));
-        long quantity = Long.parseLong(matcher.group(3));
+        int quantity = Integer.parseInt(matcher.group(3));
         String promotionName = matcher.group(4);
 
         ProductQuantityRepository.getInstance().save(name, quantity);
         return parse(name, price, quantity, promotionName);
     }
 
-    private Product parse(String name, long price, long quantity, String promotionName) {
+    private Product parse(String name, long price, int quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
         if (isPromotion(promotion)) {
             return new PromotionProduct(name, price, quantity, promotion);

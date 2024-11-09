@@ -13,10 +13,10 @@ class ProductTest {
 
     @DisplayName("결제 금액 만큼의 상품 수량을 구매할 수 있는지 확인한다.")
     @ParameterizedTest
-    @ValueSource(longs = {1L, 10L})
-    void test1(long quantity) {
+    @ValueSource(ints = {1, 10})
+    void test1(int quantity) {
         // given
-        Product product = new Product("콜라", 1000L, 10L);
+        Product product = new Product("콜라", 1000L, 10);
         // when & then
         assertDoesNotThrow(() -> product.validateAvailablePurchase(quantity));
     }
@@ -24,9 +24,9 @@ class ProductTest {
     @DisplayName("결제된 수량만큼 재고를 차감한다.")
     @ParameterizedTest
     @CsvSource(value = {"1:9개", "10:재고 없음"}, delimiter = ':')
-    void test2(long paymentQuantity, String quantityStatus) {
+    void test2(int paymentQuantity, String quantityStatus) {
         // given
-        Product product = new Product("콜라", 1000L, 10L);
+        Product product = new Product("콜라", 1000L, 10);
         // when
         product.purchase(paymentQuantity);
         // then
@@ -38,7 +38,7 @@ class ProductTest {
     @Test
     void test5() {
         // given
-        Product product = new Product("탄산수", 1200L, 0L);
+        Product product = new Product("탄산수", 1200L, 0);
         // when & then
         assertThat(product.toString())
                 .isEqualTo("탄산수 1,200원 재고 없음");

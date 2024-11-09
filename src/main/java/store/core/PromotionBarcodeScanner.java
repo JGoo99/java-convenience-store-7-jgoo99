@@ -67,7 +67,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         addFreeItemToReceipt(quantityStatus.free());
     }
 
-    private void addFreeItemToReceipt(long freeQuantity) {
+    private void addFreeItemToReceipt(int freeQuantity) {
         receipt.addFreeItem(
                 new PurchasedItem(item.getName(), freeQuantity, promotionProduct.getPrice()));
     }
@@ -76,7 +76,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         return InputView.checkUnDiscountedPromotionPurchase(item.getName(), quantityStatus.unDiscounted());
     }
 
-    public void purchaseAllPromotion(long buyQuantity) {
+    public void purchaseAllPromotion(int buyQuantity) {
         promotionProduct.purchaseAll();
         pay(buyQuantity);
     }

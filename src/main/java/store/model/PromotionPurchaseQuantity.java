@@ -1,8 +1,8 @@
 package store.model;
 
-public record PromotionPurchaseQuantity(long purchase, boolean isExceeded, long unDiscounted, long discounted, long free) {
+public record PromotionPurchaseQuantity(int purchase, boolean isExceeded, int unDiscounted, int discounted, int free) {
 
-    public long purchase() {
+    public int purchase() {
         return purchase;
     }
 
@@ -10,15 +10,15 @@ public record PromotionPurchaseQuantity(long purchase, boolean isExceeded, long 
         return isExceeded;
     }
 
-    public long unDiscounted() {
+    public int unDiscounted() {
         return unDiscounted;
     }
 
-    public long discounted() {
+    public int discounted() {
         return discounted;
     }
 
-    public long free() {
+    public int free() {
         return free;
     }
 }

@@ -8,7 +8,7 @@ public class PromotionProduct extends Product {
 
     private final Promotion promotion;
 
-    public PromotionProduct(String name, long price, long quantity, Promotion promotion) {
+    public PromotionProduct(String name, long price, int quantity, Promotion promotion) {
         super(name, price, quantity);
         this.promotion = promotion;
     }
@@ -17,9 +17,9 @@ public class PromotionProduct extends Product {
         return !promotion.withinPeriod(LocalDate.from(DateTimes.now()));
     }
 
-    public PromotionPurchaseQuantity getPurchaseQuantityStatus(long totalPurchaseQuantity) {
-        long availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
-        long discountedQuantity = calcDiscountedQuantity(availableQuantity);
+    public PromotionPurchaseQuantity getPurchaseQuantityStatus(int totalPurchaseQuantity) {
+        int availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
+        int discountedQuantity = calcDiscountedQuantity(availableQuantity);
 
         return new PromotionPurchaseQuantity(
                 availableQuantity,
@@ -29,7 +29,7 @@ public class PromotionProduct extends Product {
                 calcFreeQuantity(availableQuantity));
     }
 
-    private long calcAvailableQuantity(long quantity) {
+    private int calcAvailableQuantity(int quantity) {
         return Math.min(this.quantity, quantity);
     }
 
@@ -37,16 +37,16 @@ public class PromotionProduct extends Product {
         return this.quantity < totalQuantity;
     }
 
-    private long calcFreeQuantity(long buyQuantity) {
-        return promotion.calcFreeQuantity(buyQuantity);
+    private int calcFreeQuantity(int purchaseQuantity) {
+        return promotion.calcFreeQuantity(purchaseQuantity);
     }
 
-    private long calcDiscountedQuantity(long buyQuantity) {
-        return promotion.calcCurAppliedQuantity(buyQuantity);
+    private int calcDiscountedQuantity(int purchaseQuantity) {
+        return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
-    public boolean needOneMoreForPromotion(long unDiscountedQuantity, long buyQuantity) {
-        if (++buyQuantity > this.quantity) {
+    public boolean needOneMoreForPromotion(int unDiscountedQuantity, int purchaseQuantity) {
+        if (++purchaseQuantity > this.quantity) {
             return false;
         }
         return promotion.promotionIfPurchaseOneMore(unDiscountedQuantity);
@@ -56,7 +56,7 @@ public class PromotionProduct extends Product {
         super.purchase(this.quantity);
     }
 
-    public long calcUnDiscountedAmount(long discountedQuantity) {
+    public long calcUnDiscountedAmount(int discountedQuantity) {
         return super.calcPayment(this.quantity - discountedQuantity);
     }
 

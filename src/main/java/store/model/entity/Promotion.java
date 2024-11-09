@@ -36,15 +36,15 @@ public class Promotion implements ConvenienceEntity {
         return date.isAfter(start.minusDays(1));
     }
 
-    public long calcFreeQuantity(long buyQuantity) {
-        return buyQuantity / oneCycleQuantity;
+    public int calcFreeQuantity(int purchaseQuantity) {
+        return purchaseQuantity / oneCycleQuantity;
     }
 
-    public long calcCurAppliedQuantity(long buyQuantity) {
-        return (buyQuantity / oneCycleQuantity) * oneCycleQuantity;
+    public int calcCurAppliedQuantity(int purchaseQuantity) {
+        return (purchaseQuantity / oneCycleQuantity) * oneCycleQuantity;
     }
 
-    public boolean promotionIfPurchaseOneMore(long unDiscountedQuantity) {
+    public boolean promotionIfPurchaseOneMore(int unDiscountedQuantity) {
         return unDiscountedQuantity == buyQuantity;
     }
 

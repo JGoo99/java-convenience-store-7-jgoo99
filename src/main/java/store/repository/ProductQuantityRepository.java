@@ -7,7 +7,7 @@ public class ProductQuantityRepository {
 
     private static ProductQuantityRepository promotionRepository;
 
-    private final Map<String, Long> PRODUCT_QUANTITIES = new HashMap<>();
+    private final Map<String, Integer> PRODUCT_QUANTITIES = new HashMap<>();
 
     private ProductQuantityRepository() {
     }
@@ -19,16 +19,16 @@ public class ProductQuantityRepository {
         return promotionRepository;
     }
 
-    public void save(String name, long quantity) {
-        long prevQuantity = PRODUCT_QUANTITIES.getOrDefault(name, 0L);
+    public void save(String name, int quantity) {
+        int prevQuantity = PRODUCT_QUANTITIES.getOrDefault(name, 0);
         PRODUCT_QUANTITIES.put(name, prevQuantity + quantity);
     }
 
-    public void update(String name, long quantity) {
+    public void update(String name, int quantity) {
         PRODUCT_QUANTITIES.put(name, findByName(name) - quantity);
     }
 
-    public Long findByName(String promotionName) {
+    public Integer findByName(String promotionName) {
         return PRODUCT_QUANTITIES.get(promotionName);
     }
 

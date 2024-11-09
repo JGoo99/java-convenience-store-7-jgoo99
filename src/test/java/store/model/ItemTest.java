@@ -25,9 +25,9 @@ class ItemTest {
     @DisplayName("[상품명-수량] 문자열로 입력되면 이름과 수량 정보를 추출하여 객체를 생성한다.")
     @ParameterizedTest
     @CsvSource(value = {"콜라:3", "사이다:6", "초코바:5"}, delimiter = ':')
-    void test1(String productName, long quantity) {
+    void test1(String productName, int quantity) {
         // given
-        ProductQuantityRepository.getInstance().save(productName, 10L);
+        ProductQuantityRepository.getInstance().save(productName, 10);
         String itemInput = "[" + productName + "-" + quantity + "]";
         // when & then
         Item item = Item.from(itemInput);
@@ -38,9 +38,9 @@ class ItemTest {
     @DisplayName("재고 중에 상품명이 일치하는 것이 없는 경우 예외가 발생한다.")
     @ParameterizedTest
     @CsvSource(value = {"오렌지주스:6", "탄산수:5"}, delimiter = ':')
-    void test2(String productName, long quantity) {
+    void test2(String productName, int quantity) {
         // given
-        ProductQuantityRepository.getInstance().save("콜라", 10L);
+        ProductQuantityRepository.getInstance().save("콜라", 10);
         String itemInput = "[" + productName + "-" + quantity + "]";
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))
@@ -53,7 +53,7 @@ class ItemTest {
     @ValueSource(strings = {"콜라", "콜라-3", "[콜라+3]", "[콜라-3"})
     void test3(String itemInput) {
         // given
-        ProductQuantityRepository.getInstance().save("콜라", 10L);
+        ProductQuantityRepository.getInstance().save("콜라", 10);
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))
                 .isInstanceOf(BusinessException.class)
@@ -64,7 +64,7 @@ class ItemTest {
     @Test
     void test4() {
         // given
-        ProductQuantityRepository.getInstance().save("컵라면", 10L);
+        ProductQuantityRepository.getInstance().save("컵라면", 10);
         // when & then
         assertThatThrownBy(() -> Item.from("[컵라면-11]"))
                 .isInstanceOf(BusinessException.class)
@@ -73,10 +73,10 @@ class ItemTest {
 
     @DisplayName("구매 수량이 0 이하인 경우 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(longs = {0L, -1L})
+    @ValueSource(ints = {0, -1})
     void test5(long quantity) {
         // given
-        ProductQuantityRepository.getInstance().save("콜라", 10L);
+        ProductQuantityRepository.getInstance().save("콜라", 10);
         String itemInput = "[콜라-" + quantity + "]";
         // when & then
         assertThatThrownBy(() -> Item.from(itemInput))

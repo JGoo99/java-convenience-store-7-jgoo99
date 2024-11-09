@@ -52,7 +52,7 @@ public class InputView {
         return askYesOrNo();
     }
 
-    public static boolean checkUnDiscountedPromotionPurchase(String itemName, long quantity) {
+    public static boolean checkUnDiscountedPromotionPurchase(String itemName, int quantity) {
         print("현재 " + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }

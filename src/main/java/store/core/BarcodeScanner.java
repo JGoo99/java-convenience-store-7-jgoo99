@@ -28,12 +28,12 @@ public class BarcodeScanner {
         purchase(item.getQuantity());
     }
 
-    protected void purchase(long purchaseQuantity) {
+    protected void purchase(int purchaseQuantity) {
         product.purchase(purchaseQuantity);
         pay(purchaseQuantity);
     }
 
-    protected void pay(long buyQuantity) {
+    protected void pay(int buyQuantity) {
         item.pay(buyQuantity);
         repository.update(item.getName(), buyQuantity);
         receipt.addPurchasedItem(
