@@ -12,10 +12,17 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     private final PromotionProduct promotionProduct;
     private final PromotionPurchaseQuantity quantityStatus;
 
-    public PromotionBarcodeScanner(Receipt receipt, Product promotionProduct, Item item) {
-        super(receipt, promotionProduct, item);
-        this.promotionProduct = (PromotionProduct) promotionProduct;
-        this.quantityStatus = this.promotionProduct.getPurchaseQuantityStatus(item.getQuantity());
+    public PromotionBarcodeScanner(Receipt receipt, Product product, Item item,
+                                   PromotionProduct promotionProduct, PromotionPurchaseQuantity quantityStatus) {
+        super(receipt, product, item);
+        this.promotionProduct = promotionProduct;
+        this.quantityStatus = quantityStatus;
+    }
+
+    public static PromotionBarcodeScanner read(Receipt receipt, Product product, Item item) {
+        PromotionProduct promotionProduct = (PromotionProduct) product;
+        PromotionPurchaseQuantity quantityStatus = promotionProduct.getPurchaseQuantityStatus(item.getQuantity());
+        return new PromotionBarcodeScanner(receipt, product, item, promotionProduct, quantityStatus);
     }
 
     @Override
@@ -40,7 +47,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private void handleQuantityExceededPromotion() {
         addFreeItemToReceipt(quantityStatus.free());
-        if (!continuePurchaseUnDiscounted()) {
+        if (!purchaseUnDiscounted()) {
             item.subtractUnDiscountedQuantity(quantityStatus.unDiscounted());
             purchase(quantityStatus.discounted());
             return;
@@ -65,7 +72,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
                 new PurchasedItem(item.getName(), freeQuantity, promotionProduct.getPrice()));
     }
 
-    private boolean continuePurchaseUnDiscounted() {
+    private boolean purchaseUnDiscounted() {
         return InputView.checkUnDiscountedPromotionPurchase(item.getName(), quantityStatus.unDiscounted());
     }
 

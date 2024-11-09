@@ -12,11 +12,15 @@ public class BarcodeScanner {
     protected final Item item;
     protected final ProductQuantityRepository repository;
 
-    public BarcodeScanner(Receipt receipt, Product product, Item item) {
+    protected BarcodeScanner(Receipt receipt, Product product, Item item) {
         this.receipt = receipt;
         this.product = product;
         this.item = item;
         this.repository = ProductQuantityRepository.getInstance();
+    }
+
+    public static BarcodeScanner read(Receipt receipt, Product product, Item item) {
+        return new BarcodeScanner(receipt, product, item);
     }
 
     public void scan() {

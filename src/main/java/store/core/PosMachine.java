@@ -38,16 +38,14 @@ public class PosMachine {
     }
 
     private void registerPromotionToReceipt(Item item) {
-        PromotionBarcodeScanner promotionBarcodeScanner = new PromotionBarcodeScanner(receipt, productQueue.poll(), item);
-        promotionBarcodeScanner.scan();
+        PromotionBarcodeScanner.read(receipt, productQueue.poll(), item).scan();
     }
 
     private void registerToReceipt(Item item) {
         if (isAllPurchased(item)) {
             return;
         }
-        BarcodeScanner scanner = new BarcodeScanner(receipt, productQueue.poll(), item);
-        scanner.scan();
+        BarcodeScanner.read(receipt, productQueue.poll(), item).scan();
     }
 
     private void clearStockStatusOfItem() {
