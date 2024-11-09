@@ -4,30 +4,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import store.constants.MdFileRegex;
+import store.constants.ParseModelRegex;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 
-public class LineParser {
+public abstract class LineParser<Parsable> {
 
     protected final Matcher matcher;
 
-    protected LineParser(String line, String regex) {
-        this.matcher = Pattern.compile("^" + regex + "$").matcher(line);
+    protected LineParser(String line) {
+        this.matcher = Pattern.compile("^" + getRegex() + "$").matcher(line);
+        validate();
     }
 
-    public static ProductParser withProductRegex(String line) {
-        return ProductParser.read(line);
-    }
+    public abstract Parsable parse();
 
-    public static PromotionParser withPromotionRegex(String line) {
-        return PromotionParser.read(line);
-    }
+    protected abstract String getRegex();
 
-    protected static String buildRegex(MdFileRegex... regexes) {
+    protected String buildRegex(String delimiters, ParseModelRegex... regexes) {
         return Stream.of(regexes)
-                .map(MdFileRegex::toString)
-                .collect(Collectors.joining(","));
+                .map(ParseModelRegex::toString)
+                .collect(Collectors.joining(delimiters));
     }
 
     protected void validate() {

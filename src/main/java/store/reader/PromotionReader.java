@@ -1,7 +1,7 @@
 package store.reader;
 
 import store.model.entity.Promotion;
-import store.reader.parser.LineParser;
+import store.reader.parser.PromotionParser;
 import store.repository.PromotionRepository;
 
 public class PromotionReader extends MdFileLineReader<Promotion> {
@@ -15,7 +15,7 @@ public class PromotionReader extends MdFileLineReader<Promotion> {
     }
 
     public Promotion read(String line) {
-        Promotion promotion = LineParser.withPromotionRegex(line).parse();
+        Promotion promotion = new PromotionParser(line).parse();
         return repository.save(promotion);
     }
 }

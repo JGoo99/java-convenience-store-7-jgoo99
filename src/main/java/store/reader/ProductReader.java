@@ -1,7 +1,7 @@
 package store.reader;
 
 import store.model.entity.Product;
-import store.reader.parser.LineParser;
+import store.reader.parser.ProductParser;
 
 public class ProductReader extends MdFileLineReader<Product> {
 
@@ -13,6 +13,6 @@ public class ProductReader extends MdFileLineReader<Product> {
     }
 
     public Product read(String line) {
-        return LineParser.withProductRegex(line).parse();
+        return new ProductParser(line).parse();
     }
 }

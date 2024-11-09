@@ -1,8 +1,9 @@
 package store.model.entity;
 
 import java.time.LocalDate;
+import store.reader.parser.Parsable;
 
-public class Promotion implements ConvenienceEntity {
+public class Promotion implements ConvenienceEntity, Parsable {
 
     private final String name;
     private final int buyQuantity;

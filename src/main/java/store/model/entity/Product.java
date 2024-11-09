@@ -3,8 +3,9 @@ package store.model.entity;
 import java.text.DecimalFormat;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
+import store.reader.parser.Parsable;
 
-public class Product implements ConvenienceEntity {
+public class Product implements ConvenienceEntity, Parsable {
 
     protected final String name;
     protected final long price;

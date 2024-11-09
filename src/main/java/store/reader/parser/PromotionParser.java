@@ -1,25 +1,25 @@
 package store.reader.parser;
 
-import static store.constants.MdFileRegex.DATE;
-import static store.constants.MdFileRegex.LONG;
-import static store.constants.MdFileRegex.PROMOTION_NAME;
+import static store.constants.ParseModelRegex.DATE;
+import static store.constants.ParseModelRegex.LONG;
+import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
 import java.time.LocalDate;
 import store.model.entity.Promotion;
 
-public class PromotionParser extends LineParser {
+public class PromotionParser extends LineParser<Promotion> {
 
-    protected PromotionParser(String regex, String line) {
-        super(regex, line);
+    public PromotionParser(String line) {
+        super(line);
     }
 
-    public static PromotionParser read(String line) {
-        return new PromotionParser(line, buildRegex(
-                PROMOTION_NAME, LONG, LONG, DATE, DATE));
+    @Override
+    protected String getRegex() {
+        return buildRegex(",", PROMOTION_NAME, LONG, LONG, DATE, DATE);
     }
 
+    @Override
     public Promotion parse() {
-        validate();
         String name = matcher.group(1);
         int buyQuantity = Integer.parseInt(matcher.group(2));
         int getQuantity = Integer.parseInt(matcher.group(3));

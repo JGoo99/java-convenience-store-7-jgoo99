@@ -12,6 +12,7 @@ import java.util.List;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 import store.model.Item;
+import store.reader.parser.ItemParser;
 
 public class InputView {
 
@@ -34,7 +35,7 @@ public class InputView {
         try {
             String itemInput = Console.readLine();
             return Arrays.stream(itemInput.split(","))
-                    .map(Item::from)
+                    .map(line -> new ItemParser(line).parse())
                     .toList();
         } catch (BusinessException e) {
             System.out.println(e.getMessage());

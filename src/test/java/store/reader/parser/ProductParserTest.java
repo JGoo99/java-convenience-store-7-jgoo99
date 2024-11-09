@@ -14,7 +14,7 @@ class ProductParserTest {
         // given
         String line = "사이다,1000,7,null";
         // when & then
-        assertThat(LineParser.withProductRegex(line).parse())
+        assertThat(new ProductParser(line).parse())
                 .isInstanceOf(Product.class);
     }
 }
