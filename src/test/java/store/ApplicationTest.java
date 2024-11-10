@@ -79,6 +79,14 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    void 반짝할인_정가결제() {
+        assertSimpleTest(() -> {
+            runException("[감자칩-5]", "Y", "N");
+            assertThat(output()).contains("-450");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
