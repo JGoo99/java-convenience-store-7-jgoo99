@@ -3,7 +3,6 @@ package store.core.manager;
 import java.util.ArrayList;
 import java.util.List;
 import store.model.entity.Product;
-import store.model.entity.PromotionProduct;
 import store.reader.ProductReader;
 import store.reader.PromotionReader;
 import store.repository.ProductQuantityRepository;

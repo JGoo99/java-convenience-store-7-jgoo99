@@ -4,9 +4,12 @@ import static store.constants.ParseModelRegex.NUMBER;
 import static store.constants.ParseModelRegex.KOREAN;
 import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
+import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.model.entity.Product;
 import store.model.entity.Promotion;
 import store.model.entity.PromotionProduct;
+import store.repository.ProductPromotionRepository;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 
@@ -35,6 +38,11 @@ public class ProductParser extends LineParser<Product> {
     private Product parse(String name, final long price, final int quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
         if (isPromotion(promotion)) {
+            String existPromotionName = ProductPromotionRepository.getInstance().findByName(name);
+            if (existPromotionName != null) {
+                throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+            }
+            ProductPromotionRepository.getInstance().save(name, promotionName);
             return new PromotionProduct(name, price, quantity, promotion);
         }
         return new Product(name, price, quantity);
