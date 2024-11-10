@@ -4,7 +4,7 @@ public enum ReceiptElement {
 
     CONVENIENCE_NAME_FRAME("==============W 편의점================\n"),
     FREE_ITEM_FRAME("=============증\t\t정===============\n"),
-    AMOUNT_FRAME("=====================================\n"),
+    AMOUNT_FRAME("====================================\n"),
 
     ITEM_NAME("상품명"),
     ITEM_QUANTITY("수량"),
