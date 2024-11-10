@@ -23,7 +23,7 @@ public class PromotionProduct extends Product {
 
         return new PromotionPurchaseQuantity(
                 availableQuantity,
-                isQuantityExceeded(totalPurchaseQuantity),
+                requiredFullPriceForSomeQuantities(totalPurchaseQuantity),
                 totalPurchaseQuantity - discountedQuantity,
                 discountedQuantity,
                 calcFreeQuantity(availableQuantity));
@@ -40,7 +40,15 @@ public class PromotionProduct extends Product {
         return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
-    private boolean isQuantityExceeded(final long totalQuantity) {
+    private boolean requiredFullPriceForSomeQuantities(final int totalQuantity) {
+        return isInsufficientPromotion(totalQuantity) && isQuantityExceeded(totalQuantity);
+    }
+
+    private boolean isInsufficientPromotion(int totalQuantity) {
+        return promotion.calcCurAppliedQuantity(totalQuantity) < totalQuantity;
+    }
+
+    private boolean isQuantityExceeded(int totalQuantity) {
         return this.quantity < totalQuantity;
     }
 

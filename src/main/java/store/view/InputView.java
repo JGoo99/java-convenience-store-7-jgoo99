@@ -8,10 +8,7 @@ import static store.constants.ViewLine.UN_DISCOUNTED_PURCHASE;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
@@ -59,7 +56,7 @@ public class InputView implements Printable {
         return askYesOrNo();
     }
 
-    public boolean checkUnDiscountedPromotionPurchase(String itemName, final int quantity) {
+    public boolean checkPayFullPriceForSomeQuantities(String itemName, final int quantity) {
         print("현재 " + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }
