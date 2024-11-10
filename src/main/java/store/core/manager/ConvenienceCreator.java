@@ -21,15 +21,15 @@ public class ConvenienceCreator {
         return productReader.readAll();
     }
 
-    private void clearPrevStocks() {
-        ProductQuantityRepository.getInstance().clear();
-        PromotionRepository.getInstance().clear();
-    }
-
     public List<Product> getProducts() {
         if (products.isEmpty()) {
             products.addAll(readProducts());
         }
         return this.products;
+    }
+
+    private void clearPrevStocks() {
+        ProductQuantityRepository.getInstance().clear();
+        PromotionRepository.getInstance().clear();
     }
 }

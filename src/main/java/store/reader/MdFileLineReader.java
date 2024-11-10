@@ -19,7 +19,7 @@ public abstract class MdFileLineReader<ConvenienceEntity> implements FileLineRea
             br.lines()
                     .skip(1)
                     .forEach(line -> entities.add(read(line)));
-        } catch (IOException | BusinessException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
         return entities;
