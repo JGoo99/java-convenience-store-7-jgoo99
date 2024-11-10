@@ -15,6 +15,7 @@ class PosMachineTest {
     @Test
     void test1() {
         // given
+        ProductQuantityRepository.getInstance().clear();
         String productName = "에너지바";
         ProductQuantityRepository repository = ProductQuantityRepository.getInstance();
         repository.save(productName, 5);
