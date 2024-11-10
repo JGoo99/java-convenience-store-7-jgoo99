@@ -40,40 +40,55 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void registerToReceipt() {
-        if (quantityStatus.requiredFullPriceForSome()) {
-            handleRequiredFullPricePromotion();
+        if (quantityStatus.isExceed()) {
+            handleExceededQuantityPromotion();
             return;
         }
         handlePromotion();
     }
 
-    private void handleRequiredFullPricePromotion() {
-        if (quantityStatus.isExceed()) {
-            addFreeItemToReceipt(quantityStatus.free());
-            if (payFullPriceForSomeQuantities()) {
-                addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
-                purchaseAllPromotion(quantityStatus.purchase());
-                return;
-            }
-            itemDto.subtractQuantity(quantityStatus.unDiscounted());
-            purchase(quantityStatus.discounted());
-            return;
-        }
-        if (needOneMoreForPromotion()) {
-            itemDto.addOneMoreQuantity();
-            purchase(quantityStatus.purchase() + 1);
-            addFreeItemToReceipt(quantityStatus.free() + 1);
-            return;
-        }
+    private void handleExceededQuantityPromotion() {
+        addFreeItemToReceipt(quantityStatus.free());
         if (payFullPriceForSomeQuantities()) {
-            addUnDiscountedAmount(quantityStatus.unDiscounted());
-            purchase(quantityStatus.purchase());
+            addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
+            purchaseAllPromotion(quantityStatus.purchase());
             return;
         }
-        itemDto.subtractQuantity(itemDto.getQuantity());
+        itemDto.subtractQuantity(quantityStatus.unDiscounted());
+        purchase(quantityStatus.discounted());
     }
 
     private void handlePromotion() {
+        if (quantityStatus.requiredFullPriceForSome()) {
+            handleRequiredFullPricePromotion();
+            return;
+        }
+        purchase();
+    }
+
+    private void handleRequiredFullPricePromotion() {
+        if (needOneMoreForPromotion()) {
+            purchaseWithOneMoreFree();
+            return;
+        }
+        if (payFullPriceForSomeQuantities()) {
+            purchase();
+            return;
+        }
+        notPurchase();
+    }
+
+    private void purchaseWithOneMoreFree() {
+        itemDto.addOneMoreQuantity();
+        purchase(quantityStatus.purchase() + 1);
+        addFreeItemToReceipt(quantityStatus.free() + 1);
+    }
+
+    private void notPurchase() {
+        itemDto.subtractQuantity(itemDto.getQuantity());
+    }
+
+    private void purchase() {
         addUnDiscountedAmount(quantityStatus.unDiscounted());
         purchase(quantityStatus.purchase());
         addFreeItemToReceipt(quantityStatus.free());
@@ -83,13 +98,13 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         receipt.addFreeItem(promotionProduct.parseOf(freeQuantity));
     }
 
-    private boolean payFullPriceForSomeQuantities() {
-        return input.checkPayFullPriceForSomeQuantities(itemDto.getName(), quantityStatus.unDiscounted());
-    }
-
     private void purchaseAllPromotion(int purchaseQuantity) {
         promotionProduct.purchaseAll();
         pay(purchaseQuantity);
+    }
+
+    private boolean payFullPriceForSomeQuantities() {
+        return input.checkPayFullPriceForSomeQuantities(itemDto.getName(), quantityStatus.unDiscounted());
     }
 
     private boolean needOneMoreForPromotion() {
