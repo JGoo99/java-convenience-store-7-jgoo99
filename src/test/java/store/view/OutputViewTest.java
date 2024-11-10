@@ -11,11 +11,6 @@ import store.core.Receipt;
 
 class OutputViewTest {
 
-    private Promotion getExpiredPromotion() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
-        return new Promotion("탄산2+1", 2, 1, yesterday, yesterday);
-    }
-
     @DisplayName("환영 인사를 출력한다.")
     @Test
     void test1() {

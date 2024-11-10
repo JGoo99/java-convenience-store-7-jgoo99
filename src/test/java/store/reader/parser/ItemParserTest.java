@@ -1,9 +1,8 @@
 package store.reader.parser;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,15 +12,8 @@ import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 import store.model.ItemDto;
 import store.repository.ProductQuantityRepository;
-import store.repository.PromotionRepository;
 
 class ItemParserTest {
-
-    @BeforeEach
-    public void repositoryClear() {
-        ProductQuantityRepository.getInstance().clear();
-        PromotionRepository.getInstance().clear();
-    }
 
     @DisplayName("[상품명-수량] 문자열로 입력되면 이름과 수량 정보를 추출하여 객체를 생성한다.")
     @ParameterizedTest
