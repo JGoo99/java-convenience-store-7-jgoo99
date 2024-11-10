@@ -24,7 +24,7 @@ public class ReceiptWriter {
     public String run(List<Item> items, List<Item> freeItems) {
         writeConvenienceName();
         writeItems(items);
-        if (!freeItems.isEmpty()) {
+        if (payment.getFreeAmount() > 0) {
             writeFreeItems(freeItems);
         }
         writeTotalAmount();
