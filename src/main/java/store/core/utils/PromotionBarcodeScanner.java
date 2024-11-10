@@ -32,7 +32,8 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
             return;
         }
         if (promotionProduct.expiredPromotion()) {
-            super.scan();
+            receipt.addUnDiscountedAmount(promotionProduct.calcPayment(quantityStatus.purchase()));
+            purchase(quantityStatus.purchase());
             return;
         }
         registerToReceipt();

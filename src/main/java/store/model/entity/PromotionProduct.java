@@ -38,10 +38,16 @@ public class PromotionProduct extends Product {
     }
 
     private int calcFreeQuantity(final int purchaseQuantity) {
+        if (expiredPromotion()) {
+            return 0;
+        }
         return promotion.calcFreeQuantity(purchaseQuantity);
     }
 
     private int calcDiscountedQuantity(final int purchaseQuantity) {
+        if (expiredPromotion()) {
+            return 0;
+        }
         return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
