@@ -5,6 +5,7 @@ import java.util.List;
 import store.model.entity.Product;
 import store.reader.ProductReader;
 import store.reader.PromotionReader;
+import store.repository.ProductPromotionRepository;
 import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 
@@ -30,5 +31,6 @@ public class ConvenienceCreator {
     private void clearPrevStocks() {
         ProductQuantityRepository.getInstance().clear();
         PromotionRepository.getInstance().clear();
+        ProductPromotionRepository.getInstance().clear();
     }
 }
