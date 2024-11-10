@@ -36,7 +36,7 @@ public class PosMachine {
     }
 
     private boolean isPromotionItem() {
-        return productQueue.size() >= 2;
+        return productQueue.size() >= 2 || (productQueue.peek() instanceof PromotionProduct);
     }
 
     private void registerPromotionToReceipt(ItemDto itemDto) {
