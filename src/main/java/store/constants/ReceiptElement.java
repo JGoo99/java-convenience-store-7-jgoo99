@@ -12,9 +12,7 @@ public enum ReceiptElement {
     TOTAL_AMOUNT("총구매액"),
     FREE_DISCOUNT("행사할인"),
     MEMBERSHIP_DISCOUNT("멤버십할인"),
-    TOTAL_PAYMENT("내실돈")
-    ;
-
+    TOTAL_PAYMENT("내실돈");
 
     private final String element;
 

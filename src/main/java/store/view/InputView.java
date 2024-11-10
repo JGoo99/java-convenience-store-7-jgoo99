@@ -34,18 +34,13 @@ public class InputView implements Printable {
 
     private List<ItemDto> readItemInputs() {
         try {
-            Map<String, Integer> itemQuantities = new HashMap<>();
-
-            String itemInput = Console.readLine();
-            Arrays.stream(itemInput.split(","))
-                    .forEach(line -> {
-
-                        ItemDto itemDto = new ItemParser(line).parse();
-                        int prev = itemQuantities.getOrDefault(itemDto.getName(), 0);
-                        itemQuantities.put(itemDto.getName(), itemDto.getQuantity() + prev);
-                    });
-
-            return itemQuantities.entrySet().stream()
+            return Arrays.stream(Console.readLine().split(","))
+                    .map(line -> new ItemParser(line).parse())
+                    .collect(Collectors.toMap(
+                            ItemDto::getName,
+                            ItemDto::getQuantity,
+                            Integer::sum))
+                    .entrySet().stream()
                     .map(entry -> new ItemDto(entry.getKey(), entry.getValue()))
                     .collect(Collectors.toList());
         } catch (BusinessException e) {

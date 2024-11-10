@@ -28,21 +28,7 @@ public class ItemParser extends LineParser<ItemDto> {
     public ItemDto parse() {
         String productName = matcher.group(1);
         int quantity = Integer.parseInt(matcher.group(2));
-        validateItem(productName, quantity);
         return new ItemDto(productName, quantity);
-    }
-
-    private static void validateItem(String productName, final int quantity) {
-        if (quantity <= 0) {
-            throw new BusinessException(ErrorMessage.INVALID_INPUT);
-        }
-        Integer productQuantity = ProductQuantityRepository.getInstance().findByName(productName);
-        if (productQuantity == null) {
-            throw new BusinessException(ErrorMessage.NOTFOUND_PRODUCT);
-        }
-        if (productQuantity < quantity) {
-            throw new BusinessException(ErrorMessage.OVER_PRODUCT_QUANTITY);
-        }
     }
 
     @Override
