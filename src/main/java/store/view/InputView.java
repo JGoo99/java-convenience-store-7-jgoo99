@@ -8,7 +8,11 @@ import static store.constants.ViewLine.UN_DISCOUNTED_PURCHASE;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 import store.model.ItemDto;
@@ -30,10 +34,20 @@ public class InputView implements Printable {
 
     private List<ItemDto> readItemInputs() {
         try {
+            Map<String, Integer> itemQuantities = new HashMap<>();
+
             String itemInput = Console.readLine();
-            return Arrays.stream(itemInput.split(","))
-                    .map(line -> new ItemParser(line).parse())
-                    .toList();
+            Arrays.stream(itemInput.split(","))
+                    .forEach(line -> {
+
+                        ItemDto itemDto = new ItemParser(line).parse();
+                        int prev = itemQuantities.getOrDefault(itemDto.getName(), 0);
+                        itemQuantities.put(itemDto.getName(), itemDto.getQuantity() + prev);
+                    });
+
+            return itemQuantities.entrySet().stream()
+                    .map(entry -> new ItemDto(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
         } catch (BusinessException e) {
             print(e.getMessage());
             return null;

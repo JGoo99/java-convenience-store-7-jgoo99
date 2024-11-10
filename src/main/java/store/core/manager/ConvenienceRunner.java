@@ -38,7 +38,7 @@ public class ConvenienceRunner {
         try {
             Receipt receipt = convenience.purchase(itemDtos);
             out.printReceipt(receipt);
-        } catch (BusinessException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
