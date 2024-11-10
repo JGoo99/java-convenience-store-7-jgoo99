@@ -5,6 +5,9 @@ import static store.constants.ParseModelRegex.NUMBER;
 import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import store.exception.BusinessException;
+import store.exception.ErrorMessage;
 import store.model.entity.Promotion;
 
 public class PromotionParser extends LineParser<Promotion> {
@@ -21,11 +24,14 @@ public class PromotionParser extends LineParser<Promotion> {
     @Override
     public Promotion parse() {
         String name = matcher.group(1);
-        int buyQuantity = Integer.parseInt(matcher.group(2));
-        int getQuantity = Integer.parseInt(matcher.group(3));
-        LocalDate start = LocalDate.parse(matcher.group(4));
-        LocalDate end = LocalDate.parse(matcher.group(5));
-
-        return new Promotion(name, buyQuantity, getQuantity, start, end);
+        try {
+            int buyQuantity = Integer.parseInt(matcher.group(2));
+            int getQuantity = Integer.parseInt(matcher.group(3));
+            LocalDate start = LocalDate.parse(matcher.group(4));
+            LocalDate end = LocalDate.parse(matcher.group(5));
+            return new Promotion(name, buyQuantity, getQuantity, start, end);
+        } catch (NumberFormatException | DateTimeParseException e) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
     }
 }

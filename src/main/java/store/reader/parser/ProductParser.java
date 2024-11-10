@@ -27,12 +27,16 @@ public class ProductParser extends LineParser<Product> {
     @Override
     public Product parse() {
         String name = matcher.group(1);
-        long price = Long.parseLong(matcher.group(2));
-        int quantity = Integer.parseInt(matcher.group(3));
-        String promotionName = matcher.group(4);
+        try {
+            long price = Long.parseLong(matcher.group(2));
+            int quantity = Integer.parseInt(matcher.group(3));
+            String promotionName = matcher.group(4);
 
-        ProductQuantityRepository.getInstance().save(name, quantity);
-        return parse(name, price, quantity, promotionName);
+            ProductQuantityRepository.getInstance().save(name, quantity);
+            return parse(name, price, quantity, promotionName);
+        } catch (NumberFormatException e) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
     }
 
     private Product parse(String name, final long price, final int quantity, String promotionName) {

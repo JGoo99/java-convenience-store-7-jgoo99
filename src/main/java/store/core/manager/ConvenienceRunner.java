@@ -35,11 +35,7 @@ public class ConvenienceRunner {
     }
 
     private void purchase(final List<ItemDto> itemDtos) {
-        try {
-            Receipt receipt = convenience.purchase(itemDtos);
-            out.printReceipt(receipt);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        Receipt receipt = convenience.purchase(itemDtos);
+        out.printReceipt(receipt);
     }
 }
