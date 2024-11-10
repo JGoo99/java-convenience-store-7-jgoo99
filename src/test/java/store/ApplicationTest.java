@@ -80,7 +80,7 @@ class ApplicationTest extends NsTest {
     void oddQuantityBuyOneGetOneWillPayFullPriceForOne() {
         assertSimpleTest(() -> {
             runException("[감자칩-5]", "Y", "N");
-            assertThat(output()).contains("현재 감자칩 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-450");
         });
     }
 
@@ -89,7 +89,7 @@ class ApplicationTest extends NsTest {
     void lessThanPromotionBuyQuantity() {
         assertSimpleTest(() -> {
             runException("[콜라-1]", "N", "N");
-            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,000");
         });
     }
 
@@ -102,15 +102,6 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("2+1 에서 1개 구매 시 정가 결제 여부를 물어본다.")
-    @Test
-    void askPayFullPriceForSomeQuantities() {
-        assertSimpleTest(() -> {
-            runException("[콜라-1]", "N", "N");
-            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
-        });
-    }
-
     @DisplayName("1+1 에서 1개 구매 시 증정 상품 추가 여부를 물어본다.")
     @Test
     void askOneMoreFree() {
@@ -119,6 +110,28 @@ class ApplicationTest extends NsTest {
             assertThat(output()).contains("현재 오렌지주스은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
         });
     }
+
+    @DisplayName("프로모션과 일반 상품 섞어서 결제")
+    @Test
+    void defaultAndPromotion() {
+        assertSimpleTest(() -> {
+            runException("[콜라-3],[에너지바-5]", "Y", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈9,000");
+        });
+    }
+
+    @DisplayName("프로모션 수량 초과 결제")
+    @Test
+    void exceededPromotionQuantity() {
+        assertSimpleTest(() -> {
+            runException("[콜라-13]", "Y", "Y");
+            assertThat(output()).contains("현재 콜라 4개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+            assertThat(output().replaceAll("\\s", "")).contains("행사할인-3,000");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-1,200");
+        });
+    }
+
+
 
     @Override
     public void runMain() {

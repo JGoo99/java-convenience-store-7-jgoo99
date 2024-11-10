@@ -54,29 +54,20 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
             purchaseAllPromotion(quantityStatus.purchase());
             return;
         }
+        purchaseOnlyDiscounted();
+    }
+
+    private void purchaseOnlyDiscounted() {
         itemDto.subtractQuantity(quantityStatus.unDiscounted());
         purchase(quantityStatus.discounted());
     }
 
     private void handlePromotion() {
-        if (quantityStatus.requiredFullPriceForSome()) {
-            handleRequiredFullPricePromotion();
-            return;
-        }
-        purchase();
-    }
-
-    private void handleRequiredFullPricePromotion() {
         if (needOneMoreForPromotion()) {
             purchaseWithOneMoreFree();
             return;
         }
-        if (payFullPriceForSomeQuantities()) {
-            purchase();
-            return;
-        }
-        itemDto.subtractQuantity(quantityStatus.unDiscounted());
-        purchase(quantityStatus.discounted());
+        purchase();
     }
 
     private void purchaseWithOneMoreFree() {
