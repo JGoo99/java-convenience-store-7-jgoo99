@@ -1,7 +1,7 @@
 package store.reader.parser;
 
 import static store.constants.ParseModelRegex.DATE;
-import static store.constants.ParseModelRegex.LONG;
+import static store.constants.ParseModelRegex.NUMBER;
 import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ public class PromotionParser extends LineParser<Promotion> {
 
     @Override
     protected String getRegex() {
-        return buildRegex(",", PROMOTION_NAME, LONG, LONG, DATE, DATE);
+        return buildRegex(",", PROMOTION_NAME, NUMBER, NUMBER, DATE, DATE);
     }
 
     @Override

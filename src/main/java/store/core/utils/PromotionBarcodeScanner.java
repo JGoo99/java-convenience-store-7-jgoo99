@@ -11,14 +11,13 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private final PromotionProduct promotionProduct;
     private final PromotionPurchaseQuantity quantityStatus;
-    private final InputView input;
+    private final InputView input = new InputView();
 
     private PromotionBarcodeScanner(Receipt receipt, Product product, ItemDto itemDto,
                                     PromotionProduct promotionProduct, PromotionPurchaseQuantity quantityStatus) {
         super(receipt, product, itemDto);
         this.promotionProduct = promotionProduct;
         this.quantityStatus = quantityStatus;
-        this.input = new InputView();
     }
 
     public static PromotionBarcodeScanner read(Receipt receipt, Product product, ItemDto itemDto) {

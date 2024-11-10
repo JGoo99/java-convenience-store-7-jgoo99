@@ -7,11 +7,10 @@ import store.model.entity.Product;
 
 public class Convenience {
 
-    private final PosMachine pos;
     private final List<Product> products;
+    private final PosMachine pos = new PosMachine();
 
     private Convenience(List<Product> products) {
-        this.pos = new PosMachine();
         this.products = products;
     }
 

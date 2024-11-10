@@ -13,13 +13,11 @@ import store.view.InputView;
 public class PosMachine {
 
     private final PriorityQueue<Product> productQueue;
-    private final InputView input;
+    private final InputView input = new InputView();
 
-    private Receipt receipt;
+    private Receipt receipt = new Receipt();
 
     public PosMachine() {
-        this.receipt = new Receipt();
-        this.input = new InputView();
         this.productQueue = new PriorityQueue<>(
                 Comparator.comparing((Product p) -> !(p instanceof PromotionProduct)));
     }

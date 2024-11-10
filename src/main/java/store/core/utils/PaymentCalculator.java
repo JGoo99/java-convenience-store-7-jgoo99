@@ -4,11 +4,11 @@ import store.model.Item;
 
 public class PaymentCalculator {
 
-    private int totalQuantity = 0;
-    private long totalAmount = 0L;
-    private long freeAmount = 0L;
-    private long unDiscountedAmount = 0L;
-    private long membershipDiscountedAmount = 0L;
+    private int totalQuantity;
+    private long totalAmount;
+    private long freeAmount;
+    private long unDiscountedAmount;
+    private long membershipDiscountedAmount;
 
     public void addItem(Item item) {
         this.totalQuantity = item.calcQuantityAdditionWith(this.totalQuantity);

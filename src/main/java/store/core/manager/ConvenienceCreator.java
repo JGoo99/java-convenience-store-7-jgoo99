@@ -8,15 +8,9 @@ import store.reader.PromotionReader;
 
 public class ConvenienceCreator {
 
-    private final PromotionReader promotionReader;
-    private final ProductReader productReader;
-    private final List<Product> products;
-
-    public ConvenienceCreator() {
-        this.promotionReader = new PromotionReader();
-        this.productReader = new ProductReader();
-        this.products = new ArrayList<>();
-    }
+    private final PromotionReader promotionReader = new PromotionReader();
+    private final ProductReader productReader = new ProductReader();
+    private final List<Product> products = new ArrayList<>();
 
     private List<Product> readProducts() {
         promotionReader.readAll();

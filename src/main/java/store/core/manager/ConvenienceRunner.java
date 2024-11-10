@@ -11,13 +11,11 @@ import store.view.OutputView;
 public class ConvenienceRunner {
 
     private final Convenience convenience;
-    private final InputView input;
-    private final OutputView out;
+    private final InputView input = new InputView();
+    private final OutputView out = new OutputView();
 
     private ConvenienceRunner(Convenience convenience) {
         this.convenience = convenience;
-        this.input = new InputView();
-        this.out = new OutputView();
     }
 
     public static ConvenienceRunner stock() {

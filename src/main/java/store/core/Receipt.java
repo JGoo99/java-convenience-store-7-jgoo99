@@ -9,17 +9,10 @@ import store.core.utils.ReceiptWriter;
 
 public class Receipt {
 
-    private final List<Item> items;
-    private final List<Item> freeItems;
-    private final PaymentCalculator paymentCalculator;
-    private final ReceiptWriter writer;
-
-    public Receipt() {
-        this.items = new ArrayList<>();
-        this.freeItems = new ArrayList<>();
-        this.paymentCalculator = new PaymentCalculator();
-        this.writer = new ReceiptWriter(paymentCalculator);
-    }
+    private final List<Item> items = new ArrayList<>();
+    private final List<Item> freeItems = new ArrayList<>();
+    private final PaymentCalculator paymentCalculator = new PaymentCalculator();
+    private final ReceiptWriter writer = new ReceiptWriter(paymentCalculator);
 
     public void addItem(Item item) {
         paymentCalculator.addItem(item);

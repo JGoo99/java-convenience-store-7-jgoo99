@@ -2,9 +2,9 @@ package store.constants;
 
 public enum ParseModelRegex {
 
-    PRODUCT_NAME("([가-힣]+)"),
+    KOREAN("([가-힣]+)"),
     PROMOTION_NAME("([가-힣a-zA-Z0-9+]+)"),
-    LONG("(\\d+)"),
+    NUMBER("(\\d+)"),
     DATE("(\\d{4}-\\d{2}-\\d{2})"),
 
     OPENED_SQUARE_BRACKET("\\["),

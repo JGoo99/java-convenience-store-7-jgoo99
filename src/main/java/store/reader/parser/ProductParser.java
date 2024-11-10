@@ -1,7 +1,7 @@
 package store.reader.parser;
 
-import static store.constants.ParseModelRegex.LONG;
-import static store.constants.ParseModelRegex.PRODUCT_NAME;
+import static store.constants.ParseModelRegex.NUMBER;
+import static store.constants.ParseModelRegex.KOREAN;
 import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
 import store.model.entity.Product;
@@ -18,7 +18,7 @@ public class ProductParser extends LineParser<Product> {
 
     @Override
     protected String getRegex() {
-        return buildRegex(",", PRODUCT_NAME, LONG, LONG, PROMOTION_NAME);
+        return buildRegex(",", KOREAN, NUMBER, NUMBER, PROMOTION_NAME);
     }
 
     @Override

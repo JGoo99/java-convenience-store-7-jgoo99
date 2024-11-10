@@ -2,9 +2,9 @@ package store.reader.parser;
 
 import static store.constants.ParseModelRegex.CLOSED_SQUARE_BRACKET;
 import static store.constants.ParseModelRegex.DASH;
-import static store.constants.ParseModelRegex.LONG;
+import static store.constants.ParseModelRegex.NUMBER;
 import static store.constants.ParseModelRegex.OPENED_SQUARE_BRACKET;
-import static store.constants.ParseModelRegex.PRODUCT_NAME;
+import static store.constants.ParseModelRegex.KOREAN;
 
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
@@ -19,7 +19,7 @@ public class ItemParser extends LineParser<ItemDto> {
 
     @Override
     protected String getRegex() {
-        return buildRegex("", OPENED_SQUARE_BRACKET, PRODUCT_NAME, DASH, LONG, CLOSED_SQUARE_BRACKET);
+        return buildRegex("", OPENED_SQUARE_BRACKET, KOREAN, DASH, NUMBER, CLOSED_SQUARE_BRACKET);
     }
 
     @Override
