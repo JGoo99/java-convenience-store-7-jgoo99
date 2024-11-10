@@ -1,27 +1,19 @@
 package store;
 
-import camp.nextstep.edu.missionutils.test.NsTest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import store.repository.ProductQuantityRepository;
-import store.repository.PromotionRepository;
-
 import static camp.nextstep.edu.missionutils.test.Assertions.assertNowTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import camp.nextstep.edu.missionutils.test.NsTest;
+import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 class ApplicationTest extends NsTest {
 
-    @BeforeEach
-    public void repositoryClear() {
-        ProductQuantityRepository.getInstance().clear();
-        PromotionRepository.getInstance().clear();
-    }
-
+    @DisplayName("파일에 있는 상품 목록 출력")
     @Test
-    void 파일에_있는_상품_목록_출력() {
+    void readMdFileAndPrintProducts() {
         assertSimpleTest(() -> {
             run("[물-1]", "N", "N");
             assertThat(output()).contains(
@@ -47,43 +39,57 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @DisplayName("여러 개의 일반 상품 구매")
     @Test
-    void 여러_개의_일반_상품_구매() {
+    void purchaseDefault() {
         assertSimpleTest(() -> {
             run("[비타민워터-3],[물-2],[정식도시락-2]", "N", "N");
             assertThat(output().replaceAll("\\s", "")).contains("내실돈18,300");
         });
     }
 
+    @DisplayName("기간에 해당하지 않는 프로모션 적용")
     @Test
-    void 기간에_해당하지_않는_프로모션_적용() {
+    void purchaseExpiredPromotion() {
         assertNowTest(() -> {
             run("[감자칩-2]", "N", "N");
             assertThat(output().replaceAll("\\s", "")).contains("내실돈3,000");
         }, LocalDate.of(2024, 2, 1).atStartOfDay());
     }
 
+    @DisplayName("예외 테스트 : 재고 수량 초과")
     @Test
-    void 예외_테스트() {
+    void exceedQuantity() {
         assertSimpleTest(() -> {
             runException("[컵라면-12]", "N", "N");
             assertThat(output()).contains("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
         });
     }
 
+    @DisplayName("멤버십 최대 한도는 8000원 이다.")
     @Test
-    void 멤버십_최대한도() {
+    void exceedMembershipMaxAmount() {
         assertSimpleTest(() -> {
             runException("[정식도시락-5]", "Y", "N");
-            assertThat(output()).contains("-8,000");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-8,000");
         });
     }
 
+    @DisplayName("홀수 수량의 1+1 프로모션 재고와 일치하는 수량으로 구매 시 남은 1개는 정가 결제한다.")
     @Test
-    void 반짝할인_정가결제() {
+    void oddQuantityBuyOneGetOneWillPayFullPriceForOne() {
         assertSimpleTest(() -> {
             runException("[감자칩-5]", "Y", "N");
-            assertThat(output()).contains("-450");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-450");
+        });
+    }
+
+    @DisplayName("홀수 수량의 1+1 프로모션 재고와 일치하는 수량으로 구매 시 남은 1개는 정가 결제한다.")
+    @Test
+    void lessThanPromotionBuyQuantity() {
+        assertSimpleTest(() -> {
+            runException("[콜라-1]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,000");
         });
     }
 

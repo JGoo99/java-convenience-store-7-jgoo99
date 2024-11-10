@@ -22,8 +22,12 @@ public class BarcodeScanner {
     }
 
     public void scan() {
-        receipt.addUnDiscountedAmount(product.calcPayment(itemDto.getQuantity()));
+        addUnDiscountedAmount(itemDto.getQuantity());
         purchase(itemDto.getQuantity());
+    }
+
+    protected void addUnDiscountedAmount(int quantity) {
+        receipt.addUnDiscountedAmount(product.calcPayment(quantity));
     }
 
     protected void purchase(int purchaseQuantity) {

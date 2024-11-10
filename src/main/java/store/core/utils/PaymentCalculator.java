@@ -4,6 +4,8 @@ import store.model.Item;
 
 public class PaymentCalculator {
 
+    public static final long MEMBERSHIP_DISCOUNT_MAX_AMOUNT = 8000L;
+
     private int totalQuantity;
     private long totalAmount;
     private long freeAmount;
@@ -25,7 +27,11 @@ public class PaymentCalculator {
 
     public void calcMembershipDiscountedAmount() {
         long discountedAmount = (unDiscountedAmount / 100) * 30;
-        this.membershipDiscountedAmount = Math.min(8000L, discountedAmount);
+        this.membershipDiscountedAmount = applyMembershipMaxDiscountAmount(discountedAmount);
+    }
+
+    private long applyMembershipMaxDiscountAmount(long discountedAmount) {
+        return Math.min(MEMBERSHIP_DISCOUNT_MAX_AMOUNT, discountedAmount);
     }
 
     public long calcTotalPayment() {
