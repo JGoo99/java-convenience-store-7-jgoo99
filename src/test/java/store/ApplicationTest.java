@@ -111,6 +111,15 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @DisplayName("1+1 에서 1개 구매 시 증정 상품 추가 여부를 물어본다.")
+    @Test
+    void askOneMoreFree() {
+        assertSimpleTest(() -> {
+            runException("[오렌지주스-1]", "N", "N");
+            assertThat(output()).contains("현재 오렌지주스은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

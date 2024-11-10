@@ -75,17 +75,14 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
             purchase();
             return;
         }
-        notPurchase();
+        itemDto.subtractQuantity(quantityStatus.unDiscounted());
+        purchase(quantityStatus.discounted());
     }
 
     private void purchaseWithOneMoreFree() {
         itemDto.addOneMoreQuantity();
         purchase(quantityStatus.purchase() + 1);
         addFreeItemToReceipt(quantityStatus.free() + 1);
-    }
-
-    private void notPurchase() {
-        itemDto.subtractQuantity(itemDto.getQuantity());
     }
 
     private void purchase() {
