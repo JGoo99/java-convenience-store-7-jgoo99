@@ -16,8 +16,8 @@ public class Receipt {
 
     public void addItem(Item item) {
         paymentCalculator.addItem(item);
-        Optional<Item> exist =
-                items.stream().filter(registeredItem -> registeredItem.isSameName(item)).findFirst();
+        Optional<Item> exist = items.stream()
+                .filter(registeredItem -> registeredItem.isSameName(item)).findFirst();
         if (exist.isEmpty()) {
             this.items.add(item);
             return;

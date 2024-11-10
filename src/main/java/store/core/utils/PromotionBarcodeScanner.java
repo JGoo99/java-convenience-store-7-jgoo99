@@ -78,9 +78,9 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         return input.checkUnDiscountedPromotionPurchase(itemDto.getName(), quantityStatus.unDiscounted());
     }
 
-    public void purchaseAllPromotion(int buyQuantity) {
+    private void purchaseAllPromotion(int purchaseQuantity) {
         promotionProduct.purchaseAll();
-        pay(buyQuantity);
+        pay(purchaseQuantity);
     }
 
     private boolean needOneMoreForPromotion() {

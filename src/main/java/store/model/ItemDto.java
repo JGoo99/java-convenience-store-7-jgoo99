@@ -11,19 +11,31 @@ public class ItemDto implements Parsable {
     private int quantity;
 
     public ItemDto(String name, int quantity) {
-        validateQuantity(name, quantity);
+        validate(name, quantity);
         this.name = name;
         this.quantity = quantity;
     }
 
-    private void validateQuantity(String name, int quantity) {
+    private void validate(String name, int quantity) {
+        validateQuantityIsPositve(quantity);
+        Integer productQuantity = ProductQuantityRepository.getInstance().findByName(name);
+        validateProductExists(productQuantity);
+        validateQuantityIsWithinStock(quantity, productQuantity);
+    }
+
+    private void validateQuantityIsPositve(int quantity) {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
-        Integer productQuantity = ProductQuantityRepository.getInstance().findByName(name);
+    }
+
+    private void validateProductExists(Integer productQuantity) {
         if (productQuantity == null) {
             throw new BusinessException(ErrorMessage.NOTFOUND_PRODUCT);
         }
+    }
+
+    private void validateQuantityIsWithinStock(int quantity, Integer productQuantity) {
         if (productQuantity < quantity) {
             throw new BusinessException(ErrorMessage.OVER_PRODUCT_QUANTITY);
         }

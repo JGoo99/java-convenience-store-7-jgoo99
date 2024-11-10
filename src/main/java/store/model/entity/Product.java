@@ -6,7 +6,7 @@ import store.reader.parser.Parsable;
 
 public class Product implements ConvenienceEntity, Parsable {
 
-    private static DecimalFormat PRICE_FORMAT = new DecimalFormat("###,###");
+    private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("###,###");
 
     protected final String name;
     protected final long price;

@@ -33,6 +33,13 @@ public class PromotionProduct extends Product {
         return Math.min(this.quantity, quantity);
     }
 
+    private int calcDiscountedQuantity(final int purchaseQuantity) {
+        if (expiredPromotion()) {
+            return 0;
+        }
+        return promotion.calcCurAppliedQuantity(purchaseQuantity);
+    }
+
     private boolean isQuantityExceeded(final long totalQuantity) {
         return this.quantity < totalQuantity;
     }
@@ -44,13 +51,6 @@ public class PromotionProduct extends Product {
         return promotion.calcFreeQuantity(purchaseQuantity);
     }
 
-    private int calcDiscountedQuantity(final int purchaseQuantity) {
-        if (expiredPromotion()) {
-            return 0;
-        }
-        return promotion.calcCurAppliedQuantity(purchaseQuantity);
-    }
-
     public boolean availableGetOneMoreForFree(final int unDiscountedQuantity, final int purchaseQuantity) {
         if (purchaseQuantity + 1 > this.quantity) {
             return false;
@@ -60,10 +60,6 @@ public class PromotionProduct extends Product {
 
     public void purchaseAll() {
         super.purchase(this.quantity);
-    }
-
-    public long calcUnDiscountedAmount(final int discountedQuantity) {
-        return super.calcPayment(this.quantity - discountedQuantity);
     }
 
     @Override

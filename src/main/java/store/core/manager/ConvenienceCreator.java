@@ -15,12 +15,6 @@ public class ConvenienceCreator {
     private final ProductReader productReader = new ProductReader();
     private final List<Product> products = new ArrayList<>();
 
-    private List<Product> readProducts() {
-        clearPrevStocks();
-        promotionReader.readAll();
-        return productReader.readAll();
-    }
-
     public List<Product> getProducts() {
         if (products.isEmpty()) {
             products.addAll(readProducts());
@@ -28,9 +22,15 @@ public class ConvenienceCreator {
         return this.products;
     }
 
+    private List<Product> readProducts() {
+        clearPrevStocks();
+        promotionReader.readAll();
+        return productReader.readAll();
+    }
+
     private void clearPrevStocks() {
+        ProductPromotionRepository.getInstance().clear();
         ProductQuantityRepository.getInstance().clear();
         PromotionRepository.getInstance().clear();
-        ProductPromotionRepository.getInstance().clear();
     }
 }

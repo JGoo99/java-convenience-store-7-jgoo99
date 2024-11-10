@@ -17,10 +17,6 @@ public abstract class LineParser<Parsable> {
         validate();
     }
 
-    public abstract Parsable parse();
-
-    protected abstract String getRegex();
-
     protected String buildRegex(String delimiters, ParseModelRegex... regexes) {
         return Stream.of(regexes)
                 .map(ParseModelRegex::toString)
@@ -32,4 +28,8 @@ public abstract class LineParser<Parsable> {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
     }
+
+    protected abstract String getRegex();
+
+    public abstract Parsable parse();
 }

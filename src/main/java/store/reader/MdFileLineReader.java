@@ -3,6 +3,7 @@ package store.reader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import store.exception.BusinessException;
@@ -19,7 +20,7 @@ public abstract class MdFileLineReader<ConvenienceEntity> implements FileLineRea
             br.lines()
                     .skip(1)
                     .forEach(line -> entities.add(read(line)));
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException | DateTimeParseException e) {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
         return entities;

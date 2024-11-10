@@ -27,26 +27,18 @@ public class ProductParser extends LineParser<Product> {
     @Override
     public Product parse() {
         String name = matcher.group(1);
-        try {
-            long price = Long.parseLong(matcher.group(2));
-            int quantity = Integer.parseInt(matcher.group(3));
-            String promotionName = matcher.group(4);
-
-            ProductQuantityRepository.getInstance().save(name, quantity);
-            return parse(name, price, quantity, promotionName);
-        } catch (NumberFormatException e) {
-            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
-        }
+        long price = Long.parseLong(matcher.group(2));
+        int quantity = Integer.parseInt(matcher.group(3));
+        String promotionName = matcher.group(4);
+        
+        ProductQuantityRepository.getInstance().save(name, quantity);
+        return parse(name, price, quantity, promotionName);
     }
 
     private Product parse(String name, final long price, final int quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
         if (isPromotion(promotion)) {
-            String existPromotionName = ProductPromotionRepository.getInstance().findByName(name);
-            if (existPromotionName != null) {
-                throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
-            }
-            ProductPromotionRepository.getInstance().save(name, promotionName);
+            validateOnePromotionPerProduct(name, promotionName);
             return new PromotionProduct(name, price, quantity, promotion);
         }
         return new Product(name, price, quantity);
@@ -54,5 +46,18 @@ public class ProductParser extends LineParser<Product> {
 
     private boolean isPromotion(Promotion promotion) {
         return promotion != null;
+    }
+
+    private void validateOnePromotionPerProduct(String name, String promotionName) {
+        ProductPromotionRepository repository = ProductPromotionRepository.getInstance();
+        String existPromotionName = repository.findByName(name);
+        if (isPromotionDuplicated(existPromotionName)) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
+        repository.save(name, promotionName);
+    }
+
+    private static boolean isPromotionDuplicated(String existPromotionName) {
+        return existPromotionName != null;
     }
 }

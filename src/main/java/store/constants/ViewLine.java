@@ -9,8 +9,7 @@ public enum ViewLine {
     MEMBER_SHIP_DISCOUNT("멤버십 할인을 받으시겠습니까? (Y/N)"),
 
     WELCOME("안녕하세요. W편의점입니다."),
-    PRODUCT_QUANTITY_STATUS("현재 보유하고 있는 상품입니다.")
-    ;
+    PRODUCT_QUANTITY_STATUS("현재 보유하고 있는 상품입니다.");
 
     private final String line;
 

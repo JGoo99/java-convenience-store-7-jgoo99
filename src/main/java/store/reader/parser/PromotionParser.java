@@ -24,14 +24,11 @@ public class PromotionParser extends LineParser<Promotion> {
     @Override
     public Promotion parse() {
         String name = matcher.group(1);
-        try {
-            int buyQuantity = Integer.parseInt(matcher.group(2));
-            int getQuantity = Integer.parseInt(matcher.group(3));
-            LocalDate start = LocalDate.parse(matcher.group(4));
-            LocalDate end = LocalDate.parse(matcher.group(5));
-            return new Promotion(name, buyQuantity, getQuantity, start, end);
-        } catch (NumberFormatException | DateTimeParseException e) {
-            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
-        }
+        int buyQuantity = Integer.parseInt(matcher.group(2));
+        int getQuantity = Integer.parseInt(matcher.group(3));
+        LocalDate start = LocalDate.parse(matcher.group(4));
+        LocalDate end = LocalDate.parse(matcher.group(5));
+
+        return new Promotion(name, buyQuantity, getQuantity, start, end);
     }
 }

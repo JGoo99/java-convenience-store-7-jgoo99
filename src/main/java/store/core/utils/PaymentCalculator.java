@@ -53,5 +53,4 @@ public class PaymentCalculator {
     public long getMembershipDiscountedAmount() {
         return membershipDiscountedAmount;
     }
-
 }

@@ -50,12 +50,12 @@ public class PosMachine {
         BarcodeScanner.read(receipt, productQueue.poll(), itemDto).scan();
     }
 
-    private void clearStockStatusOfItem() {
-        productQueue.clear();
-    }
-
     private boolean isAllPurchased(ItemDto itemDto) {
         return itemDto.getQuantity() == 0;
+    }
+
+    private void clearStockStatusOfItem() {
+        productQueue.clear();
     }
 
     public void askMembershipDiscount() {

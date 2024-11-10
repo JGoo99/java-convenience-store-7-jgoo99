@@ -9,8 +9,7 @@ public enum ParseModelRegex {
 
     OPENED_SQUARE_BRACKET("\\["),
     CLOSED_SQUARE_BRACKET("\\]"),
-    DASH("-"),
-    ;
+    DASH("-");
 
     private final String regex;
 
