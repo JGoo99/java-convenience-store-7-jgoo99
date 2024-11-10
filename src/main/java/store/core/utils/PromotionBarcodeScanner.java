@@ -40,31 +40,40 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void registerToReceipt() {
-        if (quantityStatus.requiredFullPriceForSomeQuantities()) {
-            handleRequiredFullPriceForSomeQuantitiesPromotion();
+        if (quantityStatus.requiredFullPriceForSome()) {
+            handleRequiredFullPricePromotion();
             return;
         }
         handlePromotion();
     }
 
-    private void handleRequiredFullPriceForSomeQuantitiesPromotion() {
-        addFreeItemToReceipt(quantityStatus.free());
-        if (payFullPriceForSomeQuantities()) {
-            addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
-            purchaseAllPromotion(quantityStatus.purchase());
+    private void handleRequiredFullPricePromotion() {
+        if (quantityStatus.isExceed()) {
+            addFreeItemToReceipt(quantityStatus.free());
+            if (payFullPriceForSomeQuantities()) {
+                addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
+                purchaseAllPromotion(quantityStatus.purchase());
+                return;
+            }
+            itemDto.subtractQuantity(quantityStatus.unDiscounted());
+            purchase(quantityStatus.discounted());
             return;
         }
-        itemDto.subtractQuantity(quantityStatus.unDiscounted());
-        purchase(quantityStatus.discounted());
-    }
-
-    private void handlePromotion() {
         if (needOneMoreForPromotion()) {
             itemDto.addOneMoreQuantity();
             purchase(quantityStatus.purchase() + 1);
             addFreeItemToReceipt(quantityStatus.free() + 1);
             return;
         }
+        if (payFullPriceForSomeQuantities()) {
+            addUnDiscountedAmount(quantityStatus.unDiscounted());
+            purchase(quantityStatus.purchase());
+            return;
+        }
+        itemDto.subtractQuantity(itemDto.getQuantity());
+    }
+
+    private void handlePromotion() {
         addUnDiscountedAmount(quantityStatus.unDiscounted());
         purchase(quantityStatus.purchase());
         addFreeItemToReceipt(quantityStatus.free());

@@ -80,7 +80,7 @@ class ApplicationTest extends NsTest {
     void oddQuantityBuyOneGetOneWillPayFullPriceForOne() {
         assertSimpleTest(() -> {
             runException("[감자칩-5]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-450");
+            assertThat(output()).contains("현재 감자칩 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
         });
     }
 
@@ -89,7 +89,25 @@ class ApplicationTest extends NsTest {
     void lessThanPromotionBuyQuantity() {
         assertSimpleTest(() -> {
             runException("[콜라-1]", "N", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,000");
+            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+        });
+    }
+
+    @DisplayName("2+1 에서 2개 구매 시 증정 여부를 물어본다.")
+    @Test
+    void askMoreFreeGet() {
+        assertSimpleTest(() -> {
+            runException("[콜라-2]", "N", "N");
+            assertThat(output()).contains("현재 콜라은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
+        });
+    }
+
+    @DisplayName("2+1 에서 1개 구매 시 정가 결제 여부를 물어본다.")
+    @Test
+    void askPayFullPriceForSomeQuantities() {
+        assertSimpleTest(() -> {
+            runException("[콜라-1]", "N", "N");
+            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
         });
     }
 
