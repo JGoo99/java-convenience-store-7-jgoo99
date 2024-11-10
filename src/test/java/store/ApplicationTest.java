@@ -71,6 +71,14 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    void 멤버십_최대한도() {
+        assertSimpleTest(() -> {
+            runException("[정식도시락-5]", "Y", "N");
+            assertThat(output()).contains("-8,000");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

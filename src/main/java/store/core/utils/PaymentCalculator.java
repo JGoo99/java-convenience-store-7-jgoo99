@@ -24,7 +24,8 @@ public class PaymentCalculator {
     }
 
     public void calcMembershipDiscountedAmount() {
-        this.membershipDiscountedAmount = (unDiscountedAmount / 100) * 30;
+        long discountedAmount = (unDiscountedAmount / 100) * 30;
+        this.membershipDiscountedAmount = Math.min(8000L, discountedAmount);
     }
 
     public long calcTotalPayment() {
