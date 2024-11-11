@@ -44,17 +44,13 @@ public class ReceiptWriter {
 
     private void writeItems(List<Item> items) {
         BUFFER.append(ReceiptFormater.buildItemListFrameLine());
-        if (payment.getTotalQuantity() == 0) {
-            return;
-        }
-        items.forEach(item -> BUFFER.append(item.parseReceiptLineOfPurchased()));
+        items.stream()
+                .filter(Item::isQuantityGreaterThanZero)
+                .forEach(item -> BUFFER.append(item.parseReceiptLineOfPurchased()));
     }
 
     private void writeFreeItems(List<Item> freeItems) {
         BUFFER.append(FREE_ITEM_FRAME);
-        if (payment.getFreeAmount() == 0) {
-            return;
-        }
         freeItems.stream()
                 .filter(Item::isQuantityGreaterThanZero)
                 .forEach(item -> BUFFER.append(item.parseReceiptLineOfFree()));
