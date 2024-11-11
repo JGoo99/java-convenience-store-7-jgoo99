@@ -29,12 +29,19 @@ public class PromotionParser extends LineParser<Promotion> {
         LocalDate start = LocalDate.parse(matcher.group(4));
         LocalDate end = LocalDate.parse(matcher.group(5));
 
+        validateGetQuantity(getQuantity);
         validateDate(start, end);
         return new Promotion(name, buyQuantity, getQuantity, start, end);
     }
 
     private void validateDate(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
+    }
+
+    private void validateGetQuantity(int getQuantity) {
+        if (getQuantity != 1) {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
     }
