@@ -29,10 +29,18 @@ public class ProductParser extends LineParser<Product> {
         String name = matcher.group(1);
         long price = Long.parseLong(matcher.group(2));
         int quantity = Integer.parseInt(matcher.group(3));
-        String promotionName = matcher.group(4);
-        
+        String promotionName = getPromotionName();
+
         ProductQuantityRepository.getInstance().save(name, quantity);
         return parse(name, price, quantity, promotionName);
+    }
+
+    private String getPromotionName() {
+        String promotionName = matcher.group(4);
+        if (promotionName.equals("null")) {
+            return null;
+        }
+        return promotionName;
     }
 
     private Product parse(String name, final long price, final int quantity, String promotionName) {
@@ -41,7 +49,14 @@ public class ProductParser extends LineParser<Product> {
             validateOnePromotionPerProduct(name, promotionName);
             return new PromotionProduct(name, price, quantity, promotion);
         }
+        validatePromotionNameIsNull(promotionName);
         return new Product(name, price, quantity);
+    }
+
+    private void validatePromotionNameIsNull(String promotionName) {
+        if (promotionName != null) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
     }
 
     private boolean isPromotion(Promotion promotion) {
