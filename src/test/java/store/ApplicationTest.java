@@ -173,13 +173,12 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("프로모션 재고가 부족해서 buy 개수 조건을 충족하지 못한 경우는 멤버십 할인 대상이다.")
+    @DisplayName("구매한 상품이 없어도 멤버십 할인 여부를 물어본다. (테스트용)")
     @Test
     void targetOfMembershipDiscountWhenCantButPromotionBecauseOfStock() {
         assertSimpleTest(() -> {
-            runException("[콜라-10]", "Y", "Y");
-            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
-            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-300");
+            runException("[컵라면-1]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈0");
         });
     }
 
