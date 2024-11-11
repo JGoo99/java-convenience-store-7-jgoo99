@@ -2,14 +2,24 @@ package store.reader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import store.model.entity.Promotion;
+import store.repository.ProductPromotionRepository;
+import store.repository.ProductQuantityRepository;
 import store.repository.PromotionRepository;
 
 class ProductReaderTest {
+
+    @BeforeEach
+    void clearAndInitPromotion() {
+        ProductPromotionRepository.getInstance().clear();
+        ProductQuantityRepository.getInstance().clear();
+        PromotionRepository.getInstance().clear();
+        new PromotionReader().readAll();
+    }
 
     @DisplayName("name,price,quantity,promotion 정보를 읽어 Product 객체를 반환한다.")
     @ParameterizedTest
@@ -39,8 +49,6 @@ class ProductReaderTest {
             "오렌지주스,1800,9,MD추천상품:오렌지주스 1,800원 9개 MD추천상품"}, delimiter = ':')
     void test3(String line, String expected) {
         // given
-        PromotionRepository.getInstance().save(new Promotion("탄산2+1", 2, 1, null, null));
-        PromotionRepository.getInstance().save(new Promotion("MD추천상품", 2, 1, null, null));
         ProductReader reader = new ProductReader();
         // when & then
         assertThat(reader.read(line).toString())

@@ -80,7 +80,7 @@ class ApplicationTest extends NsTest {
     void oddQuantityBuyOneGetOneWillPayFullPriceForOne() {
         assertSimpleTest(() -> {
             runException("[감자칩-5]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-450");
+            assertThat(output()).contains("현재 감자칩 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
         });
     }
 
@@ -146,6 +146,15 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() -> {
             runException("[콜라-5]", "Y", "N");
             assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
+        });
+    }
+
+    @DisplayName("프로모션 재고가 부족하여 일부 수량을 정가로 결제해야 하는 경우, 그 사실을 안내한다.")
+    @Test
+    void announceFullPrice() {
+        assertSimpleTest(() -> {
+            runException("[컵라면-1]", "Y", "N");
+            assertThat(output()).contains("현재 컵라면 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
         });
     }
 

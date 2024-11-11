@@ -20,12 +20,11 @@ public class PromotionProduct extends Product {
     public PromotionPurchaseQuantity getPurchaseQuantityStatus(final int totalPurchaseQuantity) {
         int availableQuantity = calcAvailableQuantity(totalPurchaseQuantity);
         int discountedQuantity = calcDiscountedQuantity(availableQuantity);
-
+        int unDiscountedQuantity = totalPurchaseQuantity - discountedQuantity;
         return new PromotionPurchaseQuantity(
                 availableQuantity,
-                isQuantityExceeded(totalPurchaseQuantity),
-                requiredFullPriceForSomeQuantities(availableQuantity, totalPurchaseQuantity),
-                totalPurchaseQuantity - discountedQuantity,
+                isOutOfStockToApplyPromotion(totalPurchaseQuantity, unDiscountedQuantity),
+                unDiscountedQuantity,
                 discountedQuantity,
                 calcFreeQuantity(availableQuantity));
     }
@@ -41,12 +40,12 @@ public class PromotionProduct extends Product {
         return promotion.calcCurAppliedQuantity(purchaseQuantity);
     }
 
-    private boolean requiredFullPriceForSomeQuantities(final int purchaseQuantity, final int totalQuantity) {
-        return isInsufficientPromotion(purchaseQuantity, totalQuantity) || promotion.calcFreeQuantity(purchaseQuantity) == 0;
+    private boolean isOutOfStockToApplyPromotion(final int totalQuantity, final int unDiscountedQuantity) {
+        return isQuantityExceeded(totalQuantity) || cantTackFreeBecauseOfOutOfStock(totalQuantity, unDiscountedQuantity);
     }
 
-    private boolean isInsufficientPromotion(final int purchaseQuantity, final int totalQuantity) {
-        return promotion.calcCurAppliedQuantity(purchaseQuantity) < totalQuantity;
+    private boolean cantTackFreeBecauseOfOutOfStock(int totalQuantity, int unDiscountedQuantity) {
+        return promotion.availableGetOneMoreForFree(unDiscountedQuantity) && isQuantityExceeded(totalQuantity + 1);
     }
 
     private boolean isQuantityExceeded(final int totalQuantity) {
