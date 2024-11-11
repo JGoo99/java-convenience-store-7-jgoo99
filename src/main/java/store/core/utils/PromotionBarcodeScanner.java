@@ -83,9 +83,9 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void purchase() {
-        if (promotionProduct.isMeetTheBuyQuantity(quantityStatus.unDiscounted())) {
-            addUnDiscountedAmount(quantityStatus.unDiscounted());
-        }
+//        if (promotionProduct.isMeetTheBuyQuantity(quantityStatus.unDiscounted())) {
+//        }
+        addUnDiscountedAmount(quantityStatus.unDiscounted());
         purchase(quantityStatus.purchase());
         addFreeItemToReceipt(quantityStatus.free());
     }

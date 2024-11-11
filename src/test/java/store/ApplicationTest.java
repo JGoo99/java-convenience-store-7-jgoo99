@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest extends NsTest {
@@ -162,13 +163,13 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("프로모션 재고는 충분한데 buy 개수 조건을 충족하지 못해서 정가로 결제한 경우는 멤버십 할인 대상이 아니다.")
+    @DisplayName("프로모션 재고는 충분한데 buy 개수 조건을 충족하지 못해서 정가로 결제한 경우도 멤버십 할인 대상이다.")
     @ParameterizedTest
     @ValueSource(ints = {1, 4, 7})
     void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity(int quantity) {
         assertSimpleTest(() -> {
             runException("[콜라-" + quantity + "]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-300");
         });
     }
 
