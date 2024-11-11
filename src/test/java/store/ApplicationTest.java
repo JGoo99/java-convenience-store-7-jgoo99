@@ -140,7 +140,7 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("무료 증정을 받지 않겠다고 선택한 상품 1개의 금액은 멤버심 할인 대상이 아니다.")
+    @DisplayName("무료 증정을 받지 않겠다고 선택한 경우에 자의적으로 정가 지불한 금액은 멤버심 할인 대상 금액이 아니다.")
     @Test
     void doesNotTakeFreeProductIsNotTargetOfMembershipDiscount() {
         assertSimpleTest(() -> {
@@ -155,6 +155,15 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() -> {
             runException("[컵라면-1]", "Y", "N");
             assertThat(output()).contains("현재 컵라면 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+        });
+    }
+
+    @DisplayName("프로모션 개수 조건을 미충족한 경우는 멤버십 할인 대상이 아니다.")
+    @Test
+    void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity() {
+        assertSimpleTest(() -> {
+            runException("[콜라-1]", "Y", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
         });
     }
 
