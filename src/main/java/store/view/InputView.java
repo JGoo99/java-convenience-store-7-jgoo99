@@ -31,15 +31,23 @@ public class InputView implements Printable {
 
     private List<ItemDto> readItemInputs() {
         try {
-            return parserItems();
+            String inputItems = Console.readLine();
+            validateInputItems(inputItems);
+            return parserItems(inputItems);
         } catch (BusinessException e) {
             print(e.getMessage());
             return null;
         }
     }
 
-    private List<ItemDto> parserItems() {
-        return Arrays.stream(Console.readLine().split(","))
+    private void validateInputItems(String inputItems) {
+        if (inputItems.endsWith(",")) {
+            throw new BusinessException(ErrorMessage.INVALID_INPUT);
+        }
+    }
+
+    private List<ItemDto> parserItems(String inputItems) {
+        return Arrays.stream(inputItems.split(","))
                 .map(line -> new ItemParser(line).parse())
                 .collect(Collectors.toMap(
                         ItemDto::getName,
