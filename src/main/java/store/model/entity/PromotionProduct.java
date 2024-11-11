@@ -70,10 +70,6 @@ public class PromotionProduct extends Product {
         return promotion.isMeetTheBuyQuantity(unDiscountedQuantity);
     }
 
-    public void purchaseAll() {
-        super.purchase(this.quantity);
-    }
-
     @Override
     public String toString() {
         return super.toString() + " " + promotion;

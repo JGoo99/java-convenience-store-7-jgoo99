@@ -53,9 +53,9 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
 
     private void handleExceededQuantityPromotion() {
         addFreeItemToReceipt(quantityStatus.free());
-        if (payFullPriceForSomeQuantities()) {
+        if (doesPayFullPriceForSomeQuantities()) {
             addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
-            purchaseAllPromotion(quantityStatus.purchase());
+            purchase(quantityStatus.purchase());
             return;
         }
         purchaseOnlyDiscounted();
@@ -93,16 +93,11 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         receipt.addFreeItem(promotionProduct.parseOf(freeQuantity));
     }
 
-    private void purchaseAllPromotion(int purchaseQuantity) {
-        promotionProduct.purchaseAll();
-        pay(purchaseQuantity);
-    }
-
     private boolean canGetOneMoreForFree() {
         return promotionProduct.availableGetOneMoreForFree(quantityStatus.unDiscounted(), quantityStatus.purchase());
     }
 
-    private boolean payFullPriceForSomeQuantities() {
+    private boolean doesPayFullPriceForSomeQuantities() {
         return input.checkPayFullPriceForSomeQuantities(itemDto.getName(), quantityStatus.unDiscounted());
     }
 

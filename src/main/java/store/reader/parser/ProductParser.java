@@ -46,30 +46,30 @@ public class ProductParser extends LineParser<Product> {
     private Product parse(String name, final long price, final int quantity, String promotionName) {
         Promotion promotion = PromotionRepository.getInstance().findByName(promotionName);
         if (isPromotion(promotion)) {
-            validateOnePromotionPerProduct(name, promotionName);
+            validateOnePromotionPerOneProduct(name, promotionName);
             return new PromotionProduct(name, price, quantity, promotion);
         }
         validatePromotionNameIsNull(promotionName);
         return new Product(name, price, quantity);
     }
 
-    private void validatePromotionNameIsNull(String promotionName) {
-        if (promotionName != null) {
-            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
-        }
-    }
-
     private boolean isPromotion(Promotion promotion) {
         return promotion != null;
     }
 
-    private void validateOnePromotionPerProduct(String name, String promotionName) {
+    private void validateOnePromotionPerOneProduct(String name, String promotionName) {
         ProductPromotionRepository repository = ProductPromotionRepository.getInstance();
         String existPromotionName = repository.findByName(name);
         if (isPromotionDuplicated(existPromotionName)) {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
         repository.save(name, promotionName);
+    }
+
+    private void validatePromotionNameIsNull(String promotionName) {
+        if (promotionName != null) {
+            throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
+        }
     }
 
     private static boolean isPromotionDuplicated(String existPromotionName) {

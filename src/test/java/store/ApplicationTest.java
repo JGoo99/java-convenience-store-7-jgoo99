@@ -142,7 +142,7 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("무료 증정을 받지 않겠다고 선택한 경우에 자의적으로 정가 지불한 금액은 멤버심 할인 대상 금액이 아니다.")
+    @DisplayName("무료 증정을 받지 않겠다고 선택해서 정가 지불한 금액은 멤버심 할인 대상 금액이 아니다.")
     @Test
     void doesNotTakeFreeProductIsNotTargetOfMembershipDiscount() {
         assertSimpleTest(() -> {
@@ -160,7 +160,7 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("프로모션 개수 조건을 미충족한 경우는 멤버십 할인 대상이 아니다.")
+    @DisplayName("프로모션 개수 조건을 충족하지 못해서 정가로 결제한 경우는 멤버십 할인 대상이 아니다.")
     @ParameterizedTest
     @ValueSource(ints = {1, 4, 7})
     void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity(int quantity) {

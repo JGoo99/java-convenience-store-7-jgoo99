@@ -26,16 +26,16 @@ public class BarcodeScanner {
         purchase(itemDto.getQuantity());
     }
 
-    protected void addUnDiscountedAmount(int quantity) {
+    protected void addUnDiscountedAmount(final int quantity) {
         receipt.addUnDiscountedAmount(product.calcPayment(quantity));
     }
 
-    protected void purchase(int purchaseQuantity) {
+    protected void purchase(final int purchaseQuantity) {
         product.purchase(purchaseQuantity);
         pay(purchaseQuantity);
     }
 
-    protected void pay(int purchaseQuantity) {
+    protected void pay(final int purchaseQuantity) {
         itemDto.subtractQuantity(purchaseQuantity);
         ProductQuantityRepository.getInstance().update(itemDto.getName(), purchaseQuantity);
         receipt.addItem(product.parseOf(purchaseQuantity));
