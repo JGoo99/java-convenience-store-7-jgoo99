@@ -38,6 +38,10 @@ public class Product implements ConvenienceEntity, Parsable {
         return this.price * buyQuantity;
     }
 
+    public boolean isSameQuantity(int quantity) {
+        return this.quantity == quantity;
+    }
+
     public String getQuantityStatus() {
         if (quantity == 0) {
             return "재고 없음";

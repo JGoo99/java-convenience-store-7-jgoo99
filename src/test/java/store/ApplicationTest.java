@@ -160,13 +160,22 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("프로모션 개수 조건을 충족하지 못해서 정가로 결제한 경우는 멤버십 할인 대상이 아니다.")
+    @DisplayName("프로모션 재고는 충분한데 buy 개수 조건을 충족하지 못해서 정가로 결제한 경우는 멤버십 할인 대상이 아니다.")
     @ParameterizedTest
     @ValueSource(ints = {1, 4, 7})
     void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity(int quantity) {
         assertSimpleTest(() -> {
             runException("[콜라-" + quantity + "]", "Y", "N");
             assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
+        });
+    }
+
+    @DisplayName("프로모션 재고가 부족해서 buy 개수 조건을 충족하지 못한 경우는 멤버십 할인 대상이다.")
+    @Test
+    void targetOfMembershipDiscountWhenCantButPromotionBecauseOfStock() {
+        assertSimpleTest(() -> {
+            runException("[콜라-10]", "Y", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-300");
         });
     }
 
