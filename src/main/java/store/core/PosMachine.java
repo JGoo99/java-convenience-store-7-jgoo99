@@ -59,6 +59,9 @@ public class PosMachine {
     }
 
     public void askMembershipDiscount() {
+        if (!receipt.isPurchased()) {
+            return;
+        }
         if (!input.checkMembershipDiscount()) {
             return;
         }

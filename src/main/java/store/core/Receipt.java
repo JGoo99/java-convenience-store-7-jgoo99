@@ -41,4 +41,8 @@ public class Receipt {
     public String write() {
         return writer.run(items, freeItems);
     }
+
+    public boolean isPurchased() {
+        return paymentCalculator.getTotalAmount() > 0;
+    }
 }

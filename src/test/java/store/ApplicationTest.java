@@ -131,7 +131,14 @@ class ApplicationTest extends NsTest {
         });
     }
 
-
+    @DisplayName("결제한 금액이 없으면 할인 여부를 묻지 않는다.")
+    @Test
+    void doNotAskWhenNotPurchased() {
+        assertSimpleTest(() -> {
+            runException("[컵라면-2]", "N", "N");
+            assertThat(output()).doesNotContain("멤버십 할인을 받으시겠습니까? (Y/N)");
+        });
+    }
 
     @Override
     public void runMain() {
