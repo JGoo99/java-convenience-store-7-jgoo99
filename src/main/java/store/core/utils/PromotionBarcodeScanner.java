@@ -40,8 +40,8 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void registerToReceipt() {
-        if (quantityStatus.isExceed()) {
-            handleExceededQuantityPromotion();
+        if (quantityStatus.isEqualOrMore()) {
+            handleEqualOrMoreQuantityPromotion();
             return;
         }
         if (canGetOneMoreForFree()) {
@@ -51,7 +51,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         purchase();
     }
 
-    private void handleExceededQuantityPromotion() {
+    private void handleEqualOrMoreQuantityPromotion() {
         addFreeItemToReceipt(quantityStatus.free());
         if (doesPayFullPriceForSomeQuantities()) {
             addUnDiscountedAmount(quantityStatus.purchase() - quantityStatus.discounted());
@@ -82,8 +82,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void purchase() {
-        if (promotionProduct.isMeetTheBuyQuantity(quantityStatus.unDiscounted())
-                || promotionProduct.isSameQuantity(quantityStatus.purchase())) {
+        if (promotionProduct.isMeetTheBuyQuantity(quantityStatus.unDiscounted())) {
             addUnDiscountedAmount(quantityStatus.unDiscounted());
         }
         purchase(quantityStatus.purchase());

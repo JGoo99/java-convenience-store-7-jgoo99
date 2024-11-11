@@ -174,7 +174,8 @@ class ApplicationTest extends NsTest {
     @Test
     void targetOfMembershipDiscountWhenCantButPromotionBecauseOfStock() {
         assertSimpleTest(() -> {
-            runException("[콜라-10]", "Y", "N");
+            runException("[콜라-10]", "Y", "Y");
+            assertThat(output()).contains("현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
             assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-300");
         });
     }

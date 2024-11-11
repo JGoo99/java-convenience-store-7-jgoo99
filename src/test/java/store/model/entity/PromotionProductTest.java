@@ -53,7 +53,7 @@ class PromotionProductTest {
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(10);
         // then
         assertEquals(7, status.purchase());       // 총 구매 가능 수량
-        assertTrue(status.isExceed());                    // 구매 수량이 재고 수량을 넘는지
+        assertTrue(status.isEqualOrMore());                    // 구매 수량이 재고 수량을 넘는지
         assertEquals(4, status.unDiscounted()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
         assertEquals(6, status.discounted());   // 할인이 적용된 수량
         assertEquals(2, status.free());       // 무료 증정 수량
@@ -68,7 +68,7 @@ class PromotionProductTest {
         PromotionPurchaseQuantity status = product.getPurchaseQuantityStatus(10);
         // then
         assertEquals(7, status.purchase());       // 총 구매 가능 수량
-        assertTrue(status.isExceed());                    // 구매 수량이 재고 수량을 넘는지
+        assertTrue(status.isEqualOrMore());                    // 구매 수량이 재고 수량을 넘는지
         assertEquals(4, status.unDiscounted()); // 할인이 적용 되지 않는 수량 (정가 구매 수량)
         assertEquals(6, status.discounted());   // 할인이 적용된 수량
         assertEquals(3, status.free());       // 무료 증정 수량
