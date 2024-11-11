@@ -51,7 +51,9 @@ public class ReceiptWriter {
 
     private void writeFreeItems(List<Item> freeItems) {
         BUFFER.append(FREE_ITEM_FRAME);
-        freeItems.forEach(item -> BUFFER.append(item.parseReceiptLineOfFree()));
+        freeItems.stream()
+                .filter(Item::isQuantityGreaterThanZero)
+                .forEach(item -> BUFFER.append(item.parseReceiptLineOfFree()));
     }
 
     private void writeTotalAmount() {

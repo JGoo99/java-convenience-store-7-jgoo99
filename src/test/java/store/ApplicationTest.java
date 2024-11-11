@@ -140,7 +140,7 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("무료 증정을 받지 않겠다고 선택한 상품의 금액은 멤버심 할인 대상이 아니다.")
+    @DisplayName("무료 증정을 받지 않겠다고 선택한 상품 1개의 금액은 멤버심 할인 대상이 아니다.")
     @Test
     void doesNotTakeFreeProductIsNotTargetOfMembershipDiscount() {
         assertSimpleTest(() -> {

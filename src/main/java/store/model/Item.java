@@ -37,4 +37,8 @@ public class Item {
     public long calcAmount() {
         return this.quantity * this.price;
     }
+
+    public boolean isQuantityGreaterThanZero() {
+        return this.quantity > 0;
+    }
 }
