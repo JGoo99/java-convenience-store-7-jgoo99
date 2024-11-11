@@ -81,8 +81,9 @@ class ApplicationTest extends NsTest {
     @Test
     void oddQuantityBuyOneGetOneWillPayFullPriceForOne() {
         assertSimpleTest(() -> {
-            runException("[감자칩-5]", "Y", "N");
+            runException("[감자칩-5]", "Y", "Y");
             assertThat(output()).contains("현재 감자칩 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-450");
         });
     }
 
@@ -142,12 +143,13 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("무료 증정을 받지 않겠다고 선택해서 정가 지불한 금액은 멤버심 할인 대상 금액이 아니다.")
+    @DisplayName("무료 증정을 받지 않겠다고 선택해서 정가 지불한 금액은 멤버십 할인 대상 금액이다.")
     @Test
-    void doesNotTakeFreeProductIsNotTargetOfMembershipDiscount() {
+    void doesNotTakeFreeProductIsTargetOfMembershipDiscount() {
         assertSimpleTest(() -> {
-            runException("[콜라-5]", "Y", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
+            runException("[콜라-5]", "N", "Y");
+            assertThat(output()).contains("현재 콜라은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-600");
         });
     }
 
