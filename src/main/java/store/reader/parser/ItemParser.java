@@ -27,13 +27,21 @@ public class ItemParser extends LineParser<ItemDto> {
     @Override
     public ItemDto parse() {
         String productName = matcher.group(1);
-        int quantity = Integer.parseInt(matcher.group(2));
+        int quantity = getQuantity();
         return new ItemDto(productName, quantity);
     }
 
     @Override
     protected void validate() {
         if (!matcher.matches()) {
+            throw new BusinessException(ErrorMessage.INVALID_INPUT);
+        }
+    }
+
+    private int getQuantity() {
+        try {
+            return Integer.parseInt(matcher.group(2));
+        } catch (NumberFormatException e) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
     }

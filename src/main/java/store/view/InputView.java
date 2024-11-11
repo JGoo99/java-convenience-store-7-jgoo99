@@ -31,19 +31,23 @@ public class InputView implements Printable {
 
     private List<ItemDto> readItemInputs() {
         try {
-            return Arrays.stream(Console.readLine().split(","))
-                    .map(line -> new ItemParser(line).parse())
-                    .collect(Collectors.toMap(
-                            ItemDto::getName,
-                            ItemDto::getQuantity,
-                            Integer::sum))
-                    .entrySet().stream()
-                    .map(entry -> new ItemDto(entry.getKey(), entry.getValue()))
-                    .collect(Collectors.toList());
+            return parserItems();
         } catch (BusinessException e) {
             print(e.getMessage());
             return null;
         }
+    }
+
+    private List<ItemDto> parserItems() {
+        return Arrays.stream(Console.readLine().split(","))
+                .map(line -> new ItemParser(line).parse())
+                .collect(Collectors.toMap(
+                        ItemDto::getName,
+                        ItemDto::getQuantity,
+                        Integer::sum))
+                .entrySet().stream()
+                .map(entry -> new ItemDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     public boolean askWantToKeepGoing() {
