@@ -50,6 +50,9 @@ public class ReceiptWriter {
     }
 
     private void writeFreeItems(List<Item> freeItems) {
+        if (payment.getFreeAmount() == 0) {
+            return;
+        }
         BUFFER.append(FREE_ITEM_FRAME);
         freeItems.stream()
                 .filter(Item::isQuantityGreaterThanZero)
