@@ -82,11 +82,11 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
     }
 
     private void purchase() {
-        if (quantityStatus.free() > 0) {
+        if (promotionProduct.isMeetTheBuyQuantity(quantityStatus.unDiscounted())) {
             addUnDiscountedAmount(quantityStatus.unDiscounted());
-            addFreeItemToReceipt(quantityStatus.free());
         }
         purchase(quantityStatus.purchase());
+        addFreeItemToReceipt(quantityStatus.free());
     }
 
     private void addFreeItemToReceipt(int freeQuantity) {

@@ -8,6 +8,8 @@ import camp.nextstep.edu.missionutils.test.NsTest;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest extends NsTest {
 
@@ -159,10 +161,11 @@ class ApplicationTest extends NsTest {
     }
 
     @DisplayName("프로모션 개수 조건을 미충족한 경우는 멤버십 할인 대상이 아니다.")
-    @Test
-    void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity() {
+    @ParameterizedTest
+    @ValueSource(ints = {1, 4, 7})
+    void notTargetOfMembershipDiscountWhenLessThanPromotionBuyQuantity(int quantity) {
         assertSimpleTest(() -> {
-            runException("[콜라-1]", "Y", "N");
+            runException("[콜라-" + quantity + "]", "Y", "N");
             assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
         });
     }

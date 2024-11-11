@@ -45,7 +45,7 @@ public class PromotionProduct extends Product {
     }
 
     private boolean cantTackFreeBecauseOfOutOfStock(int totalQuantity, int unDiscountedQuantity) {
-        return promotion.availableGetOneMoreForFree(unDiscountedQuantity) && isQuantityExceeded(totalQuantity + 1);
+        return isMeetTheBuyQuantity(unDiscountedQuantity) && isQuantityExceeded(totalQuantity + 1);
     }
 
     private boolean isQuantityExceeded(final int totalQuantity) {
@@ -63,7 +63,11 @@ public class PromotionProduct extends Product {
         if (purchaseQuantity + 1 > this.quantity) {
             return false;
         }
-        return promotion.availableGetOneMoreForFree(unDiscountedQuantity);
+        return isMeetTheBuyQuantity(unDiscountedQuantity);
+    }
+
+    public boolean isMeetTheBuyQuantity(int unDiscountedQuantity) {
+        return promotion.isMeetTheBuyQuantity(unDiscountedQuantity);
     }
 
     public void purchaseAll() {
