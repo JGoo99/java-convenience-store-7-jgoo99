@@ -140,6 +140,15 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @DisplayName("무료 증정을 받지 않겠다고 선택한 상품의 금액은 멤버심 할인 대상이 아니다.")
+    @Test
+    void doesNotTakeFreeProductIsNotTargetOfMembershipDiscount() {
+        assertSimpleTest(() -> {
+            runException("[콜라-5]", "Y", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("멤버십할인-0");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
