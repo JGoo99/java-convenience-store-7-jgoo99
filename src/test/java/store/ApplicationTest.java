@@ -170,6 +170,15 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @DisplayName("구매한 상품이 없는 경우 상품 리스트를 출력하지 않는다.")
+    @Test
+    void notPrintItemListWhenTotalPurchaseQuantityIsZero() {
+        assertSimpleTest(() -> {
+            runException("[컵라면-1]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).doesNotContain("컵라면0");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

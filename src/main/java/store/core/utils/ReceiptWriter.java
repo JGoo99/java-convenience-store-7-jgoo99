@@ -24,9 +24,7 @@ public class ReceiptWriter {
     public String run(List<Item> items, List<Item> freeItems) {
         writeConvenienceName();
         writeItems(items);
-        if (payment.getFreeAmount() > 0) {
-            writeFreeItems(freeItems);
-        }
+        writeFreeItems(freeItems);
         writeTotalAmount();
         writeFreeAmount();
         writeMembershipDiscountedAmount();
@@ -46,11 +44,17 @@ public class ReceiptWriter {
 
     private void writeItems(List<Item> items) {
         BUFFER.append(ReceiptFormater.buildItemListFrameLine());
+        if (payment.getTotalQuantity() == 0) {
+            return;
+        }
         items.forEach(item -> BUFFER.append(item.parseReceiptLineOfPurchased()));
     }
 
     private void writeFreeItems(List<Item> freeItems) {
         BUFFER.append(FREE_ITEM_FRAME);
+        if (payment.getFreeAmount() == 0) {
+            return;
+        }
         freeItems.stream()
                 .filter(Item::isQuantityGreaterThanZero)
                 .forEach(item -> BUFFER.append(item.parseReceiptLineOfFree()));
