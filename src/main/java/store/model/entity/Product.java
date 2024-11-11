@@ -1,6 +1,7 @@
 package store.model.entity;
 
 import java.text.DecimalFormat;
+import store.constants.ViewLine;
 import store.model.Item;
 import store.reader.parser.Parsable;
 
@@ -40,15 +41,15 @@ public class Product implements ConvenienceEntity, Parsable {
 
     public String getQuantityStatus() {
         if (quantity == 0) {
-            return "재고 없음";
+            return ViewLine.NONE_QUANTITY.toString();
         }
-        return PRICE_FORMAT.format(quantity) + "개";
+        return PRICE_FORMAT.format(quantity) + ViewLine.QUANTITY_UNIT;
     }
 
     @Override
     public String toString() {
         return name + " " +
-                PRICE_FORMAT.format(price) + "원 " +
+                PRICE_FORMAT.format(price) + ViewLine.PRICE_UNIT +
                 getQuantityStatus();
     }
 }

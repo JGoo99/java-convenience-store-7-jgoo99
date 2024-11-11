@@ -17,13 +17,13 @@ public class ItemDto implements Parsable {
     }
 
     private void validate(String name, int quantity) {
-        validateQuantityIsPositve(quantity);
+        validateQuantityIsPositive(quantity);
         Integer productQuantity = ProductQuantityRepository.getInstance().findByName(name);
         validateProductExists(productQuantity);
         validateQuantityIsWithinStock(quantity, productQuantity);
     }
 
-    private void validateQuantityIsPositve(int quantity) {
+    private void validateQuantityIsPositive(int quantity) {
         if (quantity <= 0) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }

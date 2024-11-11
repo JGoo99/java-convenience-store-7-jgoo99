@@ -88,7 +88,7 @@ public class PromotionBarcodeScanner extends BarcodeScanner {
         addFreeItemToReceipt(quantityStatus.free());
     }
 
-    private void addFreeItemToReceipt(int freeQuantity) {
+    private void addFreeItemToReceipt(final int freeQuantity) {
         receipt.addFreeItem(promotionProduct.parseOf(freeQuantity));
     }
 

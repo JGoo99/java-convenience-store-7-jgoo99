@@ -1,5 +1,6 @@
 package store.reader.parser;
 
+import static store.constants.ParseModelRegex.COMMA;
 import static store.constants.ParseModelRegex.NAME;
 import static store.constants.ParseModelRegex.NUMBER;
 
@@ -20,7 +21,7 @@ public class ProductParser extends LineParser<Product> {
 
     @Override
     protected String getRegex() {
-        return buildRegex(",", NAME, NUMBER, NUMBER, NAME);
+        return buildRegex(COMMA.toString(), NAME, NUMBER, NUMBER, NAME);
     }
 
     @Override

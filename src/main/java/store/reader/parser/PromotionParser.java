@@ -1,8 +1,9 @@
 package store.reader.parser;
 
+import static store.constants.ParseModelRegex.COMMA;
 import static store.constants.ParseModelRegex.DATE;
-import static store.constants.ParseModelRegex.NUMBER;
 import static store.constants.ParseModelRegex.NAME;
+import static store.constants.ParseModelRegex.NUMBER;
 
 import java.time.LocalDate;
 import store.exception.BusinessException;
@@ -11,13 +12,15 @@ import store.model.entity.Promotion;
 
 public class PromotionParser extends LineParser<Promotion> {
 
+    public static final int PROMOTION_GET_QUANTITY = 1;
+
     public PromotionParser(String line) {
         super(line);
     }
 
     @Override
     protected String getRegex() {
-        return buildRegex(",", NAME, NUMBER, NUMBER, DATE, DATE);
+        return buildRegex(COMMA.toString(), NAME, NUMBER, NUMBER, DATE, DATE);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class PromotionParser extends LineParser<Promotion> {
     }
 
     private void validateGetQuantity(int getQuantity) {
-        if (getQuantity != 1) {
+        if (getQuantity != PROMOTION_GET_QUANTITY) {
             throw new BusinessException(ErrorMessage.INVALID_FILE_VALUE);
         }
     }

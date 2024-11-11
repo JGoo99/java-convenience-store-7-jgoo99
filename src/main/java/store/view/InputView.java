@@ -10,6 +10,8 @@ import camp.nextstep.edu.missionutils.Console;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import store.constants.ParseModelRegex;
+import store.constants.ViewLine;
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
 import store.model.ItemDto;
@@ -41,13 +43,13 @@ public class InputView implements Printable {
     }
 
     private void validateInputItems(String inputItems) {
-        if (inputItems.endsWith(",")) {
+        if (inputItems.endsWith(ParseModelRegex.COMMA.toString())) {
             throw new BusinessException(ErrorMessage.INVALID_INPUT);
         }
     }
 
     private List<ItemDto> parserItems(String inputItems) {
-        return Arrays.stream(inputItems.split(","))
+        return Arrays.stream(inputItems.split(ParseModelRegex.COMMA.toString()))
                 .map(line -> new ItemParser(line).parse())
                 .collect(Collectors.toMap(
                         ItemDto::getName,
@@ -64,12 +66,12 @@ public class InputView implements Printable {
     }
 
     public boolean checkGetOneMoreForFree(String itemName) {
-        print("현재 " + itemName + ONE_MORE_FOR_PROMOTION);
+        print(ViewLine.CURRENT + itemName + ONE_MORE_FOR_PROMOTION);
         return askYesOrNo();
     }
 
     public boolean checkPayFullPriceForSomeQuantities(String itemName, final int quantity) {
-        print("현재 " + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
+        print(ViewLine.CURRENT + itemName + " " + quantity + UN_DISCOUNTED_PURCHASE);
         return askYesOrNo();
     }
 
