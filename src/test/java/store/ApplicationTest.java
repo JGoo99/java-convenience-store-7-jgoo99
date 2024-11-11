@@ -173,11 +173,12 @@ class ApplicationTest extends NsTest {
         });
     }
 
-    @DisplayName("구매한 상품이 없어도 멤버십 할인 여부를 물어본다. (테스트용)")
+    @DisplayName("구매한 상품이 없는 경우 멤버십 할인 여부를 물어보지 않는다.")
     @Test
     void targetOfMembershipDiscountWhenCantButPromotionBecauseOfStock() {
         assertSimpleTest(() -> {
             runException("[컵라면-1]", "N", "N");
+            assertThat(output()).doesNotContain("멤버십 할인을 받으시겠습니까? (Y/N)");
             assertThat(output().replaceAll("\\s", "")).contains("내실돈0");
         });
     }
