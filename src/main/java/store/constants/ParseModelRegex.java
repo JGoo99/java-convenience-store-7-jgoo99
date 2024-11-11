@@ -2,8 +2,7 @@ package store.constants;
 
 public enum ParseModelRegex {
 
-    KOREAN("([가-힣]+)"),
-    PROMOTION_NAME("([가-힣a-zA-Z0-9+]+)"),
+    NAME("([가-힣a-zA-Z0-9+]+)"),
     NUMBER("(\\d+)"),
     DATE("(\\d{4}-\\d{2}-\\d{2})"),
 

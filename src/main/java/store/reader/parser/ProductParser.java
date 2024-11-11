@@ -1,8 +1,7 @@
 package store.reader.parser;
 
+import static store.constants.ParseModelRegex.NAME;
 import static store.constants.ParseModelRegex.NUMBER;
-import static store.constants.ParseModelRegex.KOREAN;
-import static store.constants.ParseModelRegex.PROMOTION_NAME;
 
 import store.exception.BusinessException;
 import store.exception.ErrorMessage;
@@ -21,7 +20,7 @@ public class ProductParser extends LineParser<Product> {
 
     @Override
     protected String getRegex() {
-        return buildRegex(",", KOREAN, NUMBER, NUMBER, PROMOTION_NAME);
+        return buildRegex(",", NAME, NUMBER, NUMBER, NAME);
     }
 
     @Override
